@@ -1,12 +1,11 @@
 <!-- ==========================================
-     📄 lobby.html 最終提交版
+     📄 lobby.html 最終提交版 (精準保留尺寸與字體)
      ========================================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 💡 核心修正：將 lobby.html 的分頁標題也同步更換為大寫的 CHARACTERS -->
     <title>LOBBY</title>
     <!-- 引入全域共用樣式表 -->
     <link rel="stylesheet" href="theme.css">
@@ -97,6 +96,26 @@
             transform: scale(1.04); 
         }
         
+        /* 🎯 核心修正：讓 SERVERS 和 CHARACTERS 一起維持原本的明亮高亮色調 */
+        .dir-btn:not(.lock-btn) {
+            border-color: #b37446 !important;
+            color: #b37446 !important;
+            opacity: 1 !important;
+        }
+
+        /* 🎯 保持其餘未解鎖按鈕（LORES、PHOTOS、ABOUT US）的暗淡樣式 */
+        .dir-btn.lock-btn {
+            border-color: rgba(179, 116, 70, 0.2) !important;
+            color: rgba(179, 116, 70, 0.25) !important;
+        }
+        .dir-btn.lock-btn:hover {
+            background: transparent !important;
+            color: rgba(179, 116, 70, 0.25) !important;
+            box-shadow: none !important;
+            transform: none !important;
+            cursor: default;
+        }
+        
         .dir-btn.fnf-fade-out, .lock-system-btn.fnf-hide { 
             opacity: 0 !important; 
             transform: scale(0.85) !important; 
@@ -157,17 +176,18 @@
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'characters.html')" class="dir-btn">CHARACTERS</a>
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'lores.html')" class="dir-btn lock-btn">LORES</a>
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'photos.html')" class="dir-btn lock-btn">PHOTOS</a>
-            <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'servers.html')" class="dir-btn lock-btn">SERVERS</a>
+            
+            <!-- 🎯 核心修正：移除了 lock-btn 樣式使其恢復高亮，並成功串接到你的 'servers.html' 頁面！ -->
+            <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'servers.html')" class="dir-btn">SERVERS</a>
+            
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'about.html')" class="dir-btn lock-btn">ABOUT US</a>
         </div>
 
-        <!-- 💡 核心修正：點擊 Lock System 時，改為呼叫專門的全新強退函式 forceLockOut()，解開之前被 menu.js 底層死鎖的攔截限制！ -->
         <a onclick="forceLockOut()" class="lock-system-btn" id="fnf-back">[ LOCK SYSTEM ]</a>
     </div>
 
     <script src="menu.js"></script>
     <script>
-        // 💡 核心新增：專門解開底層攔截器用的強制登出程式碼，讓 Lock System 100% 絕對能退回 index.html 密碼鎖
         function forceLockOut() {
             if (document.body) {
                 document.body.style.opacity = "0";
@@ -175,7 +195,6 @@
                 document.body.classList.add("fade-out");
             }
             setTimeout(() => {
-                // 改用最高權限的 location.replace 強行物理切換路由，繞過全站共用攔截，徹底修復無法返回的 Bug！
                 window.location.replace("index.html");
             }, 450);
         }

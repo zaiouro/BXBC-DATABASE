@@ -150,4 +150,79 @@ body.fade-out { opacity: 0 !important; }
     padding: 0 !important;       /* 💡 徹底歸零項目內邊距，阻止任何向右推的力量 */
     text-align: left !important;
     color: inherit !important;   /* 自動完美繼承 Dominic 專屬的主題翠綠色 */
+
+/* ==========================================================================
+   Lobby.html 手機版完美適配方案（防止內容溢出）
+   ========================================================================== */
+
+/* 當手機直拿時：強制旋轉並等比例縮小內容 */
+@media (max-width: 768px) and (orientation: portrait) {
+    body {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vh;  
+        height: 100vw; 
+        transform: rotate(90deg);
+        transform-origin: bottom left;
+        margin-top: -100vw; 
+        overflow: hidden;
+    }
+
+    /* 關鍵修正：縮小卡片內的文字與元件，確保不外溢 */
+    body * {
+        box-sizing: border-box !important; /* 確保所有寬度計算包含 Padding */
+    }
+
+    /* 假設你的金框卡片標籤是 .container 或 .box，請換成你實際的 class */
+    .container, .card, .main-box {
+        width: 90%;
+        max-height: 90%; /* 限制最大高度，防止上下溢出 */
+        padding: 20px !important; /* 縮小內襯墊，釋放空間 */
+        overflow: hidden; /* 萬一真的塞不下，強制切除不露出來 */
+    }
+
+    /* 縮小大標題 [ ACCESS RESTRICTED ] */
+    h1, .title {
+        font-size: 5.5vw !important; /* 使用視窗寬度單位，字體隨螢幕自動縮小 */
+        margin-bottom: 10px !important;
+    }
+
+    /* 縮小提示文字 SEARCH THE KEY... */
+    p, .hint-text {
+        font-size: 2.5vw !important;
+        margin-bottom: 15px !important;
+    }
+
+    /* 縮小輸入框 Enter key... */
+    input[type="text"], input[type="password"], .input-field {
+        width: 80% !important;
+        font-size: 3vw !important;
+        padding: 8px !important;
+        margin: 10px auto !important;
+    }
+
+    /* 縮小按鈕 CLICK ME */
+    button, .btn, input[type="submit"] {
+        padding: 8px 20px !important;
+        font-size: 3vw !important;
+    }
+}
+
+/* 當手機橫拿時：直接微調比例 */
+@media (max-width: 900px) and (orientation: landscape) {
+    body * {
+        box-sizing: border-box !important;
+    }
+
+    .container, .card, .main-box {
+        width: 85vw;
+        max-height: 85vh;
+        padding: 15px !important;
+    }
+
+    h1, .title { font-size: 5vw !important; }
+    p, .hint-text { font-size: 2.2vw !important; }
+    input[type="text"], .input-field { width: 70% !important; font-size: 2.5vw !important; }
+    button, .btn { padding: 6px 15px !important; font-size: 2.5vw !important; }
 }

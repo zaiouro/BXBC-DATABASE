@@ -1,16 +1,18 @@
-<!-- 修正後的 mangle.html 完整代碼 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATABASE Terminal - Trixie Sherman</title>
+    <!-- 💡 標題鎖定大寫 CHARACTERS -->
+    <title>CHARACTERS</title>
+    <!-- 引入全域共用樣式表 -->
     <link rel="stylesheet" href="theme.css">
     <style>
+        /* 🔴 獨立 Mangle 專屬警戒血紅色主題 Wiki 大容器 */
         .wiki-container {
             width: 100%;
             height: calc(100vh - 180px);
-            border: 1px solid #9e3b30;
+            border: 1px solid #9e3b30; 
             background: rgba(12,8,5,0.95);
             padding: 25px;
             overflow: hidden;
@@ -121,23 +123,22 @@
             font-size: 14px;
         }
 
-        @keyframes redBreathe { 
-            0%, 100% { box-shadow: 0 0 15px rgba(158, 59, 48, 0.15); } 
-            50% { box-shadow: 0 0 35px rgba(158, 59, 48, 0.45); } 
-        }
+        @keyframes redBreathe { 0%, 100% { box-shadow: 0 0 15px rgba(158, 59, 48, 0.15); } 50% { box-shadow: 0 0 35px rgba(158, 59, 48, 0.45); } }
         @keyframes pageFadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
         @keyframes topFadeIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0px); } }
     </style>
 </head>
 <body>
 
+    <!-- 頂部通用導覽列外殼 -->
     <nav id="global-nav"></nav>
 
+    <!-- 主體內容渲染容器 -->
     <div class="wiki-container">
         <div class="wiki-layout" id="view-layout"></div>
     </div>
 
-    <!-- 💡 精準修正：將來源載入路徑更名為你指定的 data-trixie.js -->
+    <!-- 💡 依序載入獨立資料檔、全域轉場與全自動化導覽渲染引擎 -->
     <script src="data-trixie.js"></script>
     <script src="menu.js"></script>
     <script src="nav.js"></script>
