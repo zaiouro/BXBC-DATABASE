@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>LOBBY</title><link rel="stylesheet" href="theme.css">
 <style>
-.lobby-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:calc(100vh - 100px);max-width:800px;margin-top:40px;border:1px solid #b37446;background:rgba(12,8,5,0.95);padding:40px;text-align:center;position:relative;overflow:hidden;animation:breathe 5s infinite}
+.lobby-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:calc(100vh - 100px);height:calc(100dvh - 100px);max-width:800px;margin-top:40px;border:1px solid #b37446;background:rgba(12,8,5,0.95);padding:40px;text-align:center;position:relative;overflow:hidden;animation:breathe 5s infinite;box-sizing:border-box}
 body{opacity:0;background:#0c0805;transition:opacity 0.45s cubic-bezier(0.16,1,0.3,1)!important}
 .lobby-header-group{position:absolute;top:40px;left:50%;transform:translateX(-50%);width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;opacity:1;transition:opacity 0.4s cubic-bezier(0.16,1,0.3,1),transform 0.4s cubic-bezier(0.16,1,0.3,1)}
 .lobby-header-group.fnf-hide{opacity:0!important;transform:translate(-50%,-20px) scale(0.95)!important}
@@ -21,22 +21,79 @@ body{opacity:0;background:#0c0805;transition:opacity 0.45s cubic-bezier(0.16,1,0
 .lock-system-btn{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);background:transparent;border:1px solid #b37446;color:#b37446;padding:8px 18px;font-size:13px;font-family:"Times New Roman",serif!important;letter-spacing:2px;text-decoration:none;text-transform:uppercase;z-index:10;opacity:1;transition:opacity 0.4s cubic-bezier(0.16,1,0.3,1),transform 0.4s cubic-bezier(0.16,1,0.3,1),background 0.2s,color 0.2s}
 .lock-system-btn:hover{background:#b37446;color:#0c0805;box-shadow:0 0 15px rgba(179,116,70,0.3)}
 .lock-system-btn.fnf-hide{opacity:0!important;transform:translate(-50%,20px) scale(0.95)!important}
+
+/* ===== 手機版適配 ===== */
+@media (max-width:600px){
+    .lobby-container{
+        width:92%;
+        height:calc(100dvh - 60px);
+        margin-top:30px;
+        padding:80px 20px 70px;
+    }
+    .lobby-header-group{
+        top:24px;
+    }
+    .lobby-title{
+        font-size:24px;
+        letter-spacing:3px;
+    }
+    .directory-box{
+        gap:12px;
+        max-width:100%;
+    }
+    .dir-btn{
+        font-size:16px;
+        letter-spacing:2px;
+        padding:16px 12px;
+        min-height:48px;
+    }
+    .lock-system-btn{
+        bottom:36px;
+        font-size:12px;
+        padding:8px 14px;
+        letter-spacing:1.5px;
+    }
+}
+
+@media (max-width:360px){
+    .lobby-title{
+        font-size:20px;
+        letter-spacing:2px;
+    }
+    .dir-btn{
+        font-size:14px;
+        letter-spacing:1.5px;
+    }
+}
+
+/* 觸控裝置：拿掉 hover 依賴的效果，改用 active 狀態即時反饋 */
+@media (hover:none) and (pointer:coarse){
+    .dir-btn:not(.lock-btn):active{
+        background:#b37446;
+        color:#0c0805;
+        box-shadow:0 0 20px rgba(179,116,70,0.4);
+        transform:scale(1.04)
+    }
+    .lock-system-btn:active{
+        background:#b37446;
+        color:#0c0805;
+        box-shadow:0 0 15px rgba(179,116,70,0.3)
+    }
+}
 </style>
 </head>
 <body>
 <div class="lobby-container">
-    <div class="lobby-header-group" id="fnf-header"><h1 class="lobby-title">[ LOBBY ]</h1></div>
+    <div class="lobby-header-group" id="fnf-header"><h1 class="lobby-title">Lobby</h1></div>
     <div class="directory-box" id="fnf-box">
         <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'characters.html')" class="dir-btn">CHARACTERS</a>
         <a class="dir-btn lock-btn">LORES</a>
         <a class="dir-btn lock-btn">PHOTOS</a>
-        
-        <!-- 🎯 已成功解鎖：修正拼字、移除 lock-btn，並與您的 fnfNavigate 動態轉場系統完美連結 -->
-        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'hde.html')" class="dir-btn">HAPPIEST DAY EVER!</a>
-        
+        <!-- 🎯 核心更替：精準將 SERVERS 更替為 MINI GAME，並完美承襲鎖定鎖死事件阻斷 -->
+        <a class="dir-btn lock-btn">HAPPEST DAY EVER!</a>
         <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'about.html')" class="dir-btn">ABOUT US</a>
     </div>
-    <a onclick="forceLockOut()" class="lock-system-btn" id="fnf-back">[ LOCK SYSTEM ]</a>
+    <a onclick="forceLockOut()" class="lock-system-btn" id="fnf-back">Back To Entrance</a>
 </div>
 <script src="menu.js"></script>
 <script>
