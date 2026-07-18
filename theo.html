@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 💡 僅將標題改為 Theo -->
+    <title>DATABASE Terminal - Theo</title>
+    <!-- 引入全域共用樣式表 -->
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .wiki-container {
+            width: 100%;
+            height: calc(100vh - 180px);
+            border: 1px solid #00e676; 
+            background: rgba(12,8,5,0.95);
+            padding: 25px;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.98);
+            animation: greenBreathe 5s infinite, pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #global-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(-15px);
+            animation: topFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+        }
+
+        .nav-status-group {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            width: 100%;
+            border: 1px dashed rgba(0, 230, 118, 0.2);
+            padding: 4px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            background: transparent;
+            border: 1px solid #00e676;
+            color: #00e676;
+            padding: 6px 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 0 3px;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #00e676;
+            border-color: #00e676;
+            color: #0c0805;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+        }
+
+        .submenu-btn {
+            flex: none;
+            width: auto;
+            padding: 4px 15px;
+            margin-bottom: 4px;
+        }
+
+        .wiki-infobox {
+            flex: 0 0 320px;
+            background: #000;
+            border: 1px solid #00e676;
+            height: 100%;
+            overflow-y: auto;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .infobox-title {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #00e676;
+        }
+
+        .infobox-table td.label {
+            font-weight: bold;
+            color: #00e676;
+            width: 40%;
+        }
+
+        .lore-content-area::-webkit-scrollbar-thumb {
+            background: #00e676;
+            border-radius: 2px;
+        }
+
+        .collapsible-header {
+            font-size: 18px;
+            color: #00e676;
+            border-bottom: 1px solid #00e676;
+            padding-bottom: 4px;
+            margin: 20px 0 10px 0;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .collapsible-header:hover {
+            color: #ffffff;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        .quote-block {
+            border-left: 3px solid #00e676;
+            padding-left: 15px;
+            font-style: italic;
+            margin: 20px 0;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        @keyframes greenBreathe { 
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 230, 118, 0.15); } 
+            50% { box-shadow: 0 0 35px rgba(0, 230, 118, 0.45); } 
+        }
+        @keyframes pageFadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes topFadeIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0px); } }
+    </style>
+</head>
+<body>
+
+    <nav id="global-nav"></nav>
+
+    <div class="wiki-container">
+        <div class="wiki-layout" id="view-layout"></div>
+    </div>
+
+    <!-- 💡 精準修正：載入您指定命名的外部資料檔 data-theo.js -->
+    <script src="data-theo.js"></script>
+    <script src="menu.js"></script>
+    <script src="nav.js"></script>
+
+    <!-- 💡 安全且獨立的局部智慧擦除腳本 -->
+    <script>
+        const cleanerTimer = setInterval(() => {
+            const tableLabels = document.querySelectorAll(".infobox-table td.label");
+            const relHeaders = document.querySelectorAll(".collapsible-header");
+            const quoteBlock = document.querySelector(".quote-block");
+
+            if (tableLabels.length > 0) {
+                // 1. 精準隱藏左側表格的 Alias 與 LOCATION:，不影響其他角色
+                tableLabels.forEach(td => {
+                    const labelText = td.textContent.trim();
+                    if (labelText === "Alias" || labelText === "LOCATION:") {
+                        td.parentElement.remove();
+                    }
+                });
+
+                // 2. 精準隱藏右側完全空白的 RELATIONSHIPS 區塊
+                relHeaders.forEach(header => {
+                    if (header.textContent.trim() === "RELATIONSHIPS") {
+                        const contentContainer = header.nextElementSibling;
+                        if (contentContainer) contentContainer.remove();
+                        header.remove();
+                    }
+                });
+
+                // 3. 隱藏空白的引言框
+                if (quoteBlock && (quoteBlock.innerText.trim() === '""' || quoteBlock.innerText.trim() === '')) {
+                    quoteBlock.remove();
+                }
+
+                // 擦除完成，終止執行
+                clearInterval(cleanerTimer);
+            }
+        }, 10);
+
+        // 超時保險防止無限運行
+        setTimeout(() => clearInterval(cleanerTimer), 3000);
+    </script>
+</body>
+</html>

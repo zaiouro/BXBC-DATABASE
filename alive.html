@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CHARACTERS</title><link rel="stylesheet" href="theme.css">
+<style>
+.lobby-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:calc(100vh - 100px);height:calc(100dvh - 100px);max-width:800px;margin-top:40px;border:1px solid #00e676;background:rgba(12,8,5,0.95);padding:40px;text-align:center;position:relative;overflow:hidden;box-sizing:border-box;animation:greenBreathe 5s infinite}
+.lobby-header-group{position:absolute;top:40px;left:50%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;opacity:0;transform:translate(-50%,-15px) scale(0.98);animation:headerFadeIn .5s cubic-bezier(0.16,1,0.3,1) forwards;transition:opacity .4s,transform .4s}
+.lobby-header-group.fnf-hide{opacity:0!important;transform:translate(-50%,-20px) scale(0.95)!important}
+.lobby-subtitle{font-size:15px;color:#618c73;margin:0;letter-spacing:1.5px;text-transform:uppercase;width:100%;display:block}
+.directory-box{display:flex;flex-direction:column;gap:15px;width:100%;max-width:550px;margin:0 auto;position:relative;opacity:0;transform:scale(0.97);animation:elementFadeIn .6s cubic-bezier(0.16,1,0.3,1) .05s forwards}
+.dir-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;background:transparent;padding:16px;border:1px solid #00e676;color:#00e676;text-decoration:none;position:relative;transform-origin:center;transition:transform .45s cubic-bezier(0.16,1,0.3,1),opacity .3s,background .2s,box-shadow .2s,border-color .2s,color .2s}
+.char-name{font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.char-status{font-size:11px;letter-spacing:2px;color:#377a56;margin-top:4px;text-transform:uppercase}
+.dir-btn:hover{background:#00e676;border-color:#00e676;color:#0c0805;box-shadow:0 0 20px rgba(0,230,118,0.4);transform:scale(1.03)}
+.dir-btn:hover .char-status{color:#0c0805;opacity:0.8}
+.dir-btn.fnf-fade-out{opacity:0!important;transform:scale(0.85)!important;pointer-events:none}
+.dir-btn.fnf-selected{pointer-events:none;z-index:99;background:#00e676!important;border-color:#00e676!important;color:#0c0805!important;box-shadow:0 0 25px rgba(0,230,118,0.6)!important}
+.dir-btn.fnf-selected .char-status{color:#0c0805!important}
+.back-lobby-btn{position:absolute;bottom:40px;left:50%;color:#618c73;font-size:12px;letter-spacing:1.5px;text-decoration:none;border-bottom:1px dashed transparent;z-index:10;text-transform:uppercase;opacity:0;transform:translate(-50%,15px) scale(0.98);animation:footerFadeIn .5s cubic-bezier(0.16,1,0.3,1) forwards;transition:opacity .4s,transform .4s,color .2s}
+.back-lobby-btn:hover{color:#00e676;border-bottom-color:#00e676}
+.back-lobby-btn.fnf-hide{opacity:0!important;transform:translate(-50%,20px) scale(0.95)!important;pointer-events:none!important}
+.audio-control-btn{position:absolute;top:20px;right:20px;background:transparent;border:1px solid #00e676;color:#00e676;padding:8px 12px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;z-index:100;transform-origin:center;transition:transform .45s cubic-bezier(0.16,1,0.3,1),background .2s,box-shadow .2s,border-color .2s,color .2s}
+.audio-control-btn:hover{background:#00e676;border-color:#00e676;color:#0c0805;box-shadow:0 0 20px rgba(0,230,118,0.4);transform:scale(1.05)}
+.audio-control-btn:active{transform:scale(0.95);transition:transform .1s ease}
+.audio-control-btn.fnf-hide{opacity:0!important;transform:scale(0.85) translateX(10px)!important;pointer-events:none!important}
+@keyframes greenBreathe{0%,100%{box-shadow:0 0 15px rgba(0,230,118,0.15)}50%{box-shadow:0 0 35px rgba(0,230,118,0.45)}}
+@keyframes headerFadeIn{from{opacity:0;transform:translate(-50%,-15px) scale(0.98)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes footerFadeIn{from{opacity:0;transform:translate(-50%,15px) scale(0.98)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes elementFadeIn{from{opacity:0;transform:translateY(0) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* ===== 手機版適配（跟 dead.html 同一套邏輯） ===== */
+@media (max-width:600px){
+    .lobby-container{
+        width:92%;
+        height:calc(100dvh - 60px);
+        margin-top:30px;
+        padding:70px 20px 60px;
+    }
+    .audio-control-btn{
+        top:12px;
+        right:12px;
+        font-size:10px;
+        padding:5px 10px;
+    }
+    .lobby-header-group{
+        top:52px;
+    }
+    .lobby-subtitle{
+        font-size:12px;
+        letter-spacing:1px;
+        padding:0 10px;
+    }
+    .directory-box{
+        gap:10px;
+    }
+    .dir-btn{
+        padding:12px;
+        min-height:48px;
+    }
+    .char-name{
+        font-size:16px;
+        letter-spacing:2px;
+    }
+    .char-status{
+        font-size:10px;
+        letter-spacing:1.5px;
+    }
+    .back-lobby-btn{
+        bottom:16px;
+        font-size:11px;
+        letter-spacing:1px;
+    }
+}
+
+@media (max-width:360px){
+    .char-name{
+        font-size:14px;
+        letter-spacing:1.5px;
+    }
+    .char-status{
+        font-size:9px;
+    }
+}
+
+/* 觸控裝置：拿掉 hover 依賴的效果，改用 active 狀態即時反饋 */
+@media (hover:none) and (pointer:coarse){
+    .dir-btn:active{
+        background:#00e676;
+        border-color:#00e676;
+        color:#0c0805;
+        box-shadow:0 0 20px rgba(0,230,118,0.4);
+        transform:scale(1.03)
+    }
+    .dir-btn:active .char-status{ color:#0c0805; opacity:0.8; }
+    .back-lobby-btn:active{ color:#00e676; border-bottom-color:#00e676; }
+    .audio-control-btn:active{ background:#00e676; border-color:#00e676; color:#0c0805; box-shadow:0 0 20px rgba(0,230,118,0.4); }
+}
+</style>
+</head>
+<body>
+<audio id="bgm" src="alive.mp3" loop></audio><audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
+<div class="lobby-container">
+    <button id="music-toggle" class="audio-control-btn" onmouseenter="playHoverSound()" onclick="toggleMusic()">Music: OFF</button>
+    <div class="lobby-header-group" id="fnf-header"><p class="lobby-subtitle">Select a character to research them.</p></div>
+    <div class="directory-box" id="fnf-box">
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'adora.html')" class="dir-btn"><span class="char-name">ADORA</span><span class="char-status">[ CREATOR MISSING ]</span></a>
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'dom.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">DOMINIC CANTON</span><span class="char-status">[ COMPANY PARTNER ]</span></a>
+        <!-- 🎯 核心修正：點擊 RYO 的時候，特別標記將音樂播放狀態傳遞過去，其餘角色則會保持安靜 -->
+        <a onmouseenter="playHoverSound()" onclick="localStorage.setItem('keep_ryo','1'); fnfNavigate(this,'ryo.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">RYO</span><span class="char-status">[ THE UNDERPAID JANITOR ]</span></a>
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'theo.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">THEO</span><span class="char-status">[ VISITOR & FURRY ]</span></a>
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'afton.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">WILLIAM AFTON</span><span class="char-status">[ COMPANY CEO ]</span></a>
+    </div>
+    <a onclick="fadeTo('characters.html')" class="back-lobby-btn" id="fnf-back">&lt; Return to Characters</a>
+</div>
+<script>
+const bgm=document.getElementById('bgm'),musicBtn=document.getElementById('music-toggle');
+function playHoverSound(){const e=document.getElementById('hover-sound');e&&(e.currentTime=0,e.play().catch(()=>{}))}
+function toggleMusic(){bgm.paused?bgm.play().then(()=>{musicBtn.innerText="Music: ON"}).catch(()=>{}):(bgm.pause(),musicBtn.innerText="Music: OFF")}
+document.addEventListener('click',()=>{bgm.paused&&"Music: OFF"===musicBtn.innerText&&bgm.play().then(()=>{musicBtn.innerText="Music: ON"}).catch(()=>{})},{once:!0});
+// 🛠️ 頁面加載時自動清空之前的角色判定標記，確保每次返回大廳都是最乾淨的狀態
+window.addEventListener('load',()=>{localStorage.removeItem('keep_ryo')});
+</script>
+<script src="menu.js"></script>
+<script>
+const originalFnfNavigate=fnfNavigate;fnfNavigate=function(e,t){musicBtn&&musicBtn.classList.add('fnf-hide');originalFnfNavigate(e,t)};
+</script>
+</body>
+</html>

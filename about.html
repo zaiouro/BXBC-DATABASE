@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ABOUT US</title><link rel="stylesheet" href="theme.css"><style>@import url('https://googleapis.com');*{font-family:"Times New Roman",serif!important;box-sizing:border-box!important;user-select:none;-webkit-user-select:none;}h1,h2,h3,.nav-btn,.panel-title,.credit-role,.discord-link {font-family:"EB Garamond",serif!important;text-transform:uppercase!important;letter-spacing:1.5px!important;}body {background:#0c0805;color:#b37446;margin:0;padding:20px 40px;display:flex;flex-direction:column;align-items:center;height:100vh;height:100dvh;opacity:0;transition:opacity .45s cubic-bezier(.16,1,.3,1)!important;overflow:hidden;}#global-nav {display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;margin-bottom:20px;}.nav-btn {text-align:center;white-space:nowrap;background:transparent;border:1px solid #b37446;color:#b37446;padding:6px 20px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none;transition:all .3s ease;}.nav-btn:hover {background:#b37446;color:#0c0805;box-shadow:0 0 15px rgba(179,116,70,.4);}.wiki-container {width:100%;height:calc(100vh - 120px);height:calc(100dvh - 120px);border:1px solid #b37446;background:rgba(12,8,5,.95);padding:35px;animation:breathe 5s infinite;overflow:hidden;position:relative;}.credits-window {width:100%;height:100%;overflow:hidden;position:relative;display:flex;justify-content:center;cursor:grab;}.credits-window:active {cursor:grabbing;}.credits-scroller {position:absolute;top:100%;width:100%;max-width:600px;display:flex;flex-direction:column;gap:14px;text-align:center;will-change:transform,top;}.credit-header {font-size:24px;color:#fff;margin:40px 0 20px 0;letter-spacing:3px;font-family:"EB Garamond",serif!important;text-shadow:0 0 5px rgba(255,255,255,.2);}.credit-desc {font-size:14px;color:#d19a6a;line-height:1.6;margin-bottom:30px;padding:0 20px;}.credit-row {display:flex;width:100%;justify-content:center;font-size:15px;gap:20px;line-height:1.2;}.credit-role {flex:1;text-align:right;color:#b37446;font-weight:bold;}.credit-name {flex:1;text-align:left;color:#fff;}
+        
+        /* 🎯 核心修正：將 Discord 網址移出名單容器，使用 position: absolute 絕對死鎖在黑框的右下角，永遠不隨名單移動！ */
+        .discord-fixed-corner { 
+            position: absolute !important; 
+            bottom: 20px !important; 
+            right: 25px !important; 
+            font-size: 11px !important; 
+            color: rgba(179,116,70,0.35); 
+            font-weight: bold; 
+            z-index: 99; /* 確保浮在滾動名單的上方 */
+            pointer-events: auto !important; 
+            letter-spacing: 1px;
+        }
+        .discord-link { color: rgba(179,116,70,0.5); text-decoration: none; transition: color 0.2s, text-shadow 0.2s; cursor: pointer; }
+        .discord-link:hover { color: #fff !important; text-shadow: 0 0 5px rgba(179,116,70,0.6); }
+        
+        @keyframes breathe {0%,100% {box-shadow:0 0 15px rgba(179,116,70,.15);}50% {box-shadow:0 0 35px rgba(179,116,70,.45);}}
+
+        /* ===== 手機版適配 ===== */
+        @media (max-width:600px){
+            body{
+                padding:14px 16px;
+            }
+            #global-nav{
+                margin-bottom:14px;
+            }
+            .nav-btn{
+                font-size:12px;
+                padding:8px 18px;
+                min-height:40px;
+            }
+            .wiki-container{
+                height:calc(100dvh - 90px);
+                padding:18px;
+            }
+            .credit-header{
+                font-size:18px;
+                margin:28px 0 14px 0;
+                letter-spacing:2px;
+            }
+            .credit-desc{
+                font-size:12px;
+                padding:0 8px;
+                margin-bottom:20px;
+            }
+            .credit-row{
+                font-size:12px;
+                gap:10px;
+            }
+            .discord-fixed-corner{
+                bottom:10px;
+                right:12px;
+                font-size:9px;
+            }
+        }
+
+        @media (max-width:360px){
+            .credit-header{
+                font-size:16px;
+            }
+            .credit-row{
+                font-size:11px;
+            }
+        }
+
+        /* 觸控裝置：hover 效果換成 active */
+        @media (hover:none) and (pointer:coarse){
+            .nav-btn:active{
+                background:#b37446;
+                color:#0c0805;
+                box-shadow:0 0 15px rgba(179,116,70,.4);
+            }
+            .discord-link:active{
+                color:#fff!important;
+                text-shadow:0 0 5px rgba(179,116,70,.6);
+            }
+        }
+        </style></head><body>
+
+    <!-- 🎯 修正點 1：將 onclick 換成全域 fadeTo('lobby.html') -->
+    <div id="global-nav"><a onclick="fadeTo('lobby.html')" class="nav-btn" style="cursor:pointer;">< RETURN TO LOBBY</a></div>
+
+    <div class="wiki-container" id="panel-box">
+        
+        <!-- 🎯 核心修正：把 Discord 連結抽出來獨立擺放，讓它死鎖在角落 -->
+        <div class="discord-fixed-corner" onmousedown="event.stopPropagation()">
+            DISCORD SERVER: <a href="https://discord.gg/yB7DkjDZxB" target="_blank" class="discord-link">DISCORD.GG/YB7DKJDZXB</a>
+        </div>
+
+        <div class="credits-window" id="mc-window">
+            <div class="credits-scroller" id="mc-scroller">
+                
+                <div class="credit-header">MEMORIES IN THE MATRIX</div>
+                <div class="credit-desc">
+                    THANK YOU EVERYONE FOR YOUR HARD-WORKINGS!<br>
+                    TO SAVE THE MEMORIES OF WHAT WE HAD,<br>
+                    SPECIAL SHOUTOUT TO ALL MY FRIENDS.
+                </div>
+                
+                <div class="credit-header">PROJECT CREATOR</div>
+                <div class="credit-row"><div class="credit-role">Full-Stack Webmaster</div><div class="credit-name">zaiouro</div></div>
+                <div class="credit-row"><div class="credit-role">System Architect</div><div class="credit-name">zaiouro</div></div>
+                <div class="credit-row"><div class="credit-role">Database Deployer</div><div class="credit-name">zaiouro</div></div>
+                <div class="credit-row"><div class="credit-role">Scripts Designers</div><div class="credit-name">EVERYONE!</div></div>
+
+                <div class="credit-header">CREATIVE PROTOCOLS</div>
+                <div class="credit-row"><div class="credit-role">THE CREATOR & WEBMASTER</div><div class="credit-name">zaiouro. (BONABI)</div></div>
+                <div class="credit-row"><div class="credit-role">CHARACTER DESIGNER</div><div class="credit-name">TONYZANBONNII (RAT)</div></div>
+                <div class="credit-row"><div class="credit-role">CHARACTER DESIGNER</div><div class="credit-name">FandomFanatic (MANGLE)</div></div>
+                <div class="credit-row"><div class="credit-role">CHARACTER DESIGNER</div><div class="credit-name">Dex (VICTOR & RYO)</div></div>
+                <div class="credit-row"><div class="credit-role">CHARACTER DESIGNER</div><div class="credit-name">PP9LOL (THEO THE FURRY)</div></div>
+                <div class="credit-row" style="margin-top: 10px;"><div class="credit-role" style="color: rgba(179,116,70,0.45); font-style: italic;">[MISSED YOU!]</div><div class="credit-name" style="color: rgba(255,255,255,0.5);">Duck (Adora)</div></div>
+                <div class="credit-row" style="margin-top: 10px;"><div class="credit-role">Asset Upload Handler</div><div class="credit-name">zaiouro</div></div>
+
+                <div class="credit-header">SPECIAL THANKS</div>
+                <div class="credit-row"><div class="credit-role">Discord Server Host</div><div class="credit-name">Marston</div></div>
+                <div class="credit-row"><div class="credit-role">RP Inspiration</div><div class="credit-name">FNAF & Blockbears:Returns</div></div>
+                <div class="credit-row" style="margin-top: 10px;"><div class="credit-role" style="color: rgba(179,116,70,0.5);">Spectators</div><div class="credit-name" style="color: rgba(255,255,255,0.75);">Toasty, Marston, Spidey</div></div>
+                
+                <div style="margin-top:60px; font-size:11px; opacity:0.3; letter-spacing:2px;">[THE END OF CREDITS]</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const win = document.getElementById('mc-window'), scr = document.getElementById('mc-scroller');
+    let isDragging = false, startY = 0, currentTop = 0, animId = null;
+    const scrollSpeed = 0.35; 
+
+    window.onload = () => {
+        document.body.style.opacity = "1";
+        currentTop = win.clientHeight;
+        startAutoScroll();
+    };
+
+    function autoScroll() {
+        if (!isDragging) {
+            currentTop -= scrollSpeed;
+            scr.style.top = currentTop + 'px';
+            if (currentTop < -scr.clientHeight) currentTop = win.clientHeight;
+        }
+        animId = requestAnimationFrame(autoScroll);
+    }
+
+    function startAutoScroll() { if (!animId) animId = requestAnimationFrame(autoScroll); }
+    function stopAutoScroll() { if (animId) { cancelAnimationFrame(animId); animId = null; } }
+
+    win.addEventListener('mousedown', (e) => {
+        if (e.target.tagName === 'A') return;
+        isDragging = true;
+        startY = e.clientY - currentTop;
+        stopAutoScroll();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        currentTop = e.clientY - startY;
+        const maxBottom = win.clientHeight + 100, minTop = -scr.clientHeight - 100;
+        if (currentTop > maxBottom) currentTop = maxBottom;
+        if (currentTop < minTop) currentTop = minTop;
+        scr.style.top = currentTop + 'px';
+    });
+
+    window.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; startAutoScroll(); } });
+
+    // 🎯 修正點 2：完整補齊殘缺的滾輪事件、計時器及大括號閉合
+    win.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        currentTop -= e.deltaY * 0.4;
+        scr.style.top = currentTop + 'px';
+        stopAutoScroll();
+        clearTimeout(win.scrollTimeout);
+        win.scrollTimeout = setTimeout(() => { if(!isDragging) startAutoScroll(); }, 1000);
+    }, { passive: false });
+
+    // 🎯 手機版補強：讓觸控滑動也能像滑鼠拖曳一樣暫停/操控名單捲動
+    win.addEventListener('touchstart', (e) => {
+        if (e.target.tagName === 'A') return;
+        isDragging = true;
+        startY = e.touches[0].clientY - currentTop;
+        stopAutoScroll();
+    }, { passive: true });
+
+    win.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentTop = e.touches[0].clientY - startY;
+        const maxBottom = win.clientHeight + 100, minTop = -scr.clientHeight - 100;
+        if (currentTop > maxBottom) currentTop = maxBottom;
+        if (currentTop < minTop) currentTop = minTop;
+        scr.style.top = currentTop + 'px';
+    }, { passive: true });
+
+    win.addEventListener('touchend', () => { if (isDragging) { isDragging = false; startAutoScroll(); } });
+</script>
+
+<!-- 🎯 修正點 3：引入核心引擎處理轉場淡出、音效與安全防護 -->
+<script src="menu.js"></script>
+</body>
+</html>

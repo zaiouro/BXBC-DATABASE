@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPTIONS</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+body{
+    background:#0c0805;
+    color:#b37446;
+    margin:0;
+    padding:20px 40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    height:100vh;
+    height:100dvh;
+    opacity:0;
+    transition:opacity .45s cubic-bezier(.16,1,.3,1)!important;
+    overflow:hidden;
+}
+
+#global-nav{ display:flex; flex-direction:column; gap:8px; align-items:center; width:100%; margin-bottom:20px; }
+.nav-btn{ text-align:center; white-space:nowrap; background:transparent; border:1px solid #b37446; color:#b37446; padding:6px 20px; font-size:13px; font-weight:bold; cursor:pointer; text-decoration:none; transition:all .3s ease; }
+.nav-btn:hover{ background:#b37446; color:#0c0805; box-shadow:0 0 15px rgba(179,116,70,.4); }
+
+.wiki-container{
+    width:100%;
+    height:calc(100vh - 120px);
+    height:calc(100dvh - 120px);
+    max-width:700px;
+    border:1px solid #b37446;
+    background:rgba(12,8,5,.95);
+    padding:35px;
+    animation:breathe 5s infinite;
+    overflow-y:auto;
+    position:relative;
+    box-sizing:border-box;
+}
+@keyframes breathe{0%,100%{box-shadow:0 0 15px rgba(179,116,70,.15);}50%{box-shadow:0 0 35px rgba(179,116,70,.45);}}
+
+.panel-title{
+    font-size:26px;
+    color:#e5bd9c;
+    text-align:center;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    font-family:"EB Garamond",serif!important;
+    margin:0 0 35px;
+}
+
+.option-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:18px 6px;
+    border-bottom:1px dashed rgba(179,116,70,0.25);
+}
+.option-row label{
+    font-family:"EB Garamond",serif!important;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    font-size:14px;
+    color:#b37446;
+    flex:0 0 auto;
+}
+
+.option-slider-wrap{ display:flex; align-items:center; gap:12px; flex:1; justify-content:flex-end; }
+.option-slider{
+    -webkit-appearance:none;
+    appearance:none;
+    width:160px;
+    max-width:45vw;
+    height:4px;
+    background:rgba(179,116,70,0.3);
+    outline:none;
+    cursor:pointer;
+}
+.option-slider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:#b37446;
+    cursor:pointer;
+    box-shadow:0 0 8px rgba(179,116,70,0.6);
+}
+.option-slider::-moz-range-thumb{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:#b37446;
+    border:none;
+    cursor:pointer;
+    box-shadow:0 0 8px rgba(179,116,70,0.6);
+}
+#volume-value{ font-size:13px; color:#e5bd9c; min-width:38px; text-align:right; }
+
+.toggle-btn{
+    background:transparent;
+    border:1px solid #b37446;
+    color:#b37446;
+    padding:8px 22px;
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    cursor:pointer;
+    min-width:80px;
+    transition:all .2s ease;
+}
+.toggle-btn.is-on{ background:#b37446; color:#0c0805; box-shadow:0 0 15px rgba(179,116,70,.4); }
+.toggle-btn:hover{ box-shadow:0 0 15px rgba(179,116,70,.3); }
+
+.option-divider{ height:1px; background:rgba(179,116,70,0.15); margin:10px 0 0; }
+
+.danger-row label{ color:#ff5c5c; }
+.danger-btn{
+    background:transparent;
+    border:1px solid #9e3b30;
+    color:#ff5c5c;
+    padding:8px 18px;
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:all .2s ease;
+}
+.danger-btn:hover{ background:#9e3b30; color:#fff; box-shadow:0 0 15px rgba(158,59,48,.5); }
+
+/* 確認清除進度的彈窗 */
+.confirm-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
+.confirm-overlay.show{ display:flex; }
+.confirm-box{
+    border:1px solid #9e3b30;
+    background:#0c0805;
+    padding:30px;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+    box-shadow:0 0 30px rgba(158,59,48,0.4);
+}
+.confirm-title{
+    color:#ff5c5c;
+    font-size:18px;
+    letter-spacing:3px;
+    font-family:"EB Garamond",serif!important;
+    text-transform:uppercase;
+    margin-bottom:14px;
+}
+.confirm-text{ color:#d19a6a; font-size:13px; line-height:1.6; margin-bottom:24px; }
+.confirm-actions{ display:flex; gap:12px; justify-content:center; }
+.confirm-btn{
+    flex:1;
+    padding:10px 12px;
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    border:1px solid #b37446;
+    background:transparent;
+    color:#b37446;
+    transition:all .2s ease;
+}
+.confirm-btn.cancel:hover{ background:#b37446; color:#0c0805; }
+.confirm-btn.confirm{ border-color:#9e3b30; color:#ff5c5c; }
+.confirm-btn.confirm:hover{ background:#9e3b30; color:#fff; box-shadow:0 0 15px rgba(158,59,48,.5); }
+
+/* ===== 手機版適配 ===== */
+@media (max-width:600px){
+    body{ padding:14px 16px; }
+    .wiki-container{ height:calc(100dvh - 90px); padding:20px; }
+    .panel-title{ font-size:20px; letter-spacing:2px; margin-bottom:24px; }
+    .option-row{ flex-wrap:wrap; padding:14px 4px; gap:8px; }
+    .option-row label{ font-size:12px; width:100%; }
+    .option-slider-wrap{ width:100%; justify-content:flex-start; }
+    .option-slider{ max-width:none; flex:1; }
+    .toggle-btn{ font-size:11px; padding:8px 16px; min-width:70px; }
+    .danger-btn{ width:100%; padding:10px; }
+    .confirm-box{ padding:22px; }
+}
+
+/* 觸控裝置：hover 換 active */
+@media (hover:none) and (pointer:coarse){
+    .nav-btn:active{ background:#b37446; color:#0c0805; box-shadow:0 0 15px rgba(179,116,70,.4); }
+    .toggle-btn:active{ box-shadow:0 0 15px rgba(179,116,70,.3); }
+    .danger-btn:active{ background:#9e3b30; color:#fff; }
+    .confirm-btn.cancel:active{ background:#b37446; color:#0c0805; }
+    .confirm-btn.confirm:active{ background:#9e3b30; color:#fff; }
+}
+</style>
+</head>
+<body>
+
+<div id="global-nav">
+    <a onclick="backToEntrance()" onmouseenter="playHoverSound()" class="nav-btn">&lt; BACK TO ENTRANCE</a>
+</div>
+
+<div class="wiki-container">
+    <h1 class="panel-title">Options</h1>
+
+    <div class="option-row">
+        <label>Music Volume</label>
+        <div class="option-slider-wrap">
+            <input type="range" min="0" max="100" value="50" id="volume-slider" class="option-slider">
+            <span id="volume-value">50%</span>
+        </div>
+    </div>
+
+    <div class="option-row">
+        <label>Sound Effects</label>
+        <button class="toggle-btn is-on" id="sfx-toggle" onclick="toggleSetting('sfx')">ON</button>
+    </div>
+
+    <div class="option-row">
+        <label>Screen Glitch Effects</label>
+        <button class="toggle-btn is-on" id="glitch-toggle" onclick="toggleSetting('glitch')">ON</button>
+    </div>
+
+    <div class="option-divider"></div>
+
+    <div class="option-row danger-row">
+        <label>Reset Progress</label>
+        <button class="danger-btn" onclick="openResetConfirm()" onmouseenter="playHoverSound()">Clear Save Data</button>
+    </div>
+</div>
+
+<div class="confirm-overlay" id="reset-confirm">
+    <div class="confirm-box">
+        <div class="confirm-title">[ Warning ]</div>
+        <div class="confirm-text">This will permanently erase all saved settings and progress on this device. This cannot be undone.</div>
+        <div class="confirm-actions">
+            <button class="confirm-btn cancel" onclick="closeResetConfirm()">Cancel</button>
+            <button class="confirm-btn confirm" onclick="confirmReset()">Erase</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const VOLUME_KEY = 'fnf_music_volume';
+    const SFX_KEY = 'fnf_sfx_enabled';
+    const GLITCH_KEY = 'fnf_glitch_enabled';
+
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeValue = document.getElementById('volume-value');
+    const sfxToggle = document.getElementById('sfx-toggle');
+    const glitchToggle = document.getElementById('glitch-toggle');
+
+    function loadSettings(){
+        const savedVolume = localStorage.getItem(VOLUME_KEY);
+        const vol = savedVolume !== null ? parseInt(savedVolume, 10) : 50;
+        volumeSlider.value = vol;
+        volumeValue.textContent = vol + '%';
+
+        const sfxOn = localStorage.getItem(SFX_KEY) !== 'off';
+        setToggleUI(sfxToggle, sfxOn);
+
+        const glitchOn = localStorage.getItem(GLITCH_KEY) !== 'off';
+        setToggleUI(glitchToggle, glitchOn);
+    }
+
+    function setToggleUI(btn, isOn){
+        btn.classList.toggle('is-on', isOn);
+        btn.textContent = isOn ? 'ON' : 'OFF';
+    }
+
+    volumeSlider.addEventListener('input', () => {
+        const v = volumeSlider.value;
+        volumeValue.textContent = v + '%';
+        localStorage.setItem(VOLUME_KEY, v);
+        if (typeof globalBGM !== 'undefined' && globalBGM) {
+            globalBGM.volume = v / 100;
+        }
+    });
+
+    function toggleSetting(which){
+        if (which === 'sfx') {
+            const nowOn = sfxToggle.textContent.trim() !== 'ON';
+            setToggleUI(sfxToggle, nowOn);
+            localStorage.setItem(SFX_KEY, nowOn ? 'on' : 'off');
+        } else if (which === 'glitch') {
+            const nowOn = glitchToggle.textContent.trim() !== 'ON';
+            setToggleUI(glitchToggle, nowOn);
+            localStorage.setItem(GLITCH_KEY, nowOn ? 'on' : 'off');
+        }
+        if (typeof playConfirmSound === 'function') playConfirmSound();
+    }
+
+    function openResetConfirm(){
+        document.getElementById('reset-confirm').classList.add('show');
+    }
+    function closeResetConfirm(){
+        document.getElementById('reset-confirm').classList.remove('show');
+    }
+    function confirmReset(){
+        localStorage.clear();
+        document.body.style.opacity = "0";
+        setTimeout(() => { window.location.href = "index.html"; }, 450);
+    }
+
+    // 跟其他頁面的 fadeTo() 不同：fadeTo() 會把 "index.html" 導向 "lobby.html"，
+    // 這裡要真的回到入口選單，所以直接寫自己的跳轉，不共用那個特殊規則
+    function backToEntrance(){
+        if (typeof playConfirmSound === 'function') playConfirmSound();
+        document.body.style.opacity = "0";
+        setTimeout(() => { window.location.href = "index.html"; }, 450);
+    }
+
+    window.addEventListener('load', () => {
+        document.body.style.opacity = "1";
+        loadSettings();
+    });
+</script>
+
+<script src="menu.js"></script>
+</body>
+</html>

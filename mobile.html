@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"><title>[ LOBBY - MOBILE ]</title><link rel="stylesheet" href="theme.css">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{background:#0c0805;color:#b37446;font-family:'Courier New',Courier,monospace;margin:0;padding:20px;display:flex;flex-direction:column;align-items:center;min-height:100vh;justify-content:center}.lobby-title{font-size:28px;letter-spacing:4px;text-align:center;margin-bottom:20px;animation:blink 3s infinite}.directory-box{display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px}.dir-btn{display:flex;align-items:center;justify-content:center;width:100%;background:transparent;padding:18px 10px;font-size:18px;font-weight:700;letter-spacing:2px;border:1px solid #b37446;color:#b37446;text-transform:uppercase;text-decoration:none;transition:all .2s;text-align:center}.dir-btn:not(.lock-btn):not(.happiest-btn):active{background:#b37446;color:#0c0805}.dir-btn.lock-btn{border-color:rgba(179,116,70,0.2)!important;color:rgba(179,116,70,0.25)!important;cursor:default!important;pointer-events:none!important}
+/* 🎯 核心補強：FNAF 驚悚彩蛋「最快樂的一天」手機版專屬高頻率血紅閃爍樣式 */
+.dir-btn.happiest-btn{border-color:#ff3333!important;color:#ff3333!important;box-shadow:0 0 15px rgba(255,51,51,0.2);animation:creepyBlink 0.4s infinite!important}.dir-btn.happiest-btn:active{background:#ff3333!important;color:#0c0805!important}.lock-system-btn{margin-top:35px;border:1px solid #b37446;color:#b37446;padding:10px 20px;font-size:12px;text-decoration:none;text-transform:uppercase;letter-spacing:1px;transition:opacity .4s}.lock-system-btn.fnf-hide{opacity:0!important;pointer-events:none!important}@keyframes blink{0%,100%{opacity:1}50%{opacity:.7}}@keyframes creepyBlink{0%,100%{opacity:1;box-shadow:0 0 15px rgba(255,51,51,0.2)}50%{opacity:.4;box-shadow:none}}
+</style>
+</head>
+<body>
+<h1 class="lobby-title">[ LOBBY - MOBILE ]</h1>
+<div class="directory-box" id="fnf-box">
+    <a onclick="fnfNavigate(this,'characters.html')" class="dir-btn">CHARACTERS</a>
+    <a class="dir-btn lock-btn">LORES</a>
+    <a class="dir-btn lock-btn">PHOTOS</a>
+    
+    <!-- 🎯 完美同步電腦版：植入隱藏劇情的 FNF 特效按鈕 (跳轉至 happiest.html) -->
+    <a onclick="fnfNavigate(this,'happiest.html')" class="dir-btn happiest-btn">HAPPIEST DAY EVER!</a>
+    
+    <a class="dir-btn lock-btn">MINI GAME</a>
+    <a onclick="fnfNavigate(this,'about.html')" class="dir-btn">ABOUT US</a>
+</div>
+<a onclick="window.location.replace('index.html')" class="lock-system-btn" id="fnf-back">[ LOCK SYSTEM ]</a>
+<script src="menu.js"></script>
+<script>
+// 手機版 FNF 引擎防穿幫：點擊切換時，最底部的 [ LOCK SYSTEM ] 登出按鈕也會跟著一起優雅消失
+const originalFnfNavigate=fnfNavigate;fnfNavigate=function(e,t){const n=document.getElementById('fnf-back');n&&n.classList.add('fnf-hide');originalFnfNavigate(e,t)};
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATABASE Terminal - Ryo</title>
+    <!-- 引入全域共用樣式表 -->
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .wiki-container {
+            width: 100%;
+            height: calc(100vh - 180px);
+            border: 1px solid #00e676; 
+            background: rgba(12,8,5,0.95);
+            padding: 25px;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.98);
+            animation: greenBreathe 5s infinite, pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #global-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(-15px);
+            animation: topFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+        }
+
+        .nav-status-group {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            width: 100%;
+            border: 1px dashed rgba(0, 230, 118, 0.2);
+            padding: 4px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            background: transparent;
+            border: 1px solid #00e676;
+            color: #00e676;
+            padding: 6px 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 0 3px;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #00e676;
+            border-color: #00e676;
+            color: #0c0805;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+        }
+
+        .submenu-btn {
+            flex: none;
+            width: auto;
+            padding: 4px 15px;
+            margin-bottom: 4px;
+        }
+
+        .wiki-infobox {
+            flex: 0 0 320px;
+            background: #000;
+            border: 1px solid #00e676;
+            height: 100%;
+            overflow-y: auto;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .infobox-title {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #00e676;
+        }
+
+        .infobox-table td.label {
+            font-weight: bold;
+            color: #00e676;
+            width: 40%;
+        }
+
+        .lore-content-area::-webkit-scrollbar-thumb {
+            background: #00e676;
+            border-radius: 2px;
+        }
+
+        .collapsible-header {
+            font-size: 18px;
+            color: #00e676;
+            border-bottom: 1px solid #00e676;
+            padding-bottom: 4px;
+            margin: 20px 0 10px 0;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .collapsible-header:hover {
+            color: #ffffff;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        .quote-block {
+            border-left: 3px solid #00e676;
+            padding-left: 15px;
+            font-style: italic;
+            margin: 20px 0;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        /* 🎯 精準優化：完美同步縮放與霓虹發光轉場特效 */
+        .audio-control-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 1px solid #00e676;
+            color: #00e676;
+            padding: 8px 12px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            z-index: 100;
+            transform-origin: center center;
+            /* 完美對齊主按鈕的平滑貝氏轉場曲線與速度 */
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+                        background 0.2s ease, 
+                        box-shadow 0.2s ease, 
+                        border-color 0.2s ease, 
+                        color 0.2s ease;
+        }
+
+        /* 懸停動態：反轉色彩、增強霓虹發光並微幅放大 */
+        .audio-control-btn:hover {
+            background: #00e676;
+            border-color: #00e676;
+            color: #0c0805;
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* 點擊瞬間的下沉微縮反饋 */
+        .audio-control-btn:active {
+            transform: scale(0.95);
+            transition: transform 0.1s ease;
+        }
+
+        @keyframes greenBreathe { 
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 230, 118, 0.15); } 
+            50% { box-shadow: 0 0 35px rgba(0, 230, 118, 0.45); } 
+        }
+        @keyframes pageFadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes topFadeIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0px); } }
+    </style>
+</head>
+<body>
+
+    <!-- 🎵 音訊檔案：載入 Ryo 的專屬音樂與全域懸停音效 -->
+    <audio id="bgm" src="ryo.mp3" loop></audio>
+    <audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
+
+    <!-- 🎯 音樂開關按鈕（已補入 onmouseenter 懸停音效與全新縮放動畫） -->
+    <button id="music-toggle" class="audio-control-btn" onmouseenter="playHoverSound()" onclick="toggleMusic()">Music: OFF</button>
+
+    <nav id="global-nav"></nav>
+
+    <div class="wiki-container">
+        <div class="wiki-layout" id="view-layout"></div>
+    </div>
+
+    <!-- 依照順序載入 Ryo 的專屬資料與主引擎 -->
+    <script src="data-ryo.js"></script>
+    <script src="menu.js"></script>
+    <script src="nav.js"></script>
+
+    <!-- 💡 精準局部重構：完全對齊 Discord 的 5 行資訊順序 -->
+    <script>
+        const discordSorter = setInterval(() => {
+            const tableBody = document.querySelector(".infobox-table tbody") || document.querySelector(".infobox-table");
+            
+            if (tableBody) {
+                // 直接將整個表格的內部 HTML 重新洗牌，完全按照 Discord 的順序繪製，排除 LOCATION
+                tableBody.innerHTML = `
+                    <tr><td class="label">Name</td><td>RYO</td></tr>
+                    <tr><td class="label">Alias</td><td>The Underpaid Janitor</td></tr>
+                    <tr><td class="label">Gender</td><td>Male</td></tr>
+                    <tr><td class="label">Age</td><td>22</td></tr>
+                    <tr><td class="label">Occupation</td><td>Janitor at Blockbears</td></tr>
+                `;
+                
+                // 處理完畢，立即關閉定時器
+                clearInterval(discordSorter);
+            }
+        }, 10);
+
+        // 3秒安全超時
+        setTimeout(() => clearInterval(discordSorter), 3000);
+    </script>
+
+    <!-- 🎵 音訊控制與音效監聽腳本 -->
+    <script>
+        const bgm = document.getElementById('bgm');
+        const musicBtn = document.getElementById('music-toggle');
+
+        // 🔊 懸停音效播放函式
+        function playHoverSound() {
+            const sound = document.getElementById('hover-sound');
+            if (sound) {
+                sound.currentTime = 0; // 每次移入重置時間，確保連續觸發
+                sound.play().catch(e => console.log("音訊播放被瀏覽器阻擋:", e));
+            }
+        }
+
+        // 🎯 自動為動態生成的導覽列按鈕追加 hover 監聽
+        const navSoundBinder = setInterval(() => {
+            const clickableElements = document.querySelectorAll('.nav-btn, .submenu-btn');
+            if (clickableElements.length > 0) {
+                clickableElements.forEach(btn => {
+                    // 避免重複綁定事件
+                    if (!btn.dataset.soundBound) {
+                        btn.addEventListener('mouseenter', playHoverSound);
+                        btn.dataset.soundBound = "true";
+                    }
+                });
+                clearInterval(navSoundBinder);
+            }
+        }, 50);
+        setTimeout(() => clearInterval(navSoundBinder), 4000); // 4秒安全超時
+
+        // 音樂開關控制函式
+        function toggleMusic() {
+            if (bgm.paused) {
+                bgm.play()
+                    .then(() => {
+                        musicBtn.innerText = "Music: ON";
+                    })
+                    .catch(e => console.log("播放失敗:", e));
+            } else {
+                bgm.pause();
+                musicBtn.innerText = "Music: OFF";
+            }
+        }
+
+        // 使用者首次點擊網頁任意處自動啟動音樂（符合瀏覽器安全政策）
+        document.addEventListener('click', () => {
+            if (bgm.paused && musicBtn.innerText === "Music: OFF") {
+                bgm.play()
+                    .then(() => {
+                        musicBtn.innerText = "Music: ON";
+                    })
+                    .catch(e => console.log("自動播放受阻，等待手動點擊"));
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>

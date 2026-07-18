@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATABASE Terminal - Dominic</title>
+    <!-- 引入全域共用樣式表 -->
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        .wiki-container {
+            width: 100%;
+            height: calc(100vh - 180px);
+            border: 1px solid #00e676; 
+            background: rgba(12,8,5,0.95);
+            padding: 25px;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.98);
+            animation: greenBreathe 5s infinite, pageFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #global-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(-15px);
+            animation: topFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+        }
+
+        .nav-status-group {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            width: 100%;
+            border: 1px dashed rgba(0, 230, 118, 0.2);
+            padding: 4px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            background: transparent;
+            border: 1px solid #00e676;
+            color: #00e676;
+            padding: 6px 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 0 3px;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #00e676;
+            border-color: #00e676;
+            color: #0c0805;
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
+        }
+
+        .submenu-btn {
+            flex: none;
+            width: auto;
+            padding: 4px 15px;
+            margin-bottom: 4px;
+        }
+
+        .wiki-infobox {
+            flex: 0 0 320px;
+            background: #000;
+            border: 1px solid #00e676;
+            height: 100%;
+            overflow-y: auto;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .infobox-title {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #00e676;
+        }
+
+        .infobox-table td.label {
+            font-weight: bold;
+            color: #00e676;
+            width: 40%;
+        }
+
+        .lore-content-area::-webkit-scrollbar-thumb {
+            background: #00e676;
+            border-radius: 2px;
+        }
+
+        .collapsible-header {
+            font-size: 18px;
+            color: #00e676;
+            border-bottom: 1px solid #00e676;
+            padding-bottom: 4px;
+            margin: 20px 0 10px 0;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .collapsible-header:hover {
+            color: #ffffff;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        .quote-block {
+            border-left: 3px solid #00e676;
+            padding-left: 15px;
+            font-style: italic;
+            margin: 20px 0;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        @keyframes greenBreathe { 
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 230, 118, 0.15); } 
+            50% { box-shadow: 0 0 35px rgba(0, 230, 118, 0.45); } 
+        }
+        @keyframes pageFadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes topFadeIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0px); } }
+    </style>
+</head>
+<body>
+
+    <nav id="global-nav"></nav>
+
+    <div class="wiki-container">
+        <div class="wiki-layout" id="view-layout"></div>
+    </div>
+
+    <!-- 💡 精準修正：載入您指定命名的外部資料檔 data-dom.js -->
+    <script src="data-dom.js"></script>
+    <script src="menu.js"></script>
+    <script src="nav.js"></script>
+
+    <!-- 💡 全新局部自動擦除魔改指令：只要內容是空的，強制將整條綠線標題與容器銷毀 (.remove()) -->
+    <script>
+        const domLinesCleaner = setInterval(() => {
+            // 💡 鎖定主引擎生成的內容文字底層容器 (.lore-text 和 .list-spacing)
+            const textContainers = document.querySelectorAll(".lore-text, .list-spacing");
+
+            if (textContainers.length > 0) {
+                textContainers.forEach(div => {
+                    const contentText = div.innerText.trim();
+                    
+                    // 只要發現容器內部完全是空的（也就是 data-dom.js 裡面的空字串 ""）
+                    if (contentText === "" || contentText === '""' || contentText === 'undefined' || contentText === 'null') {
+                        // 1. 往上溯源找到它的外部包裹塊 (toggle-content)
+                        const toggleWrapper = div.closest(".toggle-content");
+                        if (toggleWrapper) {
+                            // 2. 精準找到這個區塊上一層的綠色摺疊標題橫線 (h2.collapsible-header)
+                            const correspondingHeader = toggleWrapper.previousElementSibling;
+                            
+                            // 3. 徹底拔除綠色空線條與內部包裹，不留一絲雜亂痕跡！
+                            if (correspondingHeader && correspondingHeader.classList.contains("collapsible-header")) {
+                                correspondingHeader.remove();
+                            }
+                            toggleWrapper.remove();
+                        }
+                    }
+                });
+
+                // 清除完畢，定時器關閉
+                clearInterval(domLinesCleaner);
+            }
+        }, 10);
+
+        // 5秒防死鎖安全防護
+        setTimeout(() => clearInterval(domLinesCleaner), 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>LOBBY</title><link rel="stylesheet" href="theme.css">
+<style>
+.lobby-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:calc(100vh - 100px);max-width:800px;margin-top:40px;border:1px solid #b37446;background:rgba(12,8,5,0.95);padding:40px;text-align:center;position:relative;overflow:hidden;animation:breathe 5s infinite}
+body{opacity:0;background:#0c0805;transition:opacity 0.45s cubic-bezier(0.16,1,0.3,1)!important}
+.lobby-header-group{position:absolute;top:40px;left:50%;transform:translateX(-50%);width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;opacity:1;transition:opacity 0.4s cubic-bezier(0.16,1,0.3,1),transform 0.4s cubic-bezier(0.16,1,0.3,1)}
+.lobby-header-group.fnf-hide{opacity:0!important;transform:translate(-50%,-20px) scale(0.95)!important}
+.lobby-title{font-size:32px;color:#b37446;margin:0;letter-spacing:4px;width:100%;display:block}
+.directory-box{display:flex;flex-direction:column;gap:15px;width:100%;max-width:500px;margin:0 auto;position:relative}
+.dir-btn{display:flex;align-items:center;justify-content:center;width:100%;background:transparent;padding:22px 16px;font-size:20px;font-weight:700;letter-spacing:3px;border:1px solid #b37446;color:#b37446;text-transform:uppercase;text-decoration:none;transform-origin:center center;transition:transform 0.45s cubic-bezier(0.16,1,0.3,1),opacity 0.3s,background 0.2s,box-shadow 0.2s,border-color 0.2s,color .2s}
+.dir-btn:not(.lock-btn):hover{background:#b37446;color:#0c0805;box-shadow:0 0 20px rgba(179,116,70,0.4);transform:scale(1.04)}
+/* 🛠️ 修正：移除原本 not 選擇器的 !important 衝突，讓 lock-btn 能夠正確套用您截圖中神祕的暗棕色鎖死狀態 */
+.dir-btn:not(.lock-btn){border-color:#b37446;color:#b37446;opacity:1}
+.dir-btn.lock-btn{border-color:rgba(179,116,70,0.2)!important;color:rgba(179,116,70,0.25)!important;cursor:default!important;pointer-events:none!important}
+.dir-btn.lock-btn:hover{background:transparent!important;color:rgba(179,116,70,0.25)!important;box-shadow:none!important;transform:none!important}
+.dir-btn.fnf-fade-out,.lock-system-btn.fnf-hide{opacity:0!important;transform:scale(0.85)!important;pointer-events:none!important}
+.directory-box .dir-btn.fnf-fade-out{opacity:0!important;filter:brightness(0)!important;transform:scale(0.85)!important}
+.dir-btn.fnf-selected{pointer-events:none;z-index:99;background:#b37446!important;color:#0c0805!important;box-shadow:0 0 25px rgba(179,116,70,0.6)!important}
+.lock-system-btn{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);background:transparent;border:1px solid #b37446;color:#b37446;padding:8px 18px;font-size:13px;font-family:"Times New Roman",serif!important;letter-spacing:2px;text-decoration:none;text-transform:uppercase;z-index:10;opacity:1;transition:opacity 0.4s cubic-bezier(0.16,1,0.3,1),transform 0.4s cubic-bezier(0.16,1,0.3,1),background 0.2s,color 0.2s}
+.lock-system-btn:hover{background:#b37446;color:#0c0805;box-shadow:0 0 15px rgba(179,116,70,0.3)}
+.lock-system-btn.fnf-hide{opacity:0!important;transform:translate(-50%,20px) scale(0.95)!important}
+</style>
+</head>
+<body>
+<div class="lobby-container">
+    <div class="lobby-header-group" id="fnf-header"><h1 class="lobby-title">[ LOBBY ]</h1></div>
+    <div class="directory-box" id="fnf-box">
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'characters.html')" class="dir-btn">CHARACTERS</a>
+        <a class="dir-btn lock-btn">LORES</a>
+        <a class="dir-btn lock-btn">PHOTOS</a>
+        
+        <!-- 🎯 已成功解鎖：修正拼字、移除 lock-btn，並與您的 fnfNavigate 動態轉場系統完美連結 -->
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'hde.html')" class="dir-btn">HAPPIEST DAY EVER!</a>
+        
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'about.html')" class="dir-btn">ABOUT US</a>
+    </div>
+    <a onclick="forceLockOut()" class="lock-system-btn" id="fnf-back">[ LOCK SYSTEM ]</a>
+</div>
+<script src="menu.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded',()=>document.body.style.opacity="1");
+function forceLockOut(){document.body&&(document.body.style.opacity="0");setTimeout(()=>window.location.replace("index.html"),450)}
+</script>
+</body>
+</html>

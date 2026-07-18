@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>DATABASE Terminal - Afton</title><link rel="stylesheet" href="theme.css">
+<style>
+.wiki-container{width:100%;height:calc(100vh - 180px);border:1px solid #00e676;background:rgba(12,8,5,0.95);padding:25px;overflow:hidden;opacity:0;transform:scale(0.98);animation:greenBreathe 5s infinite,pageFadeIn .5s cubic-bezier(0.16,1,0.3,1) forwards}
+#global-nav{display:flex;flex-direction:column;gap:8px;align-items:center;width:100%;margin-bottom:20px;opacity:0;transform:translateY(-15px);animation:topFadeIn .5s cubic-bezier(0.16,1,0.3,1) .1s forwards}
+.nav-status-group{display:flex;flex-wrap:nowrap;align-items:center;width:100%;border:1px dashed rgba(0,230,118,0.2);padding:4px}
+.nav-btn{flex:1;text-align:center;white-space:nowrap;background:0 0;border:1px solid #00e676;color:#00e676;padding:6px 4px;font-size:11px;font-weight:700;margin:0 3px;text-decoration:none;transition:all .2s ease-in-out;}
+.nav-btn:hover,.nav-btn.active{background:#00e676;border-color:#00e676;color:#0c0805;box-shadow:0 0 15px rgba(0,230,118,0.4)}
+.submenu-btn{flex:none;width:auto;padding:4px 15px;margin-bottom:4px}
+.wiki-infobox{flex:0 0 320px;background:#000;border:1px solid #00e676;height:100%;overflow-y:auto;padding:15px;text-align:center}
+.infobox-title{font-size:18px;font-weight:700;padding:8px;margin-bottom:15px;border-bottom:1px solid #00e676}
+.infobox-table td.label{font-weight:700;color:#00e676;width:40%}
+.lore-content-area::-webkit-scrollbar-thumb{background:#00e676;border-radius:2px}
+.collapsible-header{font-size:18px;color:#00e676;border-bottom:1px solid #00e676;padding-bottom:4px;margin:20px 0 10px;transition:all .2s ease;}
+.collapsible-header:hover{color:#fff;border-bottom:1px solid #fff}
+.quote-block{border-left:3px solid #00e676;padding-left:15px;font-style:italic;margin:20px 0;color:#fff;font-size:14px}
+.audio-control-btn{position:absolute;top:20px;right:20px;background:0 0;border:1px solid #00e676;color:#00e676;padding:8px 12px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;z-index:100;transform-origin:center center;transition:all .45s cubic-bezier(0.16,1,0.3,1);}
+.audio-control-btn:hover {background:#00e676;border-color:#00e676;color:#0c0805;box-shadow:0 0 20px rgba(0,230,118,0.4);transform:scale(1.05)}
+.audio-control-btn:active{transform:scale(0.95);transition:transform .1s ease}
+@keyframes greenBreathe{0%,100%{box-shadow:0 0 15px rgba(0,230,118,0.15)}50%{box-shadow:0 0 35px rgba(0,230,118,0.45)}}
+@keyframes pageFadeIn{from{opacity:0;transform:scale(0.98)}to{opacity:1;transform:scale(1)}}
+@keyframes topFadeIn{from{opacity:0;transform:translateY(-15px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<audio id="bgm" src="alive.mp3" loop></audio><audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
+<button id="music-toggle" class="audio-control-btn" onmouseenter="playHoverSound()" onclick="toggleMusic()">Music: OFF</button>
+<nav id="global-nav"></nav>
+<div class="wiki-container"><div class="wiki-layout" id="view-layout"></div></div>
+<script src="data-afton.js"></script><script src="menu.js"></script><script src="nav.js"></script>
+<script>
+const discordSorter=setInterval(()=>{const t=document.querySelector(".infobox-table tbody") || document.querySelector(".infobox-table");if(t){t.innerHTML=`<tr><td class="label">Name</td><td>WILLIAM AFTON</td></tr><tr><td class="label">Alias</td><td>Springbonnie/Bonabi</td></tr><tr><td class="label">Gender</td><td>Male</td></tr><tr><td class="label">Age</td><td>53</td></tr><tr><td class="label">Occupation</td><td>CEO / Lead Inventor</td></tr>`;clearInterval(discordSorter)}},10);setTimeout(()=>clearInterval(discordSorter),3000);
+const bgm=document.getElementById('bgm'),musicBtn=document.getElementById('music-toggle');
+function playHoverSound(){const e=document.getElementById('hover-sound');if(e){e.currentTime=0;e.play().catch(()=>{})}}
+function toggleMusic(){bgm.paused?(bgm.play().then(()=>{musicBtn.innerText="Music: ON"}).catch(()=>{})):(bgm.pause(),musicBtn.innerText="Music: OFF")}
+document.addEventListener('click',()=> {if(bgm.paused&&musicBtn.innerText==="Music: OFF")bgm.play().then(()=>{musicBtn.innerText="Music: ON"}).catch(()=>{})},{once:!0});
+</script>
+</body>
+</html>
