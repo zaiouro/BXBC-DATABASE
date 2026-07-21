@@ -13,21 +13,25 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; 
+            justify-content: flex-start; 
             width: 100%; 
-            height: calc(100vh - 100px); 
-            height: calc(100dvh - 100px);
+            height: auto;
+            min-height: calc(100vh - 100px);
+            min-height: calc(100dvh - 100px);
             max-width: 800px; 
-            margin-top: 40px; 
+            margin-top: 8px;
             border: 1px solid #9e3b30; 
             background: rgba(12,8,5,0.95); 
             padding: 40px; 
             text-align: center; 
             position: relative; 
-            overflow: hidden;
+            overflow-y: auto;
             box-sizing: border-box;
             animation: redBreathe 5s infinite; 
         }
+        .lobby-container::-webkit-scrollbar { width: 4px; }
+        .lobby-container::-webkit-scrollbar-thumb { background: #9e3b30; border-radius: 2px; }
+        .lobby-container::-webkit-scrollbar-track { background: rgba(12,8,5,0.5); }
 
         .audio-toggle-btn {
             position: absolute;
@@ -57,6 +61,12 @@
             opacity: 0 !important;
             transform: scale(0.85) translateX(10px) !important;
             pointer-events: none !important;
+        }
+        .warning-text.fnf-hide {
+            opacity: 0 !important;
+            transform: scale(0.95) !important;
+            pointer-events: none !important;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .lobby-header-group { 
@@ -92,6 +102,29 @@
             display: block;
         }
 
+        .warning-box {
+            border: 1px dashed #9e3b30;
+            padding: 14px 18px;
+            margin: 10px auto 0;
+            max-width: 480px;
+            text-align: center;
+            opacity: 0;
+            animation: elementFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+        .warning-title {
+            font-size: 13px;
+            color: #ff3333;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .warning-text {
+            font-size: 12px;
+            color: #8c665e;
+            letter-spacing: 1px;
+            line-height: 1.7;
+        }
+
         .directory-box { 
             display: flex; 
             flex-direction: column; 
@@ -123,6 +156,13 @@
 
         .char-name { font-size: 20px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; }
         .char-status { font-size: 11px; letter-spacing: 2px; color: #7a3e37; margin-top: 4px; text-transform: uppercase; }
+        .char-meta { display: flex; justify-content: center; margin-top: 6px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+        .char-meta .threat-level { font-weight: bold; }
+        .threat-extreme { color: #ff1a1a; }
+        .threat-high { color: #ff6633; }
+        .threat-medium { color: #cc9900; }
+        .threat-low { color: #669966; }
+        .dir-btn:hover .char-meta .threat-level { color: #0c0805; opacity: 0.8; }
 
         .dir-btn:hover { background: #ff3333; border-color: #ff3333; color: #0c0805; box-shadow: 0 0 20px rgba(255, 51, 51, 0.4); transform: scale(1.03); }
         .dir-btn:hover .char-status { color: #0c0805; opacity: 0.8; }
@@ -140,32 +180,28 @@
         .dir-btn.fnf-selected .char-status { color: #0c0805 !important; }
         
         .back-lobby-btn { 
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
             color: #8c665e; 
             font-size: 12px; 
             letter-spacing: 1.5px; 
             text-decoration: none; 
             border-bottom: 1px dashed transparent; 
-            z-index: 10;
             text-transform: uppercase; 
             opacity: 0;
-            transform: translate(-50%, 15px) scale(0.98);
-            animation: footerFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease; 
+            transform: translateY(15px) scale(0.98);
+            animation: elementFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+            margin-top: 40px;
         }
         .back-lobby-btn:hover { color: #ff3333; border-bottom-color: #ff3333; }
         
         .back-lobby-btn.fnf-hide { 
             opacity: 0 !important; 
-            transform: translate(-50%, 20px) scale(0.95) !important; 
+            transform: translateY(20px) scale(0.95) !important; 
             pointer-events: none !important; 
         }
 
         @keyframes redBreathe { 0%, 100% { box-shadow: 0 0 15px rgba(158, 59, 48, 0.15); } 50% { box-shadow: 0 0 35px rgba(158, 59, 48, 0.45); } }
         @keyframes headerFadeIn { from { opacity: 0; transform: translate(-50%, -15px) scale(0.98); } to { opacity: 1; transform: translate(-50%, 0px) scale(1); } }
-        @keyframes footerFadeIn { from { opacity: 0; transform: translate(-50%, 15px) scale(0.98); } to { opacity: 1; transform: translate(-50%, 0px) scale(1); } }
         @keyframes elementFadeIn { from { opacity: 0; transform: translateY(0px) scale(0.96); } to { opacity: 1; transform: translateY(0px) scale(1); } }
 
         /* ===== 手機版適配 ===== */
@@ -205,10 +241,25 @@
                 font-size:10px;
                 letter-spacing:1.5px;
             }
+            .char-meta{
+                font-size:9px;
+                gap:8px;
+            }
             .back-lobby-btn{
-                bottom:16px;
+                margin-top:6px;
                 font-size:11px;
                 letter-spacing:1px;
+            }
+            .warning-box{
+                padding:10px 14px;
+                margin-top:6px;
+            }
+            .warning-title{
+                font-size:11px;
+                letter-spacing:2px;
+            }
+            .warning-text{
+                font-size:10px;
             }
         }
 
@@ -243,26 +294,32 @@
         <div class="lobby-header-group" id="fnf-header">
             <p class="lobby-subtitle">Select a character to remember them.</p>
         </div>
+        <div id="fnf-warning" class="warning-text" style="text-align:center;font-size:11px;color:#9e3b30;letter-spacing:1px;line-height:1.7;max-width:420px;margin:0 auto 24px;padding-top:80px;opacity:0;animation:elementFadeIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s forwards;">WARNING: These pages use a flashlight mechanic in a dark horror environment. Move your mouse or finger to reveal hidden content.</div>
         <div class="directory-box" id="fnf-box">
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'bonabi.html')" class="dir-btn">
                 <span class="char-name">HOLLY CALLAHAN</span>
                 <span class="char-status">[ POSSESSED ]</span>
-            </a>
-            <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'mangle.html')" class="dir-btn">
-                <span class="char-name">TRIXIE SHERMAN</span>
-                <span class="char-status">[ DAMAGED ]</span>
+                <div class="char-meta"><span class="threat-level threat-extreme">EXTREME</span></div>
             </a>
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'joshua.html')" class="dir-btn">
                 <span class="char-name">JOSHUA WOODSIDE</span>
                 <span class="char-status">[ FUSED ]</span>
+                <div class="char-meta"><span class="threat-level threat-high">HIGH</span></div>
             </a>
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'oscar.html')" class="dir-btn">
                 <span class="char-name">OSCAR WOODSIDE</span>
                 <span class="char-status">[ ENTERTAINER ]</span>
+                <div class="char-meta"><span class="threat-level threat-low">LOW</span></div>
+            </a>
+            <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'mangle.html')" class="dir-btn">
+                <span class="char-name">TRIXIE SHERMAN</span>
+                <span class="char-status">[ DAMAGED ]</span>
+                <div class="char-meta"><span class="threat-level threat-high">HIGH</span></div>
             </a>
             <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this, 'victor.html')" class="dir-btn">
                 <span class="char-name">VICTOR CALLAHAN</span>
                 <span class="char-status">[ MEDIATOR ]</span>
+                <div class="char-meta"><span class="threat-level threat-medium">MEDIUM</span></div>
             </a>
         </div>
         <a onclick="fadeTo('characters.html')" class="back-lobby-btn" id="fnf-back">&lt; Return to Characters</a>
@@ -272,7 +329,9 @@
         const originalFnfNavigate = fnfNavigate;
         fnfNavigate = function(clickedElement, targetUrl) {
             const audioBtn = document.getElementById('music-toggle-text');
-            if (audioBtn) audioBtn.classList.add('fnf-hide'); 
+            const warningEl = document.getElementById('fnf-warning');
+            if (audioBtn) audioBtn.classList.add('fnf-hide');
+            if (warningEl) warningEl.classList.add('fnf-hide');
             originalFnfNavigate(clickedElement, targetUrl);
         };
     </script>

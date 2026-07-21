@@ -16,28 +16,23 @@
             position:relative;
         }
 
-        /* 監視器掃描線 */
-        .scanlines{
+        /* 雨滴效果 */
+        .rain-drops{
             position:fixed;
             inset:0;
             pointer-events:none;
             z-index:16;
-            background:repeating-linear-gradient(
-                to bottom,
-                rgba(0,0,0,0.45) 0px,
-                rgba(0,0,0,0.45) 1px,
-                transparent 2px,
-                transparent 3px
-            );
-            animation:scanlineFlicker 6s infinite;
+            overflow:hidden;
         }
-        @keyframes scanlineFlicker{
-            0%,100%{opacity:0.55;}
-            48%{opacity:0.55;}
-            50%{opacity:0.3;}
-            52%{opacity:0.55;}
-            76%{opacity:0.4;}
-            78%{opacity:0.55;}
+        .rain-drop{
+            position:absolute;
+            width:1px;
+            background:linear-gradient(to bottom, transparent, rgba(180,200,220,0.3), transparent);
+            animation:rainFall linear infinite;
+        }
+        @keyframes rainFall{
+            0%{transform:translateY(-100vh);}
+            100%{transform:translateY(100vh);}
         }
 
         /* CRT 暈影(邊角變暗) */
@@ -91,15 +86,15 @@
             100%{opacity:0;}
         }
 
-        .lobby-container { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: calc(100vh - 100px); height: calc(100dvh - 100px); max-width: 800px; margin-top: 40px; border: 1px solid #b37446; background: rgba(12,8,5,0.95); padding: 40px; text-align: center; animation: breathe 5s infinite; position: relative; overflow: hidden; box-sizing: border-box; z-index: 7; }
+        .lobby-container { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: calc(100vh - 100px); height: calc(100dvh - 100px); max-width: 800px; margin-top: 40px; border: 1px solid rgba(139,26,26,0.4); background: rgba(5,2,2,0.95); padding: 40px; text-align: center; animation: breathe 5s infinite; position: relative; overflow: hidden; box-sizing: border-box; z-index: 7; }
         @keyframes breathe{
-            0%,100%{box-shadow:0 0 25px rgba(179,116,70,0.15) inset;}
-            50%{box-shadow:0 0 45px rgba(179,116,70,0.3) inset;}
+            0%,100%{box-shadow:0 0 15px rgba(139,26,26,0.08) inset;}
+            50%{box-shadow:0 0 25px rgba(139,26,26,0.15) inset;}
         }
         .lobby-header-group { transition: opacity 0.2s ease, transform 0.2s ease; }
         .lobby-header-group.fnf-hide { opacity: 0 !important; transform: translateY(-20px) scale(0.95) !important; }
-        .lobby-title { font-size: 32px; color: #e5bd9c; margin: 0 0 10px 0; letter-spacing: 4px; display: block; width: 100%; text-align: center; }
-        .lobby-subtitle { font-size: 14px; color: #8c7361; margin: 0; letter-spacing: 1.5px; text-transform: uppercase; display: block; width: 100%; text-align: center; }
+        .lobby-title { font-size: 32px; color: #8b1a1a; margin: 0 0 10px 0; letter-spacing: 4px; display: block; width: 100%; text-align: center; text-shadow: 0 0 20px rgba(139,26,26,0.4); }
+        .lobby-subtitle { font-size: 14px; color: #8c6a55; margin: 0; letter-spacing: 1.5px; text-transform: uppercase; display: block; width: 100%; text-align: center; }
         
         .directory-box { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 500px; margin: 0 auto; position: relative; }
         
@@ -107,12 +102,12 @@
         .dir-btn { display: flex; align-items: center; justify-content: center; width: 100%; background: transparent; padding: 22px 16px; font-size: 20px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; text-decoration: none; position: relative; transform-origin: center center; transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, background 0.2s ease, box-shadow 0.2s ease; }
         .btn-alive { border: 1px solid #00e676; color: #00e676; }
         .btn-alive:hover { background: #00e676; color: #0c0805; box-shadow: 0 0 20px rgba(0, 230, 118, 0.4); transform: scale(1.04); }
-        .btn-dead { border: 1px solid #ff3333; color: #ff3333; }
-        .btn-dead:hover { background: #ff3333; color: #0c0805; box-shadow: 0 0 20px rgba(255, 51, 51, 0.4); transform: scale(1.04); }
-        .btn-missing { border: 1px solid #b37446; color: #b37446; }
-        .btn-missing:hover { background: #b37446; color: #0c0805; box-shadow: 0 0 20px rgba(179, 116, 70, 0.4); transform: scale(1.04); }
-        .dir-btn.lock-btn { border-color: rgba(179,116,70,0.2) !important; color: rgba(179,116,70,0.25) !important; cursor: default !important; pointer-events: none !important; }
-        .dir-btn.lock-btn:hover { background: transparent !important; color: rgba(179,116,70,0.25) !important; box-shadow: none !important; transform: none !important; }
+        .btn-dead { border: 1px solid #8b1a1a; color: #8b1a1a; }
+        .btn-dead:hover { background: #8b1a1a; color: #c4a080; box-shadow: 0 0 20px rgba(139, 26, 26, 0.4); transform: scale(1.04); }
+        .btn-missing { border: 1px solid rgba(139,26,26,0.3); color: rgba(139,26,26,0.4); }
+        .btn-missing:hover { background: #8b1a1a; color: #c4a080; box-shadow: 0 0 20px rgba(139, 26, 26, 0.4); transform: scale(1.04); }
+        .dir-btn.lock-btn { border-color: rgba(139,26,26,0.15) !important; color: rgba(139,26,26,0.2) !important; cursor: default !important; pointer-events: none !important; }
+        .dir-btn.lock-btn:hover { background: transparent !important; color: rgba(139,26,26,0.2) !important; box-shadow: none !important; transform: none !important; }
         
         /* 未選中按鈕與返回鍵縮小淡出 */
         .dir-btn.fnf-fade-out, .back-lobby-btn.fnf-hide { opacity: 0 !important; transform: scale(0.85) !important; pointer-events: none !important; }
@@ -123,7 +118,7 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            color: #8c7361; 
+            color: #8c6a55; 
             font-size: 12px; 
             letter-spacing: 1.5px; 
             text-decoration: none; 
@@ -133,7 +128,7 @@
             transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease; 
             text-transform: uppercase; 
         }
-        .back-lobby-btn:hover { color: #e5bd9c; border-bottom-color: #e5bd9c; }
+        .back-lobby-btn:hover { color: #c4a080; border-bottom-color: #c4a080; }
         
         /* 點擊確認時，底部返回鍵會微微向下移動並絲滑淡出 */
         .back-lobby-btn.fnf-hide { 
@@ -189,16 +184,16 @@
         /* 觸控裝置：拿掉 hover 依賴的效果，改用 active 狀態即時反饋 */
         @media (hover:none) and (pointer:coarse){
             .btn-alive:active{ background:#00e676; color:#0c0805; box-shadow:0 0 20px rgba(0,230,118,0.4); transform:scale(1.04); }
-            .btn-dead:active{ background:#ff3333; color:#0c0805; box-shadow:0 0 20px rgba(255,51,51,0.4); transform:scale(1.04); }
-            .btn-missing:active{ background:#b37446; color:#0c0805; box-shadow:0 0 20px rgba(179,116,70,0.4); transform:scale(1.04); }
-            .back-lobby-btn:active{ color:#e5bd9c; border-bottom-color:#e5bd9c; }
+            .btn-dead:active{ background:#8b1a1a; color:#c4a080; box-shadow:0 0 20px rgba(139,26,26,0.4); transform:scale(1.04); }
+            .btn-missing:active{ background:#8b1a1a; color:#c4a080; box-shadow:0 0 20px rgba(139,26,26,0.4); transform:scale(1.04); }
+            .back-lobby-btn:active{ color:#c4a080; border-bottom-color:#c4a080; }
         }
     </style>
 </head>
 <body>
 
     <div class="crt-vignette"></div>
-    <div class="scanlines"></div>
+    <div class="rain-drops" id="rainDrops"></div>
     <div class="static-noise"></div>
     <div class="glitch-layer" id="glitchLayer"></div>
 
@@ -222,15 +217,32 @@
     <!-- 引入共用動效與音效引擎 -->
     <script src="menu.js"></script>
     <script>
+        // Rain drops
+        (function(){
+            const container=document.getElementById('rainDrops');
+            if(!container)return;
+            for(let i=0;i<60;i++){
+                const drop=document.createElement('div');
+                drop.className='rain-drop';
+                const h=Math.random()*80+40;
+                const x=Math.random()*100;
+                const dur=Math.random()*1+0.8;
+                const delay=-Math.random()*3;
+                const op=Math.random()*0.3+0.1;
+                drop.style.cssText=`left:${x}%;height:${h}px;animation-duration:${dur}s;animation-delay:${delay}s;opacity:${op};`;
+                container.appendChild(drop);
+            }
+        })();
         (function glitchLoop(){
             const layer = document.getElementById('glitchLayer');
             function triggerGlitch(){
+                if (localStorage.getItem('fnf_glitch_enabled') === 'off') return;
                 layer.classList.remove('glitch-active');
-                void layer.offsetWidth; // 強制重新觸發動畫
+                void layer.offsetWidth;
                 layer.classList.add('glitch-active');
             }
             function scheduleNext(){
-                const delay = 4000 + Math.random()*6000; // 4~10秒隨機一次
+                const delay = 4000 + Math.random()*6000;
                 setTimeout(()=>{
                     triggerGlitch();
                     scheduleNext();

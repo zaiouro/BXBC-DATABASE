@@ -6,21 +6,24 @@ const currentCharacterData = {
     name: "Theo",
     alias: "Theo",
     gender: "Male",
-    pfp: "pfp/pfp7.png",              // 💡 精準修正：加上 pfp/ 資料夾路徑！
+    pfp: "pfp/pfp7.png",
     titleColor: "#00e676",
     isAliveSubject: true,
     
-    quote: "", 
+    quote: "",
+    credit: "@pp9lol",
+    roleTier: "Visitor",
+    threatLevel: "LOW",
     
-    purpose: "Theo spends a lot of time at the restaurant because he frequently visited it as a child (and no, he never witnessed any of the bad things). He is there almost every day (which admittedly makes him sound unemployed). If someone is working in the kitchen, he often gets pizza.\n\nHe almost always wears his fursuit (the black-and-white fox one). He lives somewhere near the restaurant and often walks around the area to see what is happening around the old building.\n\nHe sometimes tries to stay in the restaurant after hours to see what happens. He is not always the smartest person, but he is smart enough to survive in a horror movie.",
+    purpose: "Theo is a regular at the restaurant — he visited it frequently as a child and never stopped coming back. He shows up almost every day, which admittedly makes him sound unemployed. If someone is working the kitchen, he usually grabs a pizza.\n\nHe lives somewhere close to the restaurant and often walks around the area to check on what's happening around the old building. He nearly always wears his fursuit, a black-and-white fox design. He sometimes tries to stay after hours to see what goes on at night. He isn't always the smartest person, but he is smart enough to stay alive in a horror movie.",
     
-    bg: "- He played many racing games, including Need for Speed: Most Wanted (2005) and Gran Turismo 4.\n- He grew up in a decent household.\n- He once broke his foot, but it has not affected his speed or the way he walks.\n- He knows a surprising amount about police tactics and procedures.",
+    bg: "Theo grew up in a decent household with nothing particularly traumatic in his past. He spent his childhood playing racing games — Need for Speed: Most Wanted (2005) and Gran Turismo 4 were his favorites. He once broke his foot, but it never affected his speed or the way he walks.\n\nHe is German and enjoys cursing in his native language. He knows a surprising amount about police tactics and procedures, though the reason why remains unclear.",
     
-    pers: "- Sometimes listens to the phone messages inside the restaurant.\n- Sometimes listens to music while alone.",
+    pers: "When alone in the restaurant, Theo sometimes listens to the old phone messages left on the office phones. He also listens to music on his phone and makes unnecessary jokes to no one in particular.",
     
-    likes: "- Cars.\n- The gaming scene.\n- Rice pudding.\n- Almost any food that will not hurt or kill him.\n- Listening to music.\n- Making unnecessary jokes.",
+    likes: "• Cars\n• The gaming scene\n• Rice pudding\n• Almost any food that won't hurt or kill him\n• Listening to music\n• Making unnecessary jokes",
     
-    dislikes: "- People who lie.\n- Things that are literally trying to kill him.\n- Scary things.",
+    dislikes: "• People who lie\n• Things that are literally trying to kill him\n• Scary things",
     
     rel: "", 
     
@@ -29,6 +32,7 @@ const currentCharacterData = {
         "He usually wears his black-and-white fox fursuit.",
         "He lives close to the restaurant.",
         "Despite his curiosity, he is generally smart enough to avoid getting himself killed.",
-        "Fun Fact: He knows many things about police tactics and related subjects."
+        "He knows many things about police tactics and related subjects.",
+        "He is German and likes to curse in German."
     ]
 };

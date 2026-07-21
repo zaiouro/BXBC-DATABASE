@@ -3,33 +3,37 @@
 // ==========================================================================
 const currentCharacterData = { 
     name: "Trixie Sherman", 
-    titleColor: "#e6194b", // 代表 Vixen/Mangle 招牌狐狸桃紅與破損警戒線的暗紅色
+    titleColor: "#e6194b",
     alias: "Vixen / Vixie / The Mangle", 
-    gender: "Female", // 對應您設定中的 Sex 項目
+    gender: "Female", 
     age: "16", 
     died: "1993 (FNAF 1 era)", 
     killer: "William Afton", 
     status: "Damaged / Active Animatronic", 
     pfp: "pfp/pfp2.png", 
     quote: "WHY WAS I MADE ONLY TO FALL APART LIKE THIS?",
+    credit: "@.fandomfanatic.",
+    roleTier: "Entertainer",
+    threatLevel: "HIGH",
+    deathAnim: "tear",
     
     purpose: "• Protect others.\n• Make William Afton pay.\n• Find her lost friends.",
     
-    bg: "Trixie was a strange but friendly girl who always wanted to feel noticed and appreciated. She often talked to herself and suffered from a deep-rooted fear of being forgotten or abandoned.\n\nShe became close friends with several children who would later possess animatronics, and her boyfriend, Oscar, disappeared alongside them. While searching tirelessly for her missing boyfriend and friends, Trixie was also cornered and disappeared, later becoming bound inside one of the animatronic shells.",
+    bg: "She loved Oscar. Not in a quiet way. She loved him loud, in front of everyone, with her whole chest. And when Oscar vanished, she didn't wait for someone to tell her what happened. She went looking.\n\nAfton was behind the curtain. He was always behind the curtain.\n\nNow she's wired back together wrong. Pieces are missing. Her voice splits in two — one voice sweet, one voice screaming in uppercase. She can't remember which one is real anymore. She was supposed to be the Mangle, a take-apart-and-put-back-together attraction for children. But nobody put her back together right.\n\nShe still looks for Oscar. She still calls his name through the dark halls at 3 AM. Sometimes she finds him. Sometimes she doesn't. Either way, she screams.",
     
-    pers: "<strong>[ During the Day ]</strong>\nFriendly, highly social, and protective of others. She remains kind-hearted and desperately well-meaning to everyone she encounters.\n\n<strong>[ During the Night ]</strong>\nAggressive, erratic, and emotionally unstable. She becomes completely desperate for attention, entirely driven by roaring anger, heartbreak, and a thirst for revenge.",
+    pers: "<strong>[ Trixie - Day ]</strong>\nFriendly, loud, the kind of person who talks to everyone and remembers your name. She acts like nothing is wrong. She laughs at jokes that aren't funny. She wants you to like her.\n\n<strong>[ Vixen - Night ]</strong>\nUnrecognizable. Aggressive, desperate, completely unhinged. She screams in all caps. She wants attention. She wants revenge. She wants someone — anyone — to stay.",
     
-    likes: "• Oscar / Chuck (Her boyfriend)\n• Holly / Bonabi (Her closest friend)\n• Her fellow animatronics and bound playmates", 
+    likes: "• Oscar / Chuck — her boyfriend, wherever he is\n• Holly / Bonabi — her closest friend\n• Being noticed\n• Being loved",
     
-    dislikes: "• Being alone or abandoned in the dark\n• Feeling unloved\n• Being physically damaged, broken, or torn apart into a take-apart attraction\n• William Afton", 
+    dislikes: "• Being alone in the dark\n• Being forgotten\n• Being taken apart — again and again and again\n• William Afton\n• Flashlights",
     
-    rel: "<strong>Oscar (Chuck):</strong> Her boyfriend. She deeply cares about him, remaining hyper-fixated on discovering the final truth behind his tragic death.\n\n<strong>Holly (Bonabi):</strong> One of her closest and dearest friends. She still heavily struggles to accept the horrific fate of what happened to Holly and everyone else.",
+    rel: "<strong>Oscar (Chuck):</strong> Her boyfriend. She would burn the world down to find him. Some nights she does.\n\n<strong>Holly (Bonabi):</strong> Her closest friend. They understand each other in ways nobody else can.",
     
     notes: [
-        "Dual Minds Matrix: She frequently talks out loud to herself, acting as though two distinct, conflicting minds or souls inhabit her frame.",
-        "Emotional Trauma: Retains an intense, desperate psychological need to feel constantly loved and accepted by those around her.",
-        "Lore Connection: 'Vixen' was canonically her absolute favorite animatronic character before her death.",
-        "Sensory Insecurity: Expresses a heavy dislike for bright flashlights or sudden intense illumination during night shifts.",
-        "Audio Distortion: Emits highly distorted, garbled radio static sounds and corrupted audio loops whenever she is angered or physically damaged."
+        "She talks to herself out loud. Two voices. Sometimes they argue.",
+        "She needs to feel loved the way other people need to breathe. Without it, she falls apart — literally.",
+        "Vixen was her favorite animatronic character before she died. Now she's stuck inside one.",
+        "Flashlights make her violent. She doesn't know why.",
+        "When she's angry, her voice distorts into corrupted radio static."
     ]
 };

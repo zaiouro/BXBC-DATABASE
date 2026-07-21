@@ -11,6 +11,13 @@
 .dir-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;background:transparent;padding:16px;border:1px solid #00e676;color:#00e676;text-decoration:none;position:relative;transform-origin:center;transition:transform .45s cubic-bezier(0.16,1,0.3,1),opacity .3s,background .2s,box-shadow .2s,border-color .2s,color .2s}
 .char-name{font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
 .char-status{font-size:11px;letter-spacing:2px;color:#377a56;margin-top:4px;text-transform:uppercase}
+.char-meta{display:flex;gap:12px;justify-content:center;margin-top:6px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+.char-meta .threat-level{font-weight:bold}
+.threat-extreme{color:#ff1a1a}
+.threat-high{color:#ff6633}
+.threat-medium{color:#cc9900}
+.threat-low{color:#2e7d32}
+.dir-btn:hover .char-meta .threat-level{color:#0c0805;opacity:0.8}
 .dir-btn:hover{background:#00e676;border-color:#00e676;color:#0c0805;box-shadow:0 0 20px rgba(0,230,118,0.4);transform:scale(1.03)}
 .dir-btn:hover .char-status{color:#0c0805;opacity:0.8}
 .dir-btn.fnf-fade-out{opacity:0!important;transform:scale(0.85)!important;pointer-events:none}
@@ -65,6 +72,10 @@
         font-size:10px;
         letter-spacing:1.5px;
     }
+    .char-meta{
+        font-size:9px;
+        gap:8px;
+    }
     .back-lobby-btn{
         bottom:16px;
         font-size:11px;
@@ -103,12 +114,11 @@
     <button id="music-toggle" class="audio-control-btn" onmouseenter="playHoverSound()" onclick="toggleMusic()">Music: OFF</button>
     <div class="lobby-header-group" id="fnf-header"><p class="lobby-subtitle">Select a character to research them.</p></div>
     <div class="directory-box" id="fnf-box">
-        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'adora.html')" class="dir-btn"><span class="char-name">ADORA</span><span class="char-status">[ CREATOR MISSING ]</span></a>
-        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'dom.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">DOMINIC CANTON</span><span class="char-status">[ COMPANY PARTNER ]</span></a>
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'dom.html')" class="dir-btn"><span class="char-name">DOMINIC CANTON</span><span class="char-status">[ COMPANY PARTNER ]</span><div class="char-meta"><span class="threat-level threat-extreme">EXTREME</span></div></a>
         <!-- 🎯 核心修正：點擊 RYO 的時候，特別標記將音樂播放狀態傳遞過去，其餘角色則會保持安靜 -->
-        <a onmouseenter="playHoverSound()" onclick="localStorage.setItem('keep_ryo','1'); fnfNavigate(this,'ryo.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">RYO</span><span class="char-status">[ THE UNDERPAID JANITOR ]</span></a>
-        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'theo.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">THEO</span><span class="char-status">[ VISITOR & FURRY ]</span></a>
-        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'afton.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">WILLIAM AFTON</span><span class="char-status">[ COMPANY CEO ]</span></a>
+        <a onmouseenter="playHoverSound()" onclick="localStorage.setItem('keep_ryo','1'); fnfNavigate(this,'ryo.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">RYO</span><span class="char-status">[ THE UNDERPAID JANITOR ]</span><div class="char-meta"><span class="threat-level threat-low">LOW</span></div></a>
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'theo.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">THEO</span><span class="char-status">[ VISITOR & FURRY ]</span><div class="char-meta"><span class="threat-level threat-low">LOW</span></div></a>
+        <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'afton.html')" class="dir-btn" style="margin-top:5px"><span class="char-name">WILLIAM AFTON</span><span class="char-status">[ COMPANY CEO ]</span><div class="char-meta"><span class="threat-level threat-extreme">EXTREME</span></div></a>
     </div>
     <a onclick="fadeTo('characters.html')" class="back-lobby-btn" id="fnf-back">&lt; Return to Characters</a>
 </div>

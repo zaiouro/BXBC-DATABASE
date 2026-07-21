@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>THE SHOW</title><link rel="stylesheet" href="theme.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden;overflow-y:auto!important;height:auto!important}
+body{background:#020104;color:#6a5040;font-family:"Times New Roman",serif;overflow-x:hidden!important;overflow-y:auto!important;height:auto!important;min-height:100dvh!important}
+
+/* FILM GRAIN */
+body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.01) 2px,rgba(255,255,255,0.01) 3px);pointer-events:none;z-index:9999;animation:grn 0.5s steps(3) infinite}
+@keyframes grn{0%{opacity:0.3}50%{opacity:0.6}100%{opacity:0.3}}
+
+/* VIGNETTE */
+.vignette{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,0.85) 100%);pointer-events:none;z-index:9998}
+
+/* SCENE */
+.scene{position:relative;width:100%;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;overflow:hidden}
+
+/* SCENE BACKGROUNDS */
+.scene-dark{background:#020104}
+.scene-stage{background:linear-gradient(180deg,#050208 0%,#0a0508 40%,#120a0a 100%)}
+.scene-warm{background:linear-gradient(180deg,#0a0508 0%,#1a0e08 50%,#0a0508 100%)}
+.scene-cold{background:linear-gradient(180deg,#020104 0%,#080a10 50%,#020104 100%)}
+.scene-blood{background:linear-gradient(180deg,#0a0204 0%,#1a0508 50%,#0a0204 100%)}
+
+/* TEXT STYLES */
+.scene-text{font-family:"EB Garamond",serif;text-align:center;max-width:650px;position:relative;z-index:2}
+.scene-title{font-size:clamp(14px,3vw,18px);color:#3a2215;letter-spacing:6px;text-transform:uppercase;margin-bottom:12px}
+.scene-heading{font-size:clamp(28px,7vw,56px);color:#8b2500;letter-spacing:6px;text-transform:uppercase;margin-bottom:20px;text-shadow:0 0 40px rgba(139,37,0,0.3)}
+.scene-body{font-size:clamp(15px,2.5vw,19px);color:#7a5a45;line-height:2;letter-spacing:0.5px}
+.scene-line{font-size:clamp(13px,2vw,16px);color:#5a4030;letter-spacing:2px;text-transform:uppercase;margin-top:24px;opacity:0.5}
+.scene-dialogue{font-size:clamp(16px,2.8vw,22px);color:#a07858;font-style:italic;line-height:1.9;letter-spacing:1px}
+.scene-whisper{font-size:clamp(12px,1.8vw,14px);color:#3a2a1a;letter-spacing:3px;text-transform:uppercase;margin-top:30px;opacity:0.4}
+.scene-red{color:#8b2500}
+.scene-dim{opacity:0.6}
+
+/* FADE IN */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity 1.2s ease,transform 1.2s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-slow{opacity:0;transition:opacity 2s ease}
+.fade-in-slow.visible{opacity:1}
+
+/* DELAY CLASSES */
+.delay-1{transition-delay:0.3s}
+.delay-2{transition-delay:0.6s}
+.delay-3{transition-delay:0.9s}
+.delay-4{transition-delay:1.2s}
+.delay-5{transition-delay:1.5s}
+.delay-6{transition-delay:1.8s}
+
+/* DIVIDER */
+.divider{width:60px;height:1px;background:rgba(90,42,21,0.2);margin:30px auto}
+
+/* SPOTLIGHT */
+.spot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:200px;height:100%;background:radial-gradient(ellipse at 50% 20%,rgba(90,42,21,0.08) 0%,transparent 60%);pointer-events:none}
+
+/* SILHOUETTE */
+.silhouette{width:100%;max-width:700px;height:200px;position:relative;display:flex;align-items:flex-end;justify-content:center;gap:30px;margin:40px auto}
+.figure-sil{width:40px;background:rgba(50,25,12,0.15);border:1px solid rgba(90,42,21,0.08);position:relative;transition:height 1.5s ease}
+.figure-sil::before{content:"";position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;background:rgba(50,25,12,0.12);border:1px solid rgba(90,42,21,0.08)}
+.fig-1{height:80px}.fig-2{height:100px}.fig-3{height:70px}.fig-4{height:90px}.fig-5{height:75px}
+
+/* BLOOD DRIP */
+.drips{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.drip{position:absolute;top:0;width:2px;background:linear-gradient(180deg,rgba(139,37,0,0.4),transparent);animation:dripFall linear infinite}
+.drip:nth-child(1){left:20%;height:60px;animation-duration:4s;animation-delay:0s}
+.drip:nth-child(2){left:45%;height:80px;animation-duration:5s;animation-delay:1.5s}
+.drip:nth-child(3){left:70%;height:50px;animation-duration:3.5s;animation-delay:0.8s}
+.drip:nth-child(4){left:85%;height:70px;animation-duration:4.5s;animation-delay:2.2s}
+@keyframes dripFall{0%{transform:translateY(-100%);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(300px);opacity:0}}
+
+/* CURTAIN TRANSITION */
+.curtain-transition{position:relative;width:100%;height:80px;overflow:hidden}
+.curtain-transition::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,#0a0204,transparent 30%,transparent 70%,#020104)}
+
+/* FLOATING PARTICLES */
+.particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:rgba(90,42,21,0.15);border-radius:50%;animation:particleFloat linear infinite}
+.particle:nth-child(1){left:10%;animation-duration:12s;animation-delay:0s}
+.particle:nth-child(2){left:30%;animation-duration:15s;animation-delay:3s}
+.particle:nth-child(3){left:55%;animation-duration:10s;animation-delay:1s}
+.particle:nth-child(4){left:75%;animation-duration:14s;animation-delay:5s}
+.particle:nth-child(5){left:90%;animation-duration:11s;animation-delay:2s}
+@keyframes particleFloat{0%{bottom:-5%;opacity:0}10%{opacity:0.5}90%{opacity:0.5}100%{bottom:105%;opacity:0}}
+
+/* PROGRESS BAR */
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:#8b2500;z-index:10000;width:0%;transition:width 0.1s linear}
+
+/* FOOTER */
+.cinematic-footer{padding:80px 24px;text-align:center;background:#020104}
+.footer-line{font-size:11px;color:#2a1810;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px}
+.footer-btn{display:inline-block;margin-top:20px;color:#3a2215;font-size:12px;letter-spacing:1.5px;text-decoration:none;text-transform:uppercase;transition:color .3s;cursor:crosshair;font-family:"Times New Roman",serif !important;border:1px solid rgba(90,42,21,0.2);padding:10px 24px}
+.footer-btn:hover{color:#8b2500;border-color:#8b2500}
+
+/* MOBILE */
+@media (max-width:600px){
+    .scene{padding:50px 16px}
+    .silhouette{gap:16px;height:150px}
+    .figure-sil{width:30px}
+}
+</style>
+</head>
+<body>
+<div class="vignette"></div>
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- SCENE 1: OPENING -->
+<div class="scene scene-dark">
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+    <div class="scene-text">
+        <div class="scene-title fade-in">Blockbears Presents</div>
+        <div class="divider fade-in delay-1"></div>
+        <div class="scene-heading fade-in delay-2">THE SHOW</div>
+        <div class="scene-line fade-in delay-3">A tragedy in five acts</div>
+    </div>
+</div>
+
+<div class="curtain-transition"></div>
+
+<!-- SCENE 2: THE STAGE -->
+<div class="scene scene-stage">
+    <div class="spot"></div>
+    <div class="scene-text">
+        <div class="scene-body fade-in">Every story needs a stage.</div>
+        <div class="scene-body fade-in delay-1 scene-dim" style="margin-top:16px">Ours was a pizzeria inHurricane, Utah. Brand new. Bright lights. Happy music. The kind of place where children laughed and parents relaxed and nobody ever asked questions.</div>
+        <div class="scene-body fade-in delay-2 scene-dim" style="margin-top:16px">The animatronics stood on stage and played their instruments and smiled. They smiled because that's what they were built to do.</div>
+    </div>
+</div>
+
+<!-- SCENE 3: THE BUILDER -->
+<div class="scene scene-warm">
+    <div class="scene-text">
+        <div class="scene-title fade-in">Act I</div>
+        <div class="scene-heading fade-in delay-1">THE BUILDER</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">William Afton built the springlock suits with his own hands. Fredbear. Spring Bonnie. Bonabi. He knew exactly how they worked. He knew exactly what happened when they failed.</div>
+        <div class="scene-dialogue fade-in delay-4" style="margin-top:30px">"Hey there kid! Why don't you follow me, Springbonnie, to get some cake!"</div>
+        <div class="scene-line fade-in delay-5">He always smiled. Always.</div>
+    </div>
+</div>
+
+<div class="curtain-transition"></div>
+
+<!-- SCENE 4: THE FIRST ACTOR -->
+<div class="scene scene-stage">
+    <div class="spot"></div>
+    <div class="scene-text">
+        <div class="scene-title fade-in">Act II</div>
+        <div class="scene-heading fade-in delay-1">THE FIRST ACTOR</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">Victor Callahan was eighteen. He performed in the Fredbear suit at his sister's birthday party. He told terrible jokes. He made children laugh.</div>
+        <div class="scene-dialogue fade-in delay-4" style="margin-top:30px">"No need to be shy! I don't bite. Well... at least not anymore."</div>
+        <div class="scene-body fade-in delay-5" style="margin-top:20px">He was the kind of person who makes you feel brave. Even when he was scared. Especially when he was scared.</div>
+    </div>
+</div>
+
+<!-- SCENE 5: THE ACCIDENT -->
+<div class="scene scene-blood">
+    <div class="drips">
+        <div class="drip"></div><div class="drip"></div><div class="drip"></div><div class="drip"></div>
+    </div>
+    <div class="scene-text">
+        <div class="scene-title fade-in">1983</div>
+        <div class="scene-heading fade-in delay-1">THE ACCIDENT</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">Holly was six. She pulled a lever she wasn't supposed to touch.</div>
+        <div class="scene-body fade-in delay-4" style="margin-top:16px">The springlocks collapsed inside the Fredbear suit. Her brother bled out inside the mascot head while children sang happy birthday on the other side of the curtain.</div>
+        <div class="scene-body fade-in delay-5" style="margin-top:20px">He never blamed her. Not once. Not even now.</div>
+        <div class="scene-whisper fade-in delay-6">She never forgave herself.</div>
+    </div>
+</div>
+
+<div class="curtain-transition"></div>
+
+<!-- SCENE 6: THE SMILE -->
+<div class="scene scene-dark">
+    <div class="scene-text">
+        <div class="scene-title fade-in">THE SMILE</div>
+        <div class="divider fade-in delay-1"></div>
+        <div class="scene-body fade-in delay-2">William Afton didn't mourn. He saw an opportunity.</div>
+        <div class="scene-body fade-in delay-3" style="margin-top:16px">He murdered Henry's daughter. Henry vanished. William took control.</div>
+        <div class="scene-body fade-in delay-4" style="margin-top:16px">Something broke inside him that day. Or maybe something was always broken, and this just let it out.</div>
+        <div class="scene-whisper fade-in delay-5">He put on the suit. He put on the smile.</div>
+    </div>
+</div>
+
+<!-- SCENE 7: THE HUNTING -->
+<div class="scene scene-blood">
+    <div class="scene-text">
+        <div class="scene-title fade-in">Act III</div>
+        <div class="scene-heading fade-in delay-1">THE HUNTING</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">He lured them with cake. With promises. With a smile they trusted.</div>
+        <div class="scene-body fade-in delay-4" style="margin-top:16px">Oscar vanished first. Then Joshua went looking. Then Trixie.</div>
+        <div class="scene-body fade-in delay-5" style="margin-top:16px">He stuffed them into the machines. One by one. Year after year. Their souls trapped inside the metal. They couldn't leave. They couldn't forget.</div>
+        <div class="scene-dialogue fade-in delay-6" style="margin-top:30px">"WHY WAS I MADE ONLY TO FALL APART LIKE THIS?"</div>
+    </div>
+</div>
+
+<div class="curtain-transition"></div>
+
+<!-- SCENE 8: THE TRAPPED -->
+<div class="scene scene-cold">
+    <div class="silhouette fade-in">
+        <div class="figure-sil fig-1"></div>
+        <div class="figure-sil fig-2"></div>
+        <div class="figure-sil fig-3"></div>
+        <div class="figure-sil fig-4"></div>
+        <div class="figure-sil fig-5"></div>
+    </div>
+    <div class="scene-text">
+        <div class="scene-title fade-in delay-1">THE TRAPPED</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">At night, the machines move. They walk the halls. They search for something they can't name.</div>
+        <div class="scene-body fade-in delay-4" style="margin-top:16px">Holly screams Victor's name. Trixie calls for Oscar. Joshua stands guard. Victor hides in the basement, smiling, always smiling.</div>
+        <div class="scene-body fade-in delay-5" style="margin-top:16px">They are still there. They have always been there.</div>
+        <div class="scene-whisper fade-in delay-6">If you listen closely at 3 AM... you can hear them.</div>
+    </div>
+</div>
+
+<!-- SCENE 9: THE DISAPPEARANCE -->
+<div class="scene scene-dark">
+    <div class="scene-text">
+        <div class="scene-title fade-in">1993</div>
+        <div class="scene-heading fade-in delay-1">THE DISAPPEARANCE</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">Afton stopped killing. Before leaving, he murdered an employee who had uncovered secrets that could not be let out.</div>
+        <div class="scene-body fade-in delay-4" style="margin-top:16px">He partnered with Chuck E. Cheese and vanished for years to let the heat die down.</div>
+        <div class="scene-body fade-in delay-5" style="margin-top:20px">The children's souls are still inside those machines.</div>
+        <div class="scene-body fade-in delay-6" style="margin-top:8px">He knows.</div>
+        <div class="scene-body fade-in" style="margin-top:8px;transition-delay:2.2s">He doesn't care.</div>
+    </div>
+</div>
+
+<div class="curtain-transition"></div>
+
+<!-- SCENE 10: THE RETURN -->
+<div class="scene scene-warm">
+    <div class="scene-text">
+        <div class="scene-title fade-in">Act IV</div>
+        <div class="scene-heading fade-in delay-1">THE RETURN</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">He came back. Still performing. Still smiling. Still wearing the suit.</div>
+        <div class="scene-body fade-in delay-4" style="margin-top:16px">New staff. New animatronics. Same souls inside. Nobody told them what happened before. Nobody tells them what moves at night.</div>
+        <div class="scene-dialogue fade-in delay-5" style="margin-top:30px">"If we're all stuck here together... then we should at least try to smile."</div>
+        <div class="scene-line fade-in delay-6">Oscar still tries to make people smile. Even now. Even like this.</div>
+    </div>
+</div>
+
+<!-- SCENE 11: THE PRESENT -->
+<div class="scene scene-cold">
+    <div class="scene-text">
+        <div class="scene-title fade-in">Act V</div>
+        <div class="scene-heading fade-in delay-1">THE PRESENT</div>
+        <div class="divider fade-in delay-2"></div>
+        <div class="scene-body fade-in delay-3">The janitor knows something is wrong. The visitor keeps coming back. The researcher studies what shouldn't be studied.</div>
+        <div class="scene-body fade-in delay-4" style="margin-top:16px">The animatronics are still trapped. Holly still screams. Trixie still calls. Victor still hides. Joshua still guards.</div>
+        <div class="scene-body fade-in delay-5" style="margin-top:20px">The show is almost over.</div>
+        <div class="scene-body fade-in delay-6" style="margin-top:8px">But the curtain hasn't fallen yet.</div>
+    </div>
+</div>
+
+<div class="curtain-transition"></div>
+
+<!-- SCENE 12: CLOSING -->
+<div class="scene scene-dark" style="min-height:60dvh">
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+    <div class="scene-text">
+        <div class="scene-heading fade-in" style="font-size:clamp(20px,4vw,32px);letter-spacing:8px">THE SHOW</div>
+        <div class="scene-body fade-in delay-1 scene-dim" style="margin-top:16px">The curtain never closes.</div>
+        <div class="scene-body fade-in delay-2 scene-dim" style="margin-top:8px">The show never ends.</div>
+        <div class="scene-whisper fade-in delay-3" style="margin-top:40px">The dead are still watching.</div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="cinematic-footer">
+    <div class="footer-line fade-in">Blockbears Pizzeria — Hurricane, Utah</div>
+    <div class="footer-line fade-in delay-1" style="opacity:0.3">Est. 2000</div>
+    <a onclick="fadeTo('lobby.html')" class="footer-btn fade-in delay-2">&lt; Return to Lobby</a>
+</div>
+
+<script src="menu.js"></script>
+<script>
+// IntersectionObserver for fade-in animations
+const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add("visible");
+        }
+    });
+},{threshold:0.15,rootMargin:"0px 0px -50px 0px"});
+
+document.querySelectorAll(".fade-in").forEach(el=>observer.observe(el));
+
+// Scroll progress bar
+window.addEventListener("scroll",()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    const p=h>0?(window.scrollY/h)*100:0;
+    document.getElementById("scroll-progress").style.width=p+"%";
+},{passive:true});
+</script>
+</body>
+</html>

@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FREDDY FAZBEAR'S - Night Shift</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#ccc;font-family:'Special Elite',monospace;overflow:hidden;height:100vh;width:100vw;user-select:none;cursor:none}
+.screen{display:none;width:100vw;height:100vh;position:absolute;top:0;left:0}
+.screen.active{display:flex}
+
+/* ===== CUSTOM CURSOR ===== */
+#cursor{position:fixed;width:16px;height:16px;border:1.5px solid #9400d3;border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);box-shadow:0 0 8px rgba(148,0,211,.4);transition:width .15s,height .15s,border-color .15s}
+#cursor::after{content:'';position:absolute;top:50%;left:50%;width:3px;height:3px;background:#9400d3;border-radius:50%;transform:translate(-50%,-50%)}
+#cursor.cam-mode{width:24px;height:24px;border-color:#cc44ff;box-shadow:0 0 12px rgba(204,68,255,.5)}
+
+/* ===== TITLE ===== */
+#title-screen{flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0d0515 0%,#000 70%);animation:tvFlick 5s infinite}
+@keyframes tvFlick{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.4}94%{opacity:1}96%{opacity:.6}97%{opacity:1}}
+#title-screen h1{font-family:'Creepster',cursive;font-size:clamp(36px,8vw,72px);color:#9400d3;text-shadow:0 0 20px #9400d3,0 0 60px #440088;letter-spacing:6px;margin-bottom:8px;animation:gt 4s infinite}
+@keyframes gt{0%,100%{text-shadow:0 0 20px #9400d3,0 0 60px #440088}25%{text-shadow:3px 0 20px #ff3333,-3px 0 60px #9400d3}50%{text-shadow:-2px 2px 20px #9400d3,2px -2px 40px #ff3333}75%{text-shadow:1px -1px 20px #e6b800,-1px 1px 40px #9400d3}}
+#title-screen h2{font-family:'Creepster',cursive;font-size:clamp(14px,3vw,24px);color:#663366;margin-bottom:35px;letter-spacing:4px}
+.tchars{display:flex;gap:12px;margin:15px 0 30px;flex-wrap:wrap;justify-content:center}
+.tchar{width:80px;height:100px;border:1px solid #330044;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(15,5,20,.85);transition:all .3s}
+.tchar:hover{border-color:#9400d3;box-shadow:0 0 15px rgba(148,0,211,.3);transform:scale(1.05)}
+.tchar .ti{font-size:26px;margin-bottom:3px}
+.tchar .tn{font-family:'Creepster',cursive;font-size:9px;color:#9400d3;letter-spacing:1px}
+.tchar .ts{font-size:7px;color:#553355;margin-top:2px;letter-spacing:1px}
+.tbtn{font-family:'Creepster',cursive;font-size:20px;padding:12px 40px;margin:5px;background:transparent;border:1px solid #9400d3;color:#9400d3;cursor:none;letter-spacing:3px;transition:all .3s}
+.tbtn:hover{background:#9400d3;color:#000;box-shadow:0 0 25px rgba(148,0,211,.4)}
+.tinfo{color:#443344;font-size:11px;margin-top:18px;letter-spacing:1px;line-height:1.7;text-align:center}
+
+/* ===== TRANSITION ===== */
+#start-trans{position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:8000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:15px}
+#start-trans.active{display:flex;animation:tfade 2.5s forwards}
+@keyframes tfade{0%{opacity:0}30%{opacity:1}85%{opacity:1}100%{opacity:0;pointer-events:none}}
+#start-trans h2{font-family:'Creepster',cursive;font-size:42px;color:#9400d3;text-shadow:0 0 20px #9400d3}
+#start-trans p{font-size:20px;color:#663366;font-family:'Creepster',cursive}
+
+/* ===== GAME SCREEN ===== */
+#game-screen{flex-direction:column;background:#000}
+
+/* Main viewport */
+#viewport{flex:1;position:relative;overflow:hidden;background:#050505}
+
+/* Office views */
+.office-view{position:absolute;top:0;left:0;width:100%;height:100%;transition:opacity .15s}
+
+/* CENTER OFFICE */
+#office-center{z-index:2}
+.office-ceiling{position:absolute;top:0;left:0;width:100%;height:25%;background:linear-gradient(180deg,#080808,#0a0a0a)}
+.office-wall{position:absolute;top:25%;left:0;width:100%;height:45%;background:#0c0c0c}
+.office-floor{position:absolute;top:70%;left:0;width:100%;height:30%;background:linear-gradient(180deg,#0a0a0a,#060606)}
+/* Desk */
+.desk{position:absolute;bottom:12%;left:50%;transform:translateX(-50%);width:55%;height:25%;background:linear-gradient(0deg,#1a1210,#151010);border-top:2px solid #221a18;border-radius:3px 3px 0 0;z-index:5}
+/* Monitor */
+.monitor{position:absolute;bottom:calc(12% + 25% - 5%);left:50%;transform:translateX(-50%);width:22%;height:22%;background:#0a0a0a;border:2px solid #1a1a1a;border-radius:3px;z-index:6;display:flex;align-items:center;justify-content:center}
+.monitor-screen{width:85%;height:80%;background:#050505;border:1px solid #111}
+.monitor-screen.on{background:#0a0a15;box-shadow:inset 0 0 10px rgba(100,50,150,.2)}
+.monitor-stand{position:absolute;bottom:-8%;left:50%;transform:translateX(-50%);width:8%;height:12%;background:#151515}
+/* Cup */
+.cup{position:absolute;bottom:calc(12% + 25% - 3%);right:30%;width:3%;height:5%;background:#1a1515;border-radius:0 0 2px 2px;z-index:6}
+.cup::before{content:'';position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:120%;height:2px;background:#1a1515;border-radius:50%}
+/* Fan */
+.fan{position:absolute;bottom:calc(12% + 25% + 2%);right:22%;z-index:6}
+.fan-blade{width:20px;height:20px;position:relative;animation:fanSpin 1.5s linear infinite}
+.fan-blade div{position:absolute;width:100%;height:2px;background:#1a1a1a;top:50%;transform-origin:0 50%;border-radius:1px}
+.fan-blade div:nth-child(1){transform:rotate(0deg)}
+.fan-blade div:nth-child(2){transform:rotate(90deg)}
+.fan-blade div:nth-child(3){transform:rotate(180deg)}
+.fan-blade div:nth-child(4){transform:rotate(270deg)}
+@keyframes fanSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fan-base{width:4px;height:10px;background:#151515;margin:0 auto}
+/* Posters */
+.poster-wall{position:absolute;z-index:3;border:1px solid #111;background:#0a0a0a}
+.poster-wall::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60%;height:40%;background:#080808}
+/* Ceiling light */
+.ceiling-wire{position:absolute;top:0;left:50%;width:1px;height:12%;background:#151515;z-index:3}
+.ceiling-bulb{position:absolute;top:12%;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#1a0e00;box-shadow:0 0 8px rgba(26,14,0,.4);animation:bulbf 6s infinite;z-index:3}
+@keyframes bulbf{0%,100%{background:#1a0e00;box-shadow:0 0 8px rgba(26,14,0,.4)}49%{background:#1a0e00}50%{background:#332200;box-shadow:0 0 20px rgba(51,34,0,.8)}51%{background:#1a0e00}70%{background:#1a0e00}71%{background:#221100;box-shadow:0 0 12px rgba(34,17,0,.6)}72%{background:#1a0e00}}
+
+/* LEFT HALLWAY */
+#office-left{z-index:1;opacity:0;pointer-events:none}
+#office-left.look{opacity:1;pointer-events:auto}
+.hall-l{position:absolute;top:0;left:0;width:100%;height:100%}
+.hall-l-floor{position:absolute;bottom:0;left:0;width:100%;height:35%;background:linear-gradient(180deg,#0a0a0a,#060606);perspective:500px}
+.hall-l-wall{position:absolute;top:20%;left:0;width:100%;height:60%;background:#0b0b0b}
+.hall-l-ceiling{position:absolute;top:0;left:0;width:100%;height:20%;background:#080808}
+/* Door frame left */
+.door-frame-l{position:absolute;top:18%;right:15%;width:20%;height:64%;border:2px solid #161616;border-right:none;background:#050505;z-index:2}
+.door-frame-l .door-edge{position:absolute;top:0;right:0;width:4px;height:100%;background:#1a1a1a}
+/* Left door panel (visual) */
+.left-door-visual{position:absolute;top:18%;right:15%;width:20%;height:64%;background:#0e0e0e;border:2px solid #1a1a1a;z-index:3;transition:transform .2s;transform-origin:right center;opacity:0;pointer-events:none}
+.left-door-visual.closed{opacity:1}
+/* Left hallway animatronic slot */
+.hall-anim-l{position:absolute;top:25%;right:18%;width:50px;height:80px;z-index:4;opacity:0;transition:opacity .4s;display:flex;align-items:center;justify-content:center;font-size:50px}
+.hall-anim-l.vis{opacity:1;animation:hallFloat 2s infinite}
+@keyframes hallFloat{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+/* Left door light */
+.door-light-l{position:absolute;top:16%;right:calc(15% + 10%);width:8px;height:8px;border-radius:50%;background:#1a0000;z-index:5;transition:all .2s}
+.door-light-l.on{background:#ffcc00;box-shadow:0 0 20px #ffcc00,0 0 40px rgba(255,204,0,.4)}
+
+/* RIGHT HALLWAY */
+#office-right{z-index:1;opacity:0;pointer-events:none}
+#office-right.look{opacity:1;pointer-events:auto}
+.hall-r-floor{position:absolute;bottom:0;left:0;width:100%;height:35%;background:linear-gradient(180deg,#0a0a0a,#060606)}
+.hall-r-wall{position:absolute;top:20%;left:0;width:100%;height:60%;background:#0b0b0b}
+.hall-r-ceiling{position:absolute;top:0;left:0;width:100%;height:20%;background:#080808}
+.door-frame-r{position:absolute;top:18%;left:15%;width:20%;height:64%;border:2px solid #161616;border-left:none;background:#050505;z-index:2}
+.door-frame-r .door-edge{position:absolute;top:0;left:0;width:4px;height:100%;background:#1a1a1a}
+.right-door-visual{position:absolute;top:18%;left:15%;width:20%;height:64%;background:#0e0e0e;border:2px solid #1a1a1a;z-index:3;transition:transform .2s;transform-origin:left center;opacity:0;pointer-events:none}
+.right-door-visual.closed{opacity:1}
+.hall-anim-r{position:absolute;top:25%;left:18%;width:50px;height:80px;z-index:4;opacity:0;transition:opacity .4s;display:flex;align-items:center;justify-content:center;font-size:50px}
+.hall-anim-r.vis{opacity:1;animation:hallFloat 2s infinite}
+.door-light-r{position:absolute;top:16%;left:calc(15% + 10%);width:8px;height:8px;border-radius:50%;background:#1a0000;z-index:5;transition:all .2s}
+.door-light-r.on{background:#ffcc00;box-shadow:0 0 20px #ffcc00,0 0 40px rgba(255,204,0,.4)}
+
+/* Scanlines & effects */
+#scanlines{position:absolute;top:0;left:0;width:100%;height:100%;z-index:8;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,.08) 1px,rgba(0,0,0,.08) 2px)}
+#vignette{position:absolute;top:0;left:0;width:100%;height:100%;z-index:7;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.8) 100%)}
+.flicker{animation:flk .04s}
+@keyframes flk{0%{filter:brightness(1)}50%{filter:brightness(.2)}100%{filter:brightness(1)}}
+
+/* ===== CAMERA VIEW ===== */
+#camera-view{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;display:none;flex-direction:column;background:#050505}
+#camera-view.active{display:flex}
+#cam-feed{flex:1;position:relative;overflow:hidden;background:#080808}
+.cam-room{width:100%;height:100%;position:relative;background:linear-gradient(180deg,#0a0a0a 0%,#141414 50%,#0a0a0a 100%)}
+.cam-room::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.2) 2px,rgba(0,0,0,.2) 4px);z-index:2;pointer-events:none}
+.cam-anim{position:absolute;font-size:60px;z-index:3;opacity:0;transition:opacity .3s}
+.cam-anim.vis{opacity:1;animation:camFloat 2.5s infinite}
+.cam-anim.holly{filter:hue-rotate(270deg) brightness(.3) contrast(1.8)}
+.cam-anim.trixie{filter:hue-rotate(-30deg) brightness(.4) contrast(2);animation:camFloat 2.5s infinite,camDist .3s infinite}
+.cam-anim.joshua{font-size:100px;filter:brightness(.2) contrast(2)}
+.cam-anim.oscar{filter:brightness(.5) contrast(1.2) saturate(.4);opacity:.7!important}
+.cam-anim.close-anim{animation:camShake .2s infinite!important}
+@keyframes camFloat{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes camDist{0%{filter:hue-rotate(-30deg) brightness(.4) contrast(2)}50%{filter:hue-rotate(-30deg) brightness(.4) contrast(2) blur(1px)}100%{filter:hue-rotate(-30deg) brightness(.4) contrast(2)}}
+@keyframes camShake{0%,100%{transform:translateX(0) scale(1.03)}25%{transform:translateX(-3px) scale(1.03)}75%{transform:translateX(3px) scale(1.03)}}
+/* Cam room decorations */
+.cam-stage-platform{position:absolute;bottom:15%;left:28%;width:44%;height:4%;background:linear-gradient(0deg,#131313,#1a1a1a);border-top:2px solid #1e1e1e;z-index:1}
+.cam-table{position:absolute;bottom:35%;left:50%;transform:translateX(-50%);width:35%;height:12%;background:#111;border-radius:4px 4px 0 0;z-index:1}
+.cam-chair{position:absolute;bottom:33%;width:6%;height:8%;background:#0e0e0e;border-radius:2px 2px 0 0;z-index:1}
+.cam-poster{position:absolute;width:7%;height:10%;border:1px solid #1a1a1a;background:#0d0d0d;z-index:1}
+.cam-shelf{position:absolute;width:55%;height:3px;background:#1a1a1a;z-index:1}
+.cam-hallway-l{position:absolute;top:0;height:100%;width:25%;left:0;background:linear-gradient(90deg,#080808,#0c0c0c 40%,transparent);border-right:2px solid #141414;z-index:1}
+.cam-hallway-r{position:absolute;top:0;height:100%;width:25%;right:0;background:linear-gradient(-90deg,#080808,#0c0c0c 40%,transparent);border-left:2px solid #141414;z-index:1}
+.cam-flicker{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:7%;background:#1a1a1a;z-index:1}
+.cam-bulb{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:#1a0e00;box-shadow:0 0 4px rgba(26,14,0,.4);animation:bulbf 5s infinite}
+/* Cam overlay */
+#cam-static{position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;pointer-events:none;opacity:.06;transition:opacity .3s}
+#cam-static.heavy{opacity:.3;animation:cShake .08s infinite}
+@keyframes cShake{0%{transform:translate(0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(-1px,0)}100%{transform:translate(0,1px)}}
+#cam-label{position:absolute;top:10px;left:10px;font-size:11px;color:#9400d3;z-index:10;text-shadow:0 0 5px rgba(148,0,211,.5)}
+#cam-label span{display:block;font-size:16px;margin-top:2px;font-family:'Creepster',cursive;letter-spacing:2px}
+#cam-rec{position:absolute;top:10px;right:10px;z-index:10;display:flex;align-items:center;gap:4px}
+#cam-rec-dot{width:6px;height:6px;background:#ff3333;border-radius:50%;animation:rb 1s infinite}
+@keyframes rb{0%,100%{opacity:1}50%{opacity:0}}
+#cam-rec-t{color:#ff3333;font-size:10px;font-family:monospace}
+#cam-time{position:absolute;bottom:8px;left:10px;font-size:10px;color:rgba(148,0,211,.5);z-index:10;font-family:monospace}
+/* Cam map bottom bar */
+#cam-bar{height:80px;background:#0a0608;border-top:1px solid #330033;display:flex;padding:6px;gap:5px;align-items:center}
+#cam-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3px;flex:1}
+.cam-btn{background:rgba(20,5,25,.8);border:1px solid #330044;color:#774477;font-family:'Special Elite',monospace;font-size:9px;cursor:none;transition:all .2s;display:flex;align-items:center;justify-content:center;text-align:center;padding:3px;letter-spacing:.5px}
+.cam-btn:hover{background:rgba(40,10,50,.8);border-color:#9400d3}
+.cam-btn.active{background:rgba(80,20,100,.5);border-color:#cc44ff;color:#cc44ff;box-shadow:0 0 8px rgba(204,68,255,.2)}
+.cam-btn.danger{animation:cd .4s infinite;border-color:#ff3333!important;color:#ff3333!important}
+@keyframes cd{0%,100%{border-color:#ff3333}50%{border-color:#ff6666;box-shadow:0 0 10px rgba(255,51,51,.3)}}
+#cam-close-btn{font-family:'Creepster',cursive;font-size:11px;padding:8px 16px;background:transparent;border:1px solid #9400d3;color:#9400d3;cursor:none;letter-spacing:1px;transition:all .2s;white-space:nowrap}
+#cam-close-btn:hover{background:#9400d3;color:#000}
+
+/* ===== BOTTOM HUD ===== */
+#hud{height:80px;background:linear-gradient(0deg,#0a0608,#120c0e);border-top:1px solid #330033;display:flex;padding:6px;gap:6px;align-items:center;z-index:20}
+#hud-left{display:flex;gap:5px;align-items:center}
+#hud-center{flex:1;display:flex;align-items:center;justify-content:center;gap:15px}
+#hud-right{display:flex;gap:5px;align-items:center}
+.hud-btn{font-family:'Creepster',cursive;font-size:10px;padding:6px 12px;background:transparent;border:1px solid #330044;color:#774477;cursor:none;letter-spacing:1px;transition:all .2s;display:flex;align-items:center;gap:4px}
+.hud-btn:hover{border-color:#9400d3;color:#9400d3}
+.hud-btn.active{border-color:#ff3333;background:rgba(120,20,60,.3);color:#ff4444}
+.hud-btn.victor-warn{border-color:#e6b800!important;color:#e6b800!important;box-shadow:0 0 12px rgba(230,184,0,.4);animation:vPulse 1s infinite}
+@keyframes vPulse{0%,100%{box-shadow:0 0 12px rgba(230,184,0,.4)}50%{box-shadow:0 0 20px rgba(230,184,0,.7)}}
+.hud-btn .hi{font-size:14px}
+#power-wrap{text-align:center}
+#power-wrap h4{font-family:'Creepster',cursive;font-size:10px;color:#9400d3;letter-spacing:1px;margin-bottom:3px}
+#pwr-bar{width:100px;height:12px;background:#1a0a1a;border:1px solid #330044;border-radius:2px;overflow:hidden}
+#pwr-fill{height:100%;width:100%;background:linear-gradient(90deg,#9400d3,#cc44ff);transition:width .5s,background .5s}
+#pwr-fill.low{background:linear-gradient(90deg,#ff6600,#ff3333);animation:pw .5s infinite}
+#pwr-fill.crit{background:linear-gradient(90deg,#ff0000,#cc0000);animation:pc .3s infinite}
+@keyframes pw{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes pc{0%,100%{opacity:1}50%{opacity:.35}}
+#pwr-txt{font-size:14px;color:#9400d3;font-family:monospace;margin-top:2px}
+#time-txt{font-family:'Creepster',cursive;font-size:22px;color:#9400d3;text-shadow:0 0 8px rgba(148,0,211,.4)}
+
+/* ===== OVERLAYS ===== */
+#josh-warn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:15;pointer-events:none;opacity:0;font-size:14px;color:#ff3333;font-family:'Creepster',cursive;letter-spacing:3px;text-shadow:0 0 10px #ff3333;text-align:center}
+#josh-warn.active{opacity:1;animation:wp .5s infinite}
+@keyframes wp{0%,100%{opacity:1}50%{opacity:.4}}
+#victor-msg{position:absolute;bottom:20%;left:50%;transform:translateX(-50%);z-index:15;pointer-events:none;opacity:0;font-size:12px;color:#e6b800;font-family:'Special Elite',monospace;letter-spacing:2px;text-shadow:0 0 8px rgba(230,184,0,.4);text-align:center;white-space:nowrap;transition:opacity .5s}
+#victor-msg.active{opacity:1}
+/* Trixie static on cam */
+#trixie-static{position:absolute;top:0;left:0;width:100%;height:100%;z-index:6;pointer-events:none;opacity:0;transition:opacity .3s}
+#trixie-static.active{opacity:1}
+#trixie-static canvas{width:100%;height:100%;display:block}
+
+/* ===== JUMPSCARE ===== */
+#jumpscare{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;display:none;align-items:center;justify-content:center;background:#000}
+#jumpscare.active{display:flex;animation:jsSh .08s infinite}
+@keyframes jsSh{0%{transform:translate(0) rotate(0)}10%{transform:translate(-18px,-12px) rotate(-3deg)}20%{transform:translate(18px,12px) rotate(3deg)}30%{transform:translate(-12px,18px) rotate(-1deg)}40%{transform:translate(12px,-18px) rotate(1deg)}50%{transform:translate(-18px,6px) rotate(-2deg)}60%{transform:translate(18px,-6px) rotate(2deg)}70%{transform:translate(-6px,-18px) rotate(-1deg)}80%{transform:translate(6px,18px) rotate(1deg)}90%{transform:translate(-12px,-12px) rotate(0)}100%{transform:translate(0) rotate(0)}}
+#js-sprite{font-size:160px;animation:jsZ .4s forwards;filter:brightness(2) contrast(2) saturate(0)}
+@keyframes jsZ{0%{transform:scale(.4);opacity:0}30%{transform:scale(3);opacity:1;filter:brightness(3) contrast(2) saturate(0)}100%{transform:scale(2.5);opacity:1}}
+#js-flash{position:absolute;top:0;left:0;width:100%;height:100%;background:white;animation:fb .12s forwards;pointer-events:none}
+@keyframes fb{0%{opacity:1}100%{opacity:0}}
+#js-name{position:absolute;bottom:14%;left:50%;transform:translateX(-50%);font-family:'Creepster',cursive;font-size:22px;letter-spacing:4px;opacity:0;animation:nR .5s .3s forwards}
+@keyframes nR{0%{opacity:0}100%{opacity:1}}
+#js-name.holly{color:#9400d3;text-shadow:0 0 15px #9400d3}
+#js-name.trixie{color:#e6194b;text-shadow:0 0 15px #e6194b}
+#js-name.joshua{color:#666;text-shadow:0 0 15px #888}
+#js-name.victor{color:#e6b800;text-shadow:0 0 15px #e6b800}
+
+/* ===== RESULT ===== */
+#result-screen{flex-direction:column;align-items:center;justify-content:center;background:#000;gap:15px}
+#result-screen h1{font-family:'Creepster',cursive;font-size:clamp(36px,7vw,56px);letter-spacing:4px}
+#result-screen h1.lose{color:#9400d3;text-shadow:0 0 25px #9400d3}
+#result-screen h1.win{color:#e6b800;text-shadow:0 0 25px #e6b800}
+#result-screen p{font-size:16px;color:#666;text-align:center;max-width:400px;line-height:1.5}
+#res-nights{font-size:14px;color:#663366;margin-top:8px}
+.res-quote{font-style:italic;color:#553355;font-size:13px;margin-top:5px;max-width:380px;text-align:center;line-height:1.4}
+
+/* ===== MOBILE ===== */
+@media(max-width:700px){
+  #hud{height:70px;flex-wrap:wrap;padding:4px;gap:4px}
+  .hud-btn{font-size:9px;padding:4px 8px}
+  #pwr-bar{width:70px;height:10px}
+  #time-txt{font-size:18px}
+  #cam-bar{height:70px}
+  .cam-btn{font-size:8px}
+  #cam-close-btn{font-size:9px;padding:6px 10px}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- TITLE -->
+<div id="title-screen" class="screen active">
+  <h1>FREDDY FAZBEAR'S</h1>
+  <h2>N I G H T &nbsp; S H I F T</h2>
+  <div class="tchars">
+    <div class="tchar"><div class="ti">💀🐰</div><div class="tn">HOLLY</div><div class="ts">POSSESSED</div></div>
+    <div class="tchar"><div class="ti">🦊</div><div class="tn">TRIXIE</div><div class="ts">DAMAGED</div></div>
+    <div class="tchar"><div class="ti">🐻</div><div class="tn">JOSHUA</div><div class="ts">FUSED</div></div>
+    <div class="tchar"><div class="ti">🐭</div><div class="tn">OSCAR</div><div class="ts">ENTERTAINER</div></div>
+    <div class="tchar"><div class="ti">🐻</div><div class="tn">VICTOR</div><div class="ts">MEDIATOR</div></div>
+  </div>
+  <button class="tbtn" onclick="startGame(1)">開始值班</button>
+  <div class="tinfo">
+    滑鼠左右移動視線 · 查看走廊和辦公室<br>
+    按 TAB 或按鈕切換攝影機 · 關門防禦 · 管理電力<br>
+    注意 Victor 的警告 · 小心 Joshua 的身影<br>
+    存活到早上 6:00 AM
+  </div>
+</div>
+
+<!-- TRANSITION -->
+<div id="start-trans"><h2 id="t-night">Night 1</h2><p>12:00 AM</p></div>
+
+<!-- GAME -->
+<div id="game-screen" class="screen">
+  <div id="viewport">
+    <!-- LEFT HALLWAY VIEW -->
+    <div id="office-left" class="office-view">
+      <div class="hall-l">
+        <div class="hall-l-ceiling"></div>
+        <div class="hall-l-wall"></div>
+        <div class="hall-l-floor"></div>
+        <div class="door-frame-l"><div class="door-edge"></div></div>
+        <div class="left-door-visual" id="left-door-vis"></div>
+        <div class="door-light-l" id="door-light-vis-l"></div>
+        <div class="hall-anim-l" id="hall-anim-left"></div>
+        <div class="cam-flicker" style="left:40%"><div class="cam-bulb"></div></div>
+      </div>
+    </div>
+
+    <!-- CENTER OFFICE VIEW -->
+    <div id="office-center" class="office-view" style="opacity:1">
+      <div class="office-ceiling"></div>
+      <div class="office-wall">
+        <div class="poster-wall" style="top:15%;left:18%;width:8%;height:14%"></div>
+        <div class="poster-wall" style="top:10%;right:22%;width:7%;height:12%"></div>
+      </div>
+      <div class="office-floor"></div>
+      <div class="ceiling-wire"></div>
+      <div class="ceiling-bulb"></div>
+      <div class="desk">
+        <div class="monitor" id="desk-monitor">
+          <div class="monitor-screen" id="monitor-screen"></div>
+        </div>
+        <div class="monitor-stand"></div>
+        <div class="cup"></div>
+        <div class="fan"><div class="fan-blade"><div></div><div></div><div></div><div></div></div><div class="fan-base"></div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT HALLWAY VIEW -->
+    <div id="office-right" class="office-view">
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%">
+        <div class="hall-r-ceiling"></div>
+        <div class="hall-r-wall"></div>
+        <div class="hall-r-floor"></div>
+        <div class="door-frame-r"><div class="door-edge"></div></div>
+        <div class="right-door-visual" id="right-door-vis"></div>
+        <div class="door-light-r" id="door-light-vis-r"></div>
+        <div class="hall-anim-r" id="hall-anim-right"></div>
+        <div class="cam-flicker" style="left:60%"><div class="cam-bulb" style="animation-delay:2s"></div></div>
+      </div>
+    </div>
+
+    <div id="scanlines"></div>
+    <div id="vignette"></div>
+
+    <!-- JOSHUA WARNING -->
+    <div id="josh-warn">⚠ CLOSE THE DOOR ⚠</div>
+    <!-- VICTOR MESSAGE -->
+    <div id="victor-msg"></div>
+  </div>
+
+  <!-- CAMERA VIEW (overlay) -->
+  <div id="camera-view">
+    <div id="cam-feed">
+      <div id="cam-room"></div>
+      <div id="cam-static"></div>
+      <div id="trixie-static"><canvas id="trix-cvs"></canvas></div>
+      <div id="cam-label">CAMERA<span id="cam-name">Stage</span></div>
+      <div id="cam-rec"><div id="cam-rec-dot"></div><span id="cam-rec-t">REC</span></div>
+      <div id="cam-time"></div>
+    </div>
+    <div id="cam-bar">
+      <div id="cam-grid"></div>
+      <button id="cam-close-btn" onclick="toggleCamView()">✕ CLOSE CAM</button>
+    </div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="hud-left">
+      <button class="hud-btn" id="btn-cam" onclick="toggleCamView()"><span class="hi">📷</span> CAM</button>
+    </div>
+    <div id="hud-center">
+      <div id="power-wrap">
+        <h4>⚡ POWER</h4>
+        <div id="pwr-bar"><div id="pwr-fill"></div></div>
+        <div id="pwr-txt">100%</div>
+      </div>
+      <div id="time-txt">12:00 AM</div>
+    </div>
+    <div id="hud-right">
+      <button class="hud-btn" id="btn-ldoor" onclick="toggleDoor('left')"><span class="hi">🚪</span> L-DOOR</button>
+      <button class="hud-btn" id="btn-llight" onmousedown="toggleLight('left',true)" onmouseup="toggleLight('left',false)" onmouseleave="toggleLight('left',false)"><span class="hi">💡</span> L-LIGHT</button>
+      <button class="hud-btn" id="btn-rdoor" onclick="toggleDoor('right')"><span class="hi">🚪</span> R-DOOR</button>
+      <button class="hud-btn" id="btn-rlight" onmousedown="toggleLight('right',true)" onmouseup="toggleLight('right',false)" onmouseleave="toggleLight('right',false)"><span class="hi">💡</span> R-LIGHT</button>
+    </div>
+  </div>
+</div>
+
+<!-- JUMPSCARE -->
+<div id="jumpscare">
+  <div id="js-flash"></div>
+  <div id="js-sprite"></div>
+  <div id="js-name"></div>
+</div>
+
+<!-- RESULT -->
+<div id="result-screen" class="screen">
+  <h1 id="res-title"></h1>
+  <p id="res-msg"></p>
+  <div id="res-nights"></div>
+  <div class="res-quote" id="res-quote"></div>
+  <button class="tbtn" onclick="backToTitle()" style="margin-top:15px">返回</button>
+</div>
+
+<script>
+// ===== ROOMS & CHARS =====
+const ROOMS=['Stage','Dining Area','Parts & Service','Backstage','Left Hall','Right Hall','Office'];
+const CHARS={
+  holly:{name:'Holly Callahan',alias:'Bonabi',icon:'💀🐰',color:'#9400d3',path:[2,1,4,6],startPos:2,aggression:3,moveInterval:5000,personality:'light-sensitive',active:true,pos:2,timer:0,quote:"I'm not crazy. I just haven't found them yet.",retreatOnLight:true,nightFormAfter:3,harmless:false},
+  trixie:{name:'Trixie Sherman',alias:'Vixen',icon:'🦊',color:'#e6194b',path:[0,1,5,6],startPos:0,aggression:4,moveInterval:4500,personality:'static-distortion',active:true,pos:0,timer:0,quote:'WHY WAS I MADE ONLY TO FALL APART LIKE THIS?',causesStatic:true,dualMind:true,harmless:false},
+  joshua:{name:'Joshua Woodside',alias:'Prototype Chuck',icon:'🐻',color:'#666',path:[3,1,4,5,6],startPos:3,aggression:5,moveInterval:4000,personality:'warning-charge',active:true,pos:3,timer:0,quote:"I couldn't save my family. I won't fail them again.",givesWarning:true,warningTime:2200,isMassive:true,harmless:false},
+  oscar:{name:'Oscar Woodside',alias:'Chuck E.',icon:'🐭',color:'#7a22c2',path:[0,1,2,3,4,5],startPos:0,aggression:2,moveInterval:3500,personality:'free-roamer',active:true,pos:0,timer:0,quote:"If we're all stuck here together... then we should at least try to smile.",harmless:true,signalsOthers:true},
+  victor:{name:'Victor Callahan',alias:'Fredbear',icon:'🐻',color:'#e6b800',path:[],startPos:-1,aggression:0,moveInterval:0,personality:'mediator-warning',active:true,pos:-1,timer:0,quote:"No need to be shy! I don't bite. Well... at least not anymore.",harmless:true,givesWarning:true,warningDoor:null}
+};
+
+let G={};
+let loopId;
+let intervals=[];
+
+function initG(night){
+  G={night,hour:0,hourTimer:0,hourDuration:65000,power:100,currentCam:0,camUp:false,
+    leftDoor:false,rightDoor:false,leftLight:false,rightLight:false,
+    gameOver:false,won:false,lastUpdate:0,usageLevel:1,
+    joshWarnActive:false,joshWarnTimer:0,joshAtDoor:null,
+    victorWarnDoor:null,victorTimer:0,
+    lightCount:0,viewDir:0};
+  for(const k of Object.keys(CHARS)){CHARS[k].pos=CHARS[k].startPos;CHARS[k].timer=0;CHARS[k].active=true;}
+  ['btn-ldoor','btn-rdoor','btn-llight','btn-rlight'].forEach(id=>document.getElementById(id).classList.remove('active','victor-warn'));
+  document.getElementById('left-door-vis').classList.remove('closed');
+  document.getElementById('right-door-vis').classList.remove('closed');
+  document.getElementById('door-light-vis-l').classList.remove('on');
+  document.getElementById('door-light-vis-r').classList.remove('on');
+}
+
+// ===== CAMERA MAP =====
+const camGrid=document.getElementById('cam-grid');
+ROOMS.forEach((r,i)=>{
+  const b=document.createElement('button');
+  b.className='cam-btn'+(i===0?' active':'');
+  b.dataset.cam=i;b.textContent=r;
+  b.onclick=()=>switchCam(i);
+  camGrid.appendChild(b);
+});
+
+// ===== CURSOR =====
+const cur=document.getElementById('cursor');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  if(!G.gameOver && !G.camUp) updateViewDir(e.clientX);
+});
+
+function updateViewDir(mx){
+  const w=window.innerWidth;
+  const pct=mx/w;
+  const ol=document.getElementById('office-left');
+  const oc=document.getElementById('office-center');
+  const or2=document.getElementById('office-right');
+  if(pct<0.33){ol.classList.add('look');oc.style.opacity='0';or2.classList.remove('look');G.viewDir=-1;}
+  else if(pct>0.66){ol.classList.remove('look');oc.style.opacity='0';or2.classList.add('look');G.viewDir=1;}
+  else{ol.classList.remove('look');oc.style.opacity='1';or2.classList.remove('look');G.viewDir=0;}
+}
+
+// ===== CAM VIEW =====
+function toggleCamView(){
+  G.camUp=!G.camUp;
+  const cv=document.getElementById('camera-view');
+  const btn=document.getElementById('btn-cam');
+  const ms=document.getElementById('monitor-screen');
+  if(G.camUp){
+    cv.classList.add('active');btn.classList.add('active');ms.classList.add('on');cur.classList.add('cam-mode');
+    switchCam(G.currentCam);
+  } else {
+    cv.classList.remove('active');btn.classList.remove('active');ms.classList.remove('on');cur.classList.remove('cam-mode');
+  }
+}
+
+function switchCam(idx){
+  G.currentCam=idx;
+  document.querySelectorAll('.cam-btn').forEach(b=>b.classList.remove('active'));
+  const b=document.querySelector(`.cam-btn[data-cam="${idx}"]`);
+  if(b)b.classList.add('active');
+  document.getElementById('cam-name').textContent=ROOMS[idx];
+  playClick();renderCamRoom(idx);
+}
+
+function renderCamRoom(idx){
+  const rm=document.getElementById('cam-room');rm.innerHTML='';
+  const sc=document.createElement('div');sc.className='cam-room';
+  switch(idx){
+    case 0:sc.innerHTML='<div class="cam-stage-platform"></div><div style="position:absolute;bottom:18%;left:33%;color:#111;font-size:14px;z-index:1">🐭</div><div style="position:absolute;bottom:19%;left:44%;color:#111;font-size:12px;z-index:1">🦊</div><div style="position:absolute;bottom:19%;left:54%;color:#111;font-size:12px;z-index:1">💀🐰</div><div class="cam-flicker" style="left:44%"><div class="cam-bulb"></div></div>';break;
+    case 1:sc.innerHTML='<div class="cam-table" style="bottom:35%"></div><div class="cam-table" style="bottom:58%"></div><div class="cam-chair" style="left:28%"></div><div class="cam-chair" style="left:38%"></div><div class="cam-chair" style="left:58%"></div><div class="cam-poster" style="top:15%;left:18%"></div><div class="cam-poster" style="top:15%;right:18%"></div><div class="cam-flicker" style="left:50%"><div class="cam-bulb" style="animation-delay:2s"></div></div>';break;
+    case 2:sc.innerHTML='<div class="cam-shelf" style="top:30%;left:18%"></div><div class="cam-shelf" style="top:50%;left:18%"></div><div class="cam-shelf" style="top:70%;left:18%"></div><div style="position:absolute;top:33%;left:22%;color:#111;font-size:16px;z-index:1">⚙</div><div style="position:absolute;top:53%;left:26%;color:#111;font-size:14px;z-index:1">⚙</div><div class="cam-flicker" style="left:50%"><div class="cam-bulb" style="animation-delay:.5s"></div></div>';break;
+    case 3:sc.innerHTML='<div class="cam-shelf" style="top:25%;left:15%"></div><div class="cam-shelf" style="top:45%;left:15%"></div><div style="position:absolute;top:30%;left:20%;color:#111;font-size:20px;z-index:1">🔧</div><div style="position:absolute;top:55%;left:25%;color:#111;font-size:16px;z-index:1">⚙</div><div class="cam-flicker" style="left:50%"><div class="cam-bulb" style="animation-delay:3s"></div></div>';break;
+    case 4:sc.innerHTML='<div class="cam-hallway-l"></div><div class="cam-flicker" style="left:50%"><div class="cam-bulb" style="animation-delay:1s"></div></div>';break;
+    case 5:sc.innerHTML='<div class="cam-hallway-r"></div><div class="cam-flicker" style="left:50%"><div class="cam-bulb" style="animation-delay:2.5s"></div></div>';break;
+    case 6:sc.innerHTML='<div class="cam-hallway-l"></div><div class="cam-hallway-r"></div><div style="position:absolute;bottom:28%;left:38%;width:24%;height:22%;background:#111;border-radius:3px;z-index:1"></div><div class="cam-flicker" style="left:50%"><div class="cam-bulb" style="animation-delay:4s"></div></div>';break;
+  }
+  rm.appendChild(sc);
+  updateCamAnimatronics(idx);
+}
+
+function updateCamAnimatronics(idx){
+  document.querySelectorAll('.cam-anim').forEach(e=>e.remove());
+  const rm=document.getElementById('cam-room');
+  for(const[k,c] of Object.entries(CHARS)){
+    if(!c.active||c.pos!==idx||c.pos===-1||k==='victor')continue;
+    const sp=document.createElement('div');sp.className='cam-anim vis';
+    if(k==='holly')sp.classList.add('holly');
+    else if(k==='trixie')sp.classList.add('trixie');
+    else if(k==='joshua')sp.classList.add('joshua');
+    else if(k==='oscar')sp.classList.add('oscar');
+    sp.textContent=c.icon;
+    if(k==='joshua'){sp.style.left='35%';sp.style.top='10%';}
+    else{sp.style.left=(25+Math.random()*40)+'%';sp.style.top=(18+Math.random()*35)+'%';}
+    if(distToOffice(c)<=1&&k!=='oscar')sp.classList.add('close-anim');
+    rm.appendChild(sp);
+  }
+  updateCamWarnings();
+}
+
+function updateCamWarnings(){
+  document.querySelectorAll('.cam-btn').forEach(b=>b.classList.remove('danger'));
+  for(const[k,c] of Object.entries(CHARS)){
+    if(!c.active||c.pos===6||c.pos===-1||c.harmless)continue;
+    const b=document.querySelector(`.cam-btn[data-cam="${c.pos}"]`);
+    if(b)b.classList.add('danger');
+  }
+}
+
+function distToOffice(c){
+  const pi=c.path.indexOf(c.pos);if(pi===-1)return 999;
+  for(let i=pi+1;i<c.path.length;i++)if(c.path[i]===6)return i-pi;
+  return 999;
+}
+
+// ===== HALLWAY ANIMATRONICS (office view) =====
+function updateHallAnims(){
+  const al=document.getElementById('hall-anim-left');
+  const ar=document.getElementById('hall-anim-right');
+  al.innerHTML='';al.classList.remove('vis');
+  ar.innerHTML='';ar.classList.remove('vis');
+  for(const[k,c] of Object.entries(CHARS)){
+    if(!c.active||c.harmless||c.pos===-1)continue;
+    if(c.pos===4){
+      al.textContent=c.icon;al.classList.add('vis');
+      al.style.filter=k==='holly'?'hue-rotate(270deg) brightness(.3) contrast(1.8)':k==='trixie'?'hue-rotate(-30deg) brightness(.4) contrast(2)':'brightness(.2) contrast(2)';
+      al.style.fontSize=k==='joshua'?'70px':'50px';
+    }
+    if(c.pos===5){
+      ar.textContent=c.icon;ar.classList.add('vis');
+      ar.style.filter=k==='holly'?'hue-rotate(270deg) brightness(.3) contrast(1.8)':k==='trixie'?'hue-rotate(-30deg) brightness(.4) contrast(2)':'brightness(.2) contrast(2)';
+      ar.style.fontSize=k==='joshua'?'70px':'50px';
+    }
+  }
+}
+
+// ===== DOORS & LIGHTS =====
+function toggleDoor(side){
+  if(G.power<=0)return;
+  if(side==='left'){
+    G.leftDoor=!G.leftDoor;
+    document.getElementById('btn-ldoor').classList.toggle('active');
+    document.getElementById('left-door-vis').classList.toggle('closed');
+  } else {
+    G.rightDoor=!G.rightDoor;
+    document.getElementById('btn-rdoor').classList.toggle('active');
+    document.getElementById('right-door-vis').classList.toggle('closed');
+  }
+  playDoor();
+}
+
+function toggleLight(side,on){
+  if(G.power<=0)return;
+  if(side==='left'){
+    G.leftLight=on;
+    document.getElementById('btn-llight').classList.toggle('active',on);
+    document.getElementById('door-light-vis-l').classList.toggle('on',on);
+    if(on){G.lightCount++;if(CHARS.holly.pos===4){CHARS.holly.pos=CHARS.holly.path[Math.max(0,CHARS.holly.path.indexOf(4)-1)];playClick();}}
+  } else {
+    G.rightLight=on;
+    document.getElementById('btn-rlight').classList.toggle('active',on);
+    document.getElementById('door-light-vis-r').classList.toggle('on',on);
+    if(on){G.lightCount++;if(CHARS.trixie.pos===5){CHARS.trixie.pos=CHARS.trixie.path[Math.max(0,CHARS.trixie.path.indexOf(5)-1)];playClick();}}
+  }
+}
+
+// ===== ANIMATRONIC AI =====
+function updateAnims(delta){
+  const nm=1+(G.night-1)*0.18;
+  const hm=1+G.hour*0.14;
+  for(const[k,c] of Object.entries(CHARS)){
+    if(c.harmless||c.pos===-1||!c.active)continue;
+    c.timer+=delta;
+    let iv=c.moveInterval/(nm*hm);
+    if(c.personality==='light-sensitive'&&G.hour>=c.nightFormAfter)iv*=0.6;
+    if(c.timer>=iv){c.timer=0;moveChar(k);}
+  }
+  updateVictor(delta);
+};
+// ===== MOVE CHAR =====
+function moveChar(k){
+  const c=CHARS[k];
+  const pi=c.path.indexOf(c.pos);
+  if(pi===-1||pi>=c.path.length-1)return;
+  const next=c.path[pi+1];
+  // Holly retreats from light
+  if(c.personality==='light-sensitive'&&c.retreatOnLight&&next===6&&(G.leftDoor||G.rightDoor)){
+    c.pos=c.path[Math.max(0,pi-1)];return;
+  }
+  // Joshua blocked by door
+  if(c.personality==='warning-charge'&&next===6){
+    const doorSide=(c.path[pi]===4)?'left':'right';
+    if(G[doorSide+'Door']){c.pos=c.path[Math.max(0,pi-1)];return;}
+  }
+
+  const roll=Math.random()*15;
+  if(roll<c.aggression){
+    c.pos=next;
+    if(next===6){
+      if(c.personality==='warning-charge'&&c.givesWarning){
+        G.joshAtDoor=(c.path[pi]===4)?'left':'right';
+        G.joshWarnActive=true;G.joshWarnTimer=c.warningTime;
+        document.getElementById('josh-warn').classList.add('active');
+        playWarn();
+      } else {
+        triggerJumpscare(k);
+      }
+    }
+  } else {
+    if(c.dualMind&&Math.random()<0.2){
+      c.pos=c.path[Math.max(0,pi-1)];
+    }
+  }
+  // Oscar signals others
+  if(k==='oscar'&&c.signalsOthers){
+    for(const[k2,c2] of Object.entries(CHARS)){
+      if(c2.harmless||!c2.active)continue;
+      const cpi=c2.path.indexOf(c2.pos);if(cpi===-1)continue;
+      for(let i=cpi+1;i<c2.path.length;i++){
+        if(c2.path[i]===c.pos){if(Math.random()<0.25){c2.pos=c.pos;if(c.pos===6)triggerJumpscare(k2);}break;}
+      }
+    }
+  }
+}
+
+function updateVictor(delta){
+  const v=CHARS.victor;v.timer+=delta;
+  if(v.timer>=7000){
+    v.timer=0;
+    if(v.pos===-1&&Math.random()<0.4){
+      const door=Math.random()<0.5?'left':'right';
+      v.pos=6;v.warningDoor=door;
+      const btnId=door==='left'?'btn-ldoor':'btn-rdoor';
+      document.getElementById(btnId).classList.add('victor-warn');
+      const vm=document.getElementById('victor-msg');
+      vm.textContent=['"Someone is coming..."','"Be careful at the door."','"I can feel them nearby."','"They\'re closer than you think."','"Watch the door."'][Math.floor(Math.random()*5)];
+      vm.classList.add('active');
+      playVictor();
+      setTimeout(()=>{
+        if(v.pos===6){v.pos=-1;v.warningDoor=null;document.getElementById(btnId).classList.remove('victor-warn');vm.classList.remove('active');}
+      },4000+Math.random()*2000);
+    }
+  }
+}
+
+// ===== JOSHUA WARNING =====
+function updateJoshWarn(delta){
+  if(!G.joshWarnActive)return;
+  G.joshWarnTimer-=delta;
+  const d=G.joshAtDoor;
+  if((d==='left'&&G.leftDoor)||(d==='right'&&G.rightDoor)){
+    G.joshWarnActive=false;document.getElementById('josh-warn').classList.remove('active');
+    CHARS.joshua.pos=CHARS.joshua.path[Math.max(0,CHARS.joshua.path.indexOf(6)-2)];
+    playClick();return;
+  }
+  if(G.joshWarnTimer<=0){
+    G.joshWarnActive=false;document.getElementById('josh-warn').classList.remove('active');
+    triggerJumpscare('joshua');
+  }
+}
+
+// ===== POWER =====
+function updatePower(delta){
+  let drain=0.08,usage=1;
+  if(G.leftDoor){drain+=0.1;usage++;}
+  if(G.rightDoor){drain+=0.1;usage++;}
+  if(G.leftLight){drain+=0.04;usage++;}
+  if(G.rightLight){drain+=0.04;usage++;}
+  if(G.camUp){drain+=0.04;usage++;}
+  G.power-=drain*(delta/1000)*(1+G.night*0.1);
+  G.usageLevel=usage;
+  if(G.power<=0){G.power=0;powerOut();}
+  const f=document.getElementById('pwr-fill');
+  f.style.width=G.power+'%';f.classList.remove('low','crit');
+  if(G.power<20)f.classList.add('crit');else if(G.power<50)f.classList.add('low');
+  document.getElementById('pwr-txt').textContent=Math.ceil(G.power)+'%';
+}
+
+function powerOut(){
+  G.leftDoor=false;G.rightDoor=false;G.camUp=false;
+  document.getElementById('camera-view').classList.remove('active');
+  document.getElementById('btn-cam').classList.remove('active');
+  document.getElementById('btn-ldoor').classList.remove('active');
+  document.getElementById('btn-rdoor').classList.remove('active');
+  document.getElementById('left-door-vis').classList.remove('closed');
+  document.getElementById('right-door-vis').classList.remove('closed');
+  setTimeout(()=>{
+    const keys=Object.keys(CHARS).filter(k=>!CHARS[k].harmless&&CHARS[k].active);
+    for(const k of keys){if(CHARS[k].pos===6){triggerJumpscare(k);return;}}
+    const c=keys.reduce((a,b)=>distToOffice(CHARS[a])<distToOffice(CHARS[b])?a:b);
+    CHARS[c].pos=6;triggerJumpscare(c);
+  },2500+Math.random()*3500);
+}
+
+// ===== TIME =====
+function updateTime(delta){
+  G.hourTimer+=delta;
+  if(G.hourTimer>=G.hourDuration){G.hourTimer=0;G.hour++;if(G.hour>=6){winGame();return;}}
+  const dh=G.hour===0?12:G.hour;
+  document.getElementById('time-txt').textContent=dh+':00 AM';
+}
+
+// ===== TRIXIE STATIC =====
+function updateTrixieStatic(){
+  const el=document.getElementById('trixie-static');
+  if(CHARS.trixie.pos===G.currentCam&&G.camUp){el.classList.add('active');drawTrixieNoise();}
+  else el.classList.remove('active');
+}
+
+// ===== JUMPSCARE =====
+function triggerJumpscare(k){
+  if(G.gameOver)return;G.gameOver=true;
+  const c=CHARS[k];
+  document.getElementById('js-sprite').textContent=c.icon;
+  const nm=document.getElementById('js-name');nm.textContent=c.name;
+  nm.className='';nm.classList.add(k);
+  document.getElementById('jumpscare').classList.add('active');
+  playScream();playNoise(.8,.45);
+  setTimeout(()=>{document.getElementById('jumpscare').classList.remove('active');showResult(false,k);},1600);
+}
+
+function showResult(won,k){
+  switchScreen('result-screen');
+  const t=document.getElementById('res-title'),m=document.getElementById('res-msg'),n=document.getElementById('res-nights'),q=document.getElementById('res-quote');
+  if(won){t.textContent='6:00 AM';t.className='win';m.textContent='你存活了整晚... 但明天還得繼續值班。';q.textContent='"'+CHARS.victor.quote+'"';}
+  else{t.textContent='GAME OVER';t.className='lose';m.textContent=CHARS[k].name+' ('+CHARS[k].alias+') 找到了你...';q.textContent='"'+CHARS[k].quote+'"';}
+  n.textContent='Night '+G.night+' | 存活: '+G.hour+'/6 小時';
+}
+function winGame(){G.won=true;G.gameOver=true;playNoise(1.5,.03);setTimeout(()=>showResult(true),500);}
+function switchScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function backToTitle(){cancelAnimationFrame(loopId);clearIntervals();switchScreen('title-screen');}
+
+// ===== AUDIO =====
+let ac;
+function initAudio(){if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();}
+function playNoise(dur,vol){
+  if(!ac)return;const sz=ac.sampleRate*dur;const buf=ac.createBuffer(1,sz,ac.sampleRate);const d=buf.getChannelData(0);
+  for(let i=0;i<sz;i++)d[i]=(Math.random()*2-1)*.3;
+  const s=ac.createBufferSource();s.buffer=buf;const g=ac.createGain();g.gain.setValueAtTime(vol,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
+  s.connect(g);g.connect(ac.destination);s.start();
+}
+function playAmbient(){if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=50;g.gain.value=.02;o.connect(g);g.connect(ac.destination);o.start();}
+function playScream(){if(!ac)return;const o=ac.createOscillator(),o2=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=900;o.frequency.exponentialRampToValueAtTime(180,ac.currentTime+.6);o2.type='square';o2.frequency.value=450;o2.frequency.exponentialRampToValueAtTime(90,ac.currentTime+.6);g.gain.setValueAtTime(.45,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.9);o.connect(g);o2.connect(g);g.connect(ac.destination);o.start();o2.start();o.stop(ac.currentTime+.9);o2.stop(ac.currentTime+.9);}
+function playDoor(){if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=75;g.gain.setValueAtTime(.15,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.1);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.1);}
+function playClick(){playNoise(.03,.06);}
+function playWarn(){if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.setValueAtTime(220,ac.currentTime);o.frequency.setValueAtTime(330,ac.currentTime+.15);o.frequency.setValueAtTime(220,ac.currentTime+.3);g.gain.setValueAtTime(.12,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.4);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.4);}
+function playVictor(){if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=110;g.gain.setValueAtTime(0,ac.currentTime);g.gain.linearRampToValueAtTime(.05,ac.currentTime+.5);g.gain.linearRampToValueAtTime(0,ac.currentTime+1.5);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+1.5);}
+function playHeart(){if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=40;g.gain.setValueAtTime(.1,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.1);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.1);}
+
+// ===== STATIC NOISE =====
+const nCvs=document.createElement('canvas');const nCtx=nCvs.getContext('2d');
+function drawCamStatic(){
+  const ov=document.getElementById('cam-static');
+  if(!G.camUp){ov.style.opacity='.04';return;}
+  const w=ov.offsetWidth||800,h=ov.offsetHeight||400;
+  if(nCvs.width!==w||nCvs.height!==h){nCvs.width=w;nCvs.height=h;}
+  const id=nCtx.createImageData(w,h);const d=id.data;
+  for(let i=0;i<d.length;i+=4){const v=Math.random()*255;d[i]=v;d[i+1]=v;d[i+2]=v;d[i+3]=CHARS.trixie.pos===G.currentCam?35:10;}
+  nCtx.putImageData(id,0,0);
+  ov.style.backgroundImage=`url(${nCvs.toDataURL()})`;ov.style.backgroundSize='100% 100%';
+}
+
+const tCvs=document.getElementById('trix-cvs');const tCtx=tCvs.getContext('2d');
+function drawTrixieNoise(){
+  const w=tCvs.parentElement.offsetWidth||800;const h=tCvs.parentElement.offsetHeight||400;
+  tCvs.width=w;tCvs.height=h;
+  const id=tCtx.createImageData(w,h);const d=id.data;
+  for(let i=0;i<d.length;i+=20){for(let j=0;j<20&&i+j<d.length;j+=4){d[i+j]=230;d[i+j+1]=25;d[i+j+2]=75;d[i+j+3]=Math.random()*60;}}
+  tCtx.putImageData(id,0,0);
+}
+
+// ===== GAME LOOP =====
+function loopFn(ts){
+  if(G.gameOver){cancelAnimationFrame(loopId);return;}
+  const delta=ts-G.lastUpdate;G.lastUpdate=ts;
+  if(delta>0&&delta<1000){
+    updateTime(delta);updatePower(delta);updateAnims(delta);
+    updateJoshWarn(delta);updateHallAnims();
+    if(G.camUp){updateCamAnimatronics(G.currentCam);updateTrixieStatic();}
+  }
+  loopId=requestAnimationFrame(loopFn);
+}
+
+function clearIntervals(){intervals.forEach(id=>clearInterval(id));intervals=[];}
+
+function startAmbient(){
+  intervals.push(setInterval(()=>{if(G.gameOver)return;if(Math.random()<.06){document.getElementById('viewport').classList.add('flicker');setTimeout(()=>document.getElementById('viewport').classList.remove('flicker'),40);}},3500));
+  intervals.push(setInterval(()=>{if(G.gameOver)return;drawCamStatic();},250));
+  intervals.push(setInterval(()=>{if(G.gameOver)return;if(G.power<40)playHeart();},1800));
+}
+
+// ===== START =====
+function startGame(night){
+  initAudio();initG(night);
+  document.getElementById('t-night').textContent='Night '+night;
+  switchScreen('game-screen');
+  document.getElementById('start-trans').classList.add('active');
+  setTimeout(()=>{
+    document.getElementById('start-trans').classList.remove('active');
+    G.lastUpdate=performance.now();
+    loopId=requestAnimationFrame(loopFn);
+    playAmbient();startAmbient();
+  },2500);
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown',e=>{
+  if(G.gameOver)return;
+  if(e.key==='Tab'){e.preventDefault();toggleCamView();}
+  if(!G.camUp){
+    if(e.key==='1')toggleDoor('left');
+    if(e.key==='2')toggleDoor('right');
+    if(e.key==='q'||e.key==='Q')toggleDoor('left');
+    if(e.key==='e'||e.key==='E')toggleDoor('right');
+    if(e.key==='a'||e.key==='A')toggleLight('left',true);
+    if(e.key==='d'||e.key==='D')toggleLight('right',true);
+  } else {
+    const n=parseInt(e.key);if(n>=1&&n<=7)switchCam(n-1);
+  }
+});
+document.addEventListener('keyup',e=>{
+  if(e.key==='a'||e.key==='A')toggleLight('left',false);
+  if(e.key==='d'||e.key==='D')toggleLight('right',false);
+});
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ let globalBGM = null, audioCtx = null;
 function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 function playSound(type, freq, vol, duration) {
     try {
+        if (localStorage.getItem('fnf_sfx_enabled') === 'off') return;
         initAudio(); let now = audioCtx.currentTime;
         let osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
         osc.type = type; osc.frequency.setValueAtTime(freq, now);
@@ -89,9 +90,80 @@ document.addEventListener("DOMContentLoaded", () => {
     let path = window.location.pathname.toLowerCase();
     if (path.includes("dead.html")) {
         try {
-            globalBGM = new Audio('bgm.mp3'); globalBGM.loop = true; globalBGM.volume = 0.3;
+            globalBGM = new Audio('bgm.mp3'); globalBGM.loop = true;
+            const savedVol = localStorage.getItem('fnf_music_volume');
+            globalBGM.volume = savedVol !== null ? parseInt(savedVol, 10) / 100 : 0.3;
             let start = () => { if (localStorage.getItem("terminalMusicSetting") !== "OFF" && globalBGM) globalBGM.play().then(() => { document.removeEventListener('click', start); document.removeEventListener('mouseenter', start); }).catch(()=>{}); };
             document.addEventListener('click', start); document.addEventListener('mouseenter', start);
+        } catch(err) {}
+    }
+    if (path.includes("index.html")) {
+        try {
+            const savedVol = localStorage.getItem('fnf_music_volume');
+            const vol = savedVol !== null ? parseInt(savedVol, 10) / 100 : 0.3;
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const master = ctx.createGain();
+            master.gain.value = vol * 0.4;
+            master.connect(ctx.destination);
+            function startIndexBGM(){
+                if (ctx.state === 'suspended') ctx.resume();
+                if (localStorage.getItem("terminalMusicSetting") === "OFF") return;
+                // deep drone
+                const drone = ctx.createOscillator();
+                drone.type = 'sine';
+                drone.frequency.value = 55;
+                const droneGain = ctx.createGain();
+                droneGain.gain.value = 0.3;
+                drone.connect(droneGain);
+                droneGain.connect(master);
+                drone.start();
+                // second drone, detuned
+                const drone2 = ctx.createOscillator();
+                drone2.type = 'sine';
+                drone2.frequency.value = 55.3;
+                const drone2Gain = ctx.createGain();
+                drone2Gain.gain.value = 0.2;
+                drone2.connect(drone2Gain);
+                drone2Gain.connect(master);
+                drone2.start();
+                // slow LFO on volume for pulsing
+                const lfo = ctx.createOscillator();
+                lfo.type = 'sine';
+                lfo.frequency.value = 0.08;
+                const lfoGain = ctx.createGain();
+                lfoGain.gain.value = 0.08;
+                lfo.connect(lfoGain);
+                lfoGain.connect(droneGain.gain);
+                lfoGain.connect(drone2Gain.gain);
+                lfo.start();
+                // high eerie tone
+                const eerie = ctx.createOscillator();
+                eerie.type = 'triangle';
+                eerie.frequency.value = 880;
+                const eerieGain = ctx.createGain();
+                eerieGain.gain.value = 0.015;
+                const eerieFilter = ctx.createBiquadFilter();
+                eerieFilter.type = 'bandpass';
+                eerieFilter.frequency.value = 900;
+                eerieFilter.Q.value = 20;
+                eerie.connect(eerieFilter);
+                eerieFilter.connect(eerieGain);
+                eerieGain.connect(master);
+                eerie.start();
+                // slow pitch drift on eerie
+                const drift = ctx.createOscillator();
+                drift.type = 'sine';
+                drift.frequency.value = 0.03;
+                const driftGain = ctx.createGain();
+                driftGain.gain.value = 15;
+                drift.connect(driftGain);
+                driftGain.connect(eerie.frequency);
+                drift.start();
+                globalBGM = { pause(){try{ctx.suspend();}catch(e){}}, play(){try{ctx.resume();}catch(e){}}, volume:v,set volume(v){master.gain.value=v*0.4;} };
+            }
+            let idxStart = () => { if (localStorage.getItem("terminalMusicSetting") !== "OFF") { startIndexBGM(); document.removeEventListener('click', idxStart); document.removeEventListener('mouseenter', idxStart); } };
+            document.addEventListener('click', idxStart);
+            document.addEventListener('mouseenter', idxStart);
         } catch(err) {}
     }
 });
@@ -137,7 +209,7 @@ function fnfNavigate(btn, url) {
             document.body.classList.remove("fade-in");
             document.body.classList.add("fade-out");
         } 
-        setTimeout(() => window.location.href = (url === "index.html" || url === "lobby.html") ? "lobby.html" : url, 450); 
+setTimeout(() => window.location.href = (url === "index.html") ? "index.html" : (url === "lobby.html") ? "lobby.html" : url, 450);
     }, 550);
 }
 
@@ -150,7 +222,7 @@ function fadeTo(url) {
         document.body.classList.remove("fade-in");
         document.body.classList.add("fade-out");
     }
-    setTimeout(() => window.location.href = (url === "index.html" || url === "lobby.html") ? "lobby.html" : url, 450);
+    setTimeout(() => window.location.href = url, 450);
 }
 
 // 5. 🔒 全站安全性防護 (防右鍵、防 F12)

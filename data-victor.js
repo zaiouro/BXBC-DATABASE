@@ -3,7 +3,7 @@
 // ==========================================================================
 const currentCharacterData = { 
     name: "Victor Callahan", 
-    titleColor: "#e6b800", // 代表金色黃金 Fredbear 的暗金色
+    titleColor: "#e6b800",
     alias: "Fredbear", 
     gender: "Male", 
     age: "18", 
@@ -12,29 +12,31 @@ const currentCharacterData = {
     status: "Animatronic (Possessed)", 
     pfp: "pfp/pfp5.png", 
     quote: "No need to be shy! I don't bite. Well... at least not anymore.",
+    credit: "@halbebibelganzerhuso",
+    roleTier: "Entertainer",
+    threatLevel: "MEDIUM",
+    deathAnim: "crush",
     
     purpose: "• Maintain peace and resolve conflicts.\n• Protect children and those under his care.\n• Preserve hope, even when he no longer fully believes in it himself.",
     
-    bg: "<strong>[ 1983 ]</strong>\nVictor worked as a performer inside the Fredbear springlock suit. His cheerful personality, patience, and kindness quickly made him beloved by both children and staff. Among those closest to him was his six-year-old sister, Holly, whom he cared for deeply.\n\nDespite his maturity, Victor could be naive and overly trusting. One day, while playfully interacting with Holly at the pizzeria, she accidentally triggered the springlock mechanisms inside his suit. The internal components collapsed, fatally injuring him. His death was sudden and traumatic, leaving Holly burdened with guilt that Victor himself never shared.\n\n<strong>[ 1983-2000 ]</strong>\nAfter possessing the Fredbear suit, Victor continued performing as he always had. Rather than seeking revenge or dwelling on his death, he devoted himself to protecting children and creating a sense of safety for those around him.\n\nAs the years passed, however, he became increasingly withdrawn during the night. Although he rarely speaks about his death, the memories continue to haunt him. He questions whether avoiding conflict truly protects others, or simply allows suffering to continue.",
+    bg: "He was eighteen, performing in the Fredbear suit at his sister's birthday party. Holly was six and wanted to see how the suit worked. She pulled a lever she wasn't supposed to touch. The springlocks collapsed.\n\nHe bled out inside the mascot head while children sang happy birthday on the other side of the curtain. He never blamed her. Not once. Not even now.\n\nAfter possessing the Fredbear suit, he kept performing. He told terrible jokes. He made children laugh. He refused to become what killed him.\n\nBut as the years passed, he retreated deeper into himself. At night he hides in the basement — the only place where he doesn't have to pretend. He still smiles when he's angry. He still sounds cheerful when he's warning you. That's the worst part about Victor: you can never tell when he's in pain.",
     
-    pers: "<strong>[ Day Form ]</strong>\nPacifistic, caring, and thoughtful. Somewhat naive but extremely optimistic. Acts as a father figure to others and uses humor to make people feel comfortable.\n\n<strong>[ Night Form ]</strong>\nSelf-aware and introspective. Quiet and reserved. Retains an unnatural optimism even in serious situations, while concealing most of his true feelings and avoiding discussions about his past.",
+    pers: "<strong>[ Day Form ]</strong>\nPacifistic, warm, the kind of person who makes terrible jokes to make children feel brave. He acts like a father figure to everyone, even though he was only eighteen when he died.\n\n<strong>[ Night Form ]\strong>\nSelf-aware and quiet. He knows what he is. He knows what happened. He keeps smiling anyway. He avoids talking about his death the way other people avoid eye contact — carefully, deliberately, with a joke ready if anyone gets too close.",
     
-    likes: "• Making terrible jokes\n• Peaceful days\n• Entertaining others\n• Protecting children\n• Acting as a caretaker and mediator", 
+    likes: "• Terrible jokes\n• Peaceful days\n• Protecting children\n• Mediating fights\n• The basement — the only place where he can be himself",
     
-    dislikes: "• Revenge and unnecessary violence\n• Being pressured to abandon his optimism\n• Discussions about his death\n• Seeing others suffer\n• Conflict and hostility", 
+    dislikes: "• Revenge and unnecessary violence\n• People who pressure him to drop the act\n• Being asked about his death\n• Conflict\n• Watching people suffer",
     
-    rel: "<strong>Holly Callahan:</strong> Although Holly accidentally caused his death, Victor has never blamed her. He continues to care deeply for her and attempts to guide her away from revenge and hatred, unaware that she now exists as Bonabi.\n\n<strong>Cassidy:</strong> A child Victor once cared for. While Cassidy's fate remains uncertain, Victor occasionally behaves as though he senses another presence nearby.",
+    rel: "<strong>Holly Callahan:</strong> His little sister. She killed him by accident when she was six. He has never blamed her. He spends his nights trying to guide her away from revenge, not because he's angry, but because he doesn't want her to become what Afton made her.\n\n<strong>Cassidy:</strong> A child he once cared for. He occasionally behaves as though he senses another presence nearby, though he never speaks about it.",
     
-    // 將「Insecurities & Fears」、「Behavior Patterns」與「Notes」整合到終端機底部的 Intel Notes
     notes: [
-        "Insecurity - Cowardice: Victor avoids conflict whenever possible, fearing that confrontation will destroy the fragile peace he works so hard to maintain.",
-        "Insecurity - Lack of Control: He struggles with the reality that he cannot protect everyone. Whenever someone suffers, he quietly blames himself.",
-        "Day Behavior: Performs for guests, tells terrible jokes, and observes people with genuine curiosity, appearing approachable and carefree.",
-        "Night Behavior: Protects humans from harm, delivers warnings without dropping his cheerful demeanor, and retreats to the basement when alone to reflect in silence.",
-        "Victor has poor long-distance vision but notices small details up close.",
-        "The basement is the only place where he feels comfortable being himself.",
-        "His optimism is genuine, but it also serves as a defense mechanism against his own trauma.",
-        "When angered, he remains calm and cheerful, making his behavior feel unnatural and unsettling.",
-        "Despite everything he has endured, he still believes that protecting others is worth the pain."
+        "He avoids conflict. Not because he's afraid — because he believes peace is the only thing worth protecting.",
+        "He can't save everyone. He knows this. It eats at him quietly, every single night.",
+        "During the day, he performs for guests and tells terrible jokes. He seems carefree. He isn't.",
+        "At night, he guards humans from harm while keeping his cheerful voice. He retreats to the basement when he's alone.",
+        "He has poor long-distance vision but notices small details up close.",
+        "His optimism is real. It's also a wall.",
+        "When he's angry, he smiles. It's the most unsettling thing about him.",
+        "He still believes protecting others is worth the pain. He's not sure how much longer that will be true."
     ]
 };

@@ -3,23 +3,22 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>LOBBY</title><link rel="stylesheet" href="theme.css">
 <style>
-.lobby-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:calc(100vh - 100px);height:calc(100dvh - 100px);max-width:800px;margin-top:40px;border:1px solid #b37446;background:rgba(12,8,5,0.95);padding:40px;text-align:center;position:relative;overflow:hidden;animation:breathe 5s infinite;box-sizing:border-box}
-body{opacity:0;background:#0c0805;transition:opacity 0.45s cubic-bezier(0.16,1,0.3,1)!important}
+.lobby-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:calc(100vh - 100px);height:calc(100dvh - 100px);max-width:800px;margin-top:40px;border:1px solid #8b1a1a;background:rgba(5,2,2,0.97);padding:40px;text-align:center;position:relative;overflow:hidden;animation:breathe 5s infinite;box-sizing:border-box}
+body{opacity:0;background:#050204;transition:opacity 0.45s cubic-bezier(0.16,1,0.3,1)!important;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .lobby-header-group{position:absolute;top:40px;left:50%;transform:translateX(-50%);width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;opacity:1;transition:opacity 0.4s cubic-bezier(0.16,1,0.3,1),transform 0.4s cubic-bezier(0.16,1,0.3,1)}
 .lobby-header-group.fnf-hide{opacity:0!important;transform:translate(-50%,-20px) scale(0.95)!important}
-.lobby-title{font-size:32px;color:#b37446;margin:0;letter-spacing:4px;width:100%;display:block}
+.lobby-title{font-size:32px;color:#8b1a1a;margin:0;letter-spacing:4px;width:100%;display:block;text-shadow:0 0 20px rgba(139,26,26,0.4)}
 .directory-box{display:flex;flex-direction:column;gap:15px;width:100%;max-width:500px;margin:0 auto;position:relative}
-.dir-btn{display:flex;align-items:center;justify-content:center;width:100%;background:transparent;padding:22px 16px;font-size:20px;font-weight:700;letter-spacing:3px;border:1px solid #b37446;color:#b37446;text-transform:uppercase;text-decoration:none;transform-origin:center center;transition:transform 0.45s cubic-bezier(0.16,1,0.3,1),opacity 0.3s,background 0.2s,box-shadow 0.2s,border-color 0.2s,color .2s}
-.dir-btn:not(.lock-btn):hover{background:#b37446;color:#0c0805;box-shadow:0 0 20px rgba(179,116,70,0.4);transform:scale(1.04)}
-/* 🛠️ 修正：移除原本 not 選擇器的 !important 衝突，讓 lock-btn 能夠正確套用您截圖中神祕的暗棕色鎖死狀態 */
-.dir-btn:not(.lock-btn){border-color:#b37446;color:#b37446;opacity:1}
-.dir-btn.lock-btn{border-color:rgba(179,116,70,0.2)!important;color:rgba(179,116,70,0.25)!important;cursor:default!important;pointer-events:none!important}
-.dir-btn.lock-btn:hover{background:transparent!important;color:rgba(179,116,70,0.25)!important;box-shadow:none!important;transform:none!important}
+.dir-btn{display:flex;align-items:center;justify-content:center;width:100%;background:transparent;padding:22px 16px;font-size:20px;font-weight:700;letter-spacing:3px;border:1px solid #8b1a1a;color:#8b1a1a;text-transform:uppercase;text-decoration:none;transform-origin:center center;transition:transform 0.45s cubic-bezier(0.16,1,0.3,1),opacity 0.3s,background 0.2s,box-shadow 0.2s,border-color 0.2s,color .2s}
+.dir-btn:not(.lock-btn):hover{background:#8b1a1a;color:#c4a080;box-shadow:0 0 20px rgba(139,26,26,0.4);transform:scale(1.04)}
+.dir-btn:not(.lock-btn){border-color:#8b1a1a;color:#8b1a1a;opacity:1}
+.dir-btn.lock-btn{border-color:rgba(139,26,26,0.2)!important;color:rgba(139,26,26,0.25)!important;cursor:default!important;pointer-events:none!important}
+.dir-btn.lock-btn:hover{background:transparent!important;color:rgba(139,26,26,0.25)!important;box-shadow:none!important;transform:none!important}
 .dir-btn.fnf-fade-out,.lock-system-btn.fnf-hide{opacity:0!important;transform:scale(0.85)!important;pointer-events:none!important}
 .directory-box .dir-btn.fnf-fade-out{opacity:0!important;filter:brightness(0)!important;transform:scale(0.85)!important}
-.dir-btn.fnf-selected{pointer-events:none;z-index:99;background:#b37446!important;color:#0c0805!important;box-shadow:0 0 25px rgba(179,116,70,0.6)!important}
-.lock-system-btn{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);background:transparent;border:1px solid #b37446;color:#b37446;padding:8px 18px;font-size:13px;font-family:"Times New Roman",serif!important;letter-spacing:2px;text-decoration:none;text-transform:uppercase;z-index:10;opacity:1;transition:opacity 0.4s cubic-bezier(0.16,1,0.3,1),transform 0.4s cubic-bezier(0.16,1,0.3,1),background 0.2s,color 0.2s}
-.lock-system-btn:hover{background:#b37446;color:#0c0805;box-shadow:0 0 15px rgba(179,116,70,0.3)}
+.dir-btn.fnf-selected{pointer-events:none;z-index:99;background:#8b1a1a!important;color:#c4a080!important;box-shadow:0 0 25px rgba(139,26,26,0.6)!important}
+.lock-system-btn{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);background:transparent;border:1px solid #8b1a1a;color:#8b1a1a;padding:8px 18px;font-size:13px;font-family:"Times New Roman",serif!important;letter-spacing:2px;text-decoration:none;text-transform:uppercase;z-index:10;opacity:1;transition:opacity 0.4s cubic-bezier(0.16,1,0.3,1),transform 0.4s cubic-bezier(0.16,1,0.3,1),background 0.2s,color 0.2s}
+.lock-system-btn:hover{background:#8b1a1a;color:#c4a080;box-shadow:0 0 15px rgba(139,26,26,0.3)}
 .lock-system-btn.fnf-hide{opacity:0!important;transform:translate(-50%,20px) scale(0.95)!important}
 
 /* ===== 手機版適配 ===== */
@@ -52,6 +51,8 @@ body{opacity:0;background:#0c0805;transition:opacity 0.45s cubic-bezier(0.16,1,0
         font-size:12px;
         padding:8px 14px;
         letter-spacing:1.5px;
+        border-color:#8b1a1a;
+        color:#8b1a1a;
     }
 }
 
@@ -66,31 +67,50 @@ body{opacity:0;background:#0c0805;transition:opacity 0.45s cubic-bezier(0.16,1,0
     }
 }
 
+/* CRT scanlines */
+.crt-scanlines{position:fixed;inset:0;pointer-events:none;z-index:100;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.12) 2px,rgba(0,0,0,0.12) 4px);animation:scanScroll 8s linear infinite}
+@keyframes scanScroll{0%{background-position:0 0}100%{background-position:0 100px}}
+
+/* Dark vignette */
+.dark-vignette{position:fixed;inset:0;pointer-events:none;z-index:99;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.75) 100%)}
+
+/* Floating ash particles */
+.ash{position:fixed;bottom:-10px;background:#8b1a1a;border-radius:50%;box-shadow:0 0 6px 2px rgba(139,26,26,0.7);opacity:0;pointer-events:none;z-index:10;animation:ashRise linear infinite}
+@keyframes ashRise{0%{transform:translateY(0) translateX(0) scale(0.6);opacity:0}10%{opacity:0.5}50%{transform:translateY(-50vh) translateX(12px) scale(1);opacity:0.3}90%{opacity:0.1}100%{transform:translateY(-105vh) translateX(-8px) scale(0.4);opacity:0}}
+
+/* Static noise */
+.static-noise{position:fixed;inset:0;pointer-events:none;z-index:97;opacity:0.06;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");animation:noiseShift .2s steps(2) infinite}
+@keyframes noiseShift{0%{transform:translate(0,0)}50%{transform:translate(-1%,1%)}100%{transform:translate(1%,-1%)}}
+
 /* 觸控裝置：拿掉 hover 依賴的效果，改用 active 狀態即時反饋 */
 @media (hover:none) and (pointer:coarse){
     .dir-btn:not(.lock-btn):active{
-        background:#b37446;
-        color:#0c0805;
-        box-shadow:0 0 20px rgba(179,116,70,0.4);
+        background:#8b1a1a;
+        color:#c4a080;
+        box-shadow:0 0 20px rgba(139,26,26,0.4);
         transform:scale(1.04)
     }
     .lock-system-btn:active{
-        background:#b37446;
-        color:#0c0805;
-        box-shadow:0 0 15px rgba(179,116,70,0.3)
+        background:#8b1a1a;
+        color:#c4a080;
+        box-shadow:0 0 15px rgba(139,26,26,0.3)
     }
 }
 </style>
 </head>
 <body>
+<div class="crt-scanlines"></div>
+<div class="dark-vignette"></div>
+<div class="static-noise"></div>
+<div id="ash-container"></div>
+
 <div class="lobby-container">
     <div class="lobby-header-group" id="fnf-header"><h1 class="lobby-title">Lobby</h1></div>
     <div class="directory-box" id="fnf-box">
         <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'characters.html')" class="dir-btn">CHARACTERS</a>
         <a class="dir-btn lock-btn">LORES</a>
         <a class="dir-btn lock-btn">PHOTOS</a>
-        <!-- 🎯 核心更替：精準將 SERVERS 更替為 MINI GAME，並完美承襲鎖定鎖死事件阻斷 -->
-        <a class="dir-btn lock-btn">HAPPEST DAY EVER!</a>
+        <a class="dir-btn lock-btn">THE SHOW</a>
         <a onmouseenter="playHoverSound()" onclick="fnfNavigate(this,'about.html')" class="dir-btn">ABOUT US</a>
     </div>
     <a onclick="forceLockOut()" class="lock-system-btn" id="fnf-back">Back To Entrance</a>
@@ -99,6 +119,25 @@ body{opacity:0;background:#0c0805;transition:opacity 0.45s cubic-bezier(0.16,1,0
 <script>
 window.addEventListener('DOMContentLoaded',()=>document.body.style.opacity="1");
 function forceLockOut(){document.body&&(document.body.style.opacity="0");setTimeout(()=>window.location.replace("index.html"),450)}
+
+(function spawnAsh(){
+    var c=document.getElementById('ash-container');
+    var count=window.innerWidth<=600?10:18;
+    for(var i=0;i<count;i++){
+        var a=document.createElement('div');
+        a.className='ash';
+        var left=Math.random()*100;
+        var dur=6+Math.random()*8;
+        var delay=Math.random()*10;
+        var size=2+Math.random()*2.5;
+        a.style.left=left+'vw';
+        a.style.width=size+'px';
+        a.style.height=size+'px';
+        a.style.animationDuration=dur+'s';
+        a.style.animationDelay=delay+'s';
+        c.appendChild(a);
+    }
+})();
 </script>
 </body>
 </html>

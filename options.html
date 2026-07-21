@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="theme.css">
 <style>
 body{
-    background:#0c0805;
-    color:#b37446;
+    background:#050204;
+    color:#8b1a1a;
     margin:0;
     padding:20px 40px;
     display:flex;
@@ -22,32 +22,33 @@ body{
 }
 
 #global-nav{ display:flex; flex-direction:column; gap:8px; align-items:center; width:100%; margin-bottom:20px; }
-.nav-btn{ text-align:center; white-space:nowrap; background:transparent; border:1px solid #b37446; color:#b37446; padding:6px 20px; font-size:13px; font-weight:bold; cursor:pointer; text-decoration:none; transition:all .3s ease; }
-.nav-btn:hover{ background:#b37446; color:#0c0805; box-shadow:0 0 15px rgba(179,116,70,.4); }
+.nav-btn{ text-align:center; white-space:nowrap; background:transparent; border:1px solid #8b1a1a; color:#8b1a1a; padding:6px 20px; font-size:13px; font-weight:bold; cursor:pointer; text-decoration:none; transition:all .3s ease; }
+.nav-btn:hover{ background:#8b1a1a; color:#c4a080; box-shadow:0 0 15px rgba(139,26,26,.4); }
 
 .wiki-container{
     width:100%;
     height:calc(100vh - 120px);
     height:calc(100dvh - 120px);
     max-width:700px;
-    border:1px solid #b37446;
-    background:rgba(12,8,5,.95);
+    border:1px solid #8b1a1a;
+    background:rgba(5,2,2,.95);
     padding:35px;
     animation:breathe 5s infinite;
     overflow-y:auto;
     position:relative;
     box-sizing:border-box;
 }
-@keyframes breathe{0%,100%{box-shadow:0 0 15px rgba(179,116,70,.15);}50%{box-shadow:0 0 35px rgba(179,116,70,.45);}}
+@keyframes breathe{0%,100%{box-shadow:0 0 15px rgba(139,26,26,.1);}50%{box-shadow:0 0 35px rgba(139,26,26,.25);}}
 
 .panel-title{
     font-size:26px;
-    color:#e5bd9c;
+    color:#c4a080;
     text-align:center;
     letter-spacing:4px;
     text-transform:uppercase;
     font-family:"EB Garamond",serif!important;
     margin:0 0 35px;
+    text-shadow:0 0 12px rgba(139,26,26,0.3);
 }
 
 .option-row{
@@ -56,14 +57,14 @@ body{
     justify-content:space-between;
     gap:16px;
     padding:18px 6px;
-    border-bottom:1px dashed rgba(179,116,70,0.25);
+    border-bottom:1px dashed rgba(139,26,26,0.25);
 }
 .option-row label{
     font-family:"EB Garamond",serif!important;
     text-transform:uppercase;
     letter-spacing:1.5px;
     font-size:14px;
-    color:#b37446;
+    color:#8b1a1a;
     flex:0 0 auto;
 }
 
@@ -74,7 +75,7 @@ body{
     width:160px;
     max-width:45vw;
     height:4px;
-    background:rgba(179,116,70,0.3);
+    background:rgba(139,26,26,0.3);
     outline:none;
     cursor:pointer;
 }
@@ -83,25 +84,25 @@ body{
     width:16px;
     height:16px;
     border-radius:50%;
-    background:#b37446;
+    background:#8b1a1a;
     cursor:pointer;
-    box-shadow:0 0 8px rgba(179,116,70,0.6);
+    box-shadow:0 0 8px rgba(139,26,26,0.6);
 }
 .option-slider::-moz-range-thumb{
     width:16px;
     height:16px;
     border-radius:50%;
-    background:#b37446;
+    background:#8b1a1a;
     border:none;
     cursor:pointer;
-    box-shadow:0 0 8px rgba(179,116,70,0.6);
+    box-shadow:0 0 8px rgba(139,26,26,0.6);
 }
-#volume-value{ font-size:13px; color:#e5bd9c; min-width:38px; text-align:right; }
+#volume-value{ font-size:13px; color:#c4a080; min-width:38px; text-align:right; }
 
 .toggle-btn{
     background:transparent;
-    border:1px solid #b37446;
-    color:#b37446;
+    border:1px solid #8b1a1a;
+    color:#8b1a1a;
     padding:8px 22px;
     font-size:12px;
     font-weight:bold;
@@ -111,10 +112,10 @@ body{
     min-width:80px;
     transition:all .2s ease;
 }
-.toggle-btn.is-on{ background:#b37446; color:#0c0805; box-shadow:0 0 15px rgba(179,116,70,.4); }
-.toggle-btn:hover{ box-shadow:0 0 15px rgba(179,116,70,.3); }
+.toggle-btn.is-on{ background:#8b1a1a; color:#c4a080; box-shadow:0 0 15px rgba(139,26,26,.4); }
+.toggle-btn:hover{ box-shadow:0 0 15px rgba(139,26,26,.3); }
 
-.option-divider{ height:1px; background:rgba(179,116,70,0.15); margin:10px 0 0; }
+.option-divider{ height:1px; background:rgba(139,26,26,0.15); margin:10px 0 0; }
 
 .danger-row label{ color:#ff5c5c; }
 .danger-btn{
@@ -169,12 +170,12 @@ body{
     letter-spacing:1.5px;
     text-transform:uppercase;
     cursor:pointer;
-    border:1px solid #b37446;
+    border:1px solid #8b1a1a;
     background:transparent;
-    color:#b37446;
+    color:#8b1a1a;
     transition:all .2s ease;
 }
-.confirm-btn.cancel:hover{ background:#b37446; color:#0c0805; }
+.confirm-btn.cancel:hover{ background:#8b1a1a; color:#c4a080; }
 .confirm-btn.confirm{ border-color:#9e3b30; color:#ff5c5c; }
 .confirm-btn.confirm:hover{ background:#9e3b30; color:#fff; box-shadow:0 0 15px rgba(158,59,48,.5); }
 
@@ -194,10 +195,10 @@ body{
 
 /* 觸控裝置：hover 換 active */
 @media (hover:none) and (pointer:coarse){
-    .nav-btn:active{ background:#b37446; color:#0c0805; box-shadow:0 0 15px rgba(179,116,70,.4); }
-    .toggle-btn:active{ box-shadow:0 0 15px rgba(179,116,70,.3); }
+    .nav-btn:active{ background:#8b1a1a; color:#c4a080; box-shadow:0 0 15px rgba(139,26,26,.4); }
+    .toggle-btn:active{ box-shadow:0 0 15px rgba(139,26,26,.3); }
     .danger-btn:active{ background:#9e3b30; color:#fff; }
-    .confirm-btn.cancel:active{ background:#b37446; color:#0c0805; }
+    .confirm-btn.cancel:active{ background:#8b1a1a; color:#c4a080; }
     .confirm-btn.confirm:active{ background:#9e3b30; color:#fff; }
 }
 </style>
@@ -229,6 +230,11 @@ body{
         <button class="toggle-btn is-on" id="glitch-toggle" onclick="toggleSetting('glitch')">ON</button>
     </div>
 
+    <div class="option-row">
+        <label>Flashlight Effect</label>
+        <button class="toggle-btn is-on" id="flashlight-toggle" onclick="toggleSetting('flashlight')">ON</button>
+    </div>
+
     <div class="option-divider"></div>
 
     <div class="option-row danger-row">
@@ -252,11 +258,13 @@ body{
     const VOLUME_KEY = 'fnf_music_volume';
     const SFX_KEY = 'fnf_sfx_enabled';
     const GLITCH_KEY = 'fnf_glitch_enabled';
+    const FLASHLIGHT_KEY = 'flashlightOff';
 
     const volumeSlider = document.getElementById('volume-slider');
     const volumeValue = document.getElementById('volume-value');
     const sfxToggle = document.getElementById('sfx-toggle');
     const glitchToggle = document.getElementById('glitch-toggle');
+    const flashlightToggle = document.getElementById('flashlight-toggle');
 
     function loadSettings(){
         const savedVolume = localStorage.getItem(VOLUME_KEY);
@@ -269,6 +277,9 @@ body{
 
         const glitchOn = localStorage.getItem(GLITCH_KEY) !== 'off';
         setToggleUI(glitchToggle, glitchOn);
+
+        const flashlightOn = localStorage.getItem(FLASHLIGHT_KEY) !== '1';
+        setToggleUI(flashlightToggle, flashlightOn);
     }
 
     function setToggleUI(btn, isOn){
@@ -294,6 +305,10 @@ body{
             const nowOn = glitchToggle.textContent.trim() !== 'ON';
             setToggleUI(glitchToggle, nowOn);
             localStorage.setItem(GLITCH_KEY, nowOn ? 'on' : 'off');
+        } else if (which === 'flashlight') {
+            const nowOn = flashlightToggle.textContent.trim() !== 'ON';
+            setToggleUI(flashlightToggle, nowOn);
+            localStorage.setItem(FLASHLIGHT_KEY, nowOn ? '0' : '1');
         }
         if (typeof playConfirmSound === 'function') playConfirmSound();
     }

@@ -3,7 +3,7 @@
 // ==========================================================================
 const currentCharacterData = { 
     name: "Joshua Woodside", 
-    titleColor: "#4a4a4a", // 代表冰冷原型金屬與老舊鋼骨的暗灰色
+    titleColor: "#4a4a4a",
     alias: "Josh / Costume", 
     gender: "Male", 
     age: "18", 
@@ -12,23 +12,27 @@ const currentCharacterData = {
     status: "Prototype Chuck (Fused)", 
     pfp: "pfp/pfp3.png", 
     quote: "I couldn't save my family. I won't fail them again.",
+    credit: "@tonyzanbonnii2_80929",
+    roleTier: "Prototype Entertainer",
+    threatLevel: "MEDIUM",
+    deathAnim: "constrict",
     
     purpose: "• Avenge his friends.\n• Avenge his younger brother, Oscar.",
     
-    bg: "Joshua was the older brother of Oscar and often took care of him and his friends. After their parents were murdered by an individual known as \"DOM,\" Joshua became even more protective of his brother.\n\nWhen Oscar disappeared, Joshua went looking for him, only to be ambushed and brutally killed by William Afton. He later became trapped inside an abandoned prototype Chuck E. Cheese suit, which permanently fused with his organic body and altered his physical appearance completely.",
+    bg: "Their parents were killed by someone called DOM. After that, Joshua became Oscar's entire world. He cooked. He cleaned. He walked Oscar to school. He was eighteen and already living like a tired old man because someone had to keep the family together.\n\nThen Oscar disappeared.\n\nJoshua went looking. He found Afton instead. Afton shoved him into a seven-foot prototype Chuck suit and left him to die. The suit fused with his body. The metal became his skin. He can't take it off. He can't fit through doors. He can't run.\n\nHe blames himself. Every night. For the rest of whatever this is.",
     
-    pers: "Stern, exceptionally serious, and highly responsible. He cloaks his emotions deeply, rarely showing vulnerability or feeling openly to others, moving with the heavy protective weight of a guardian.",
+    pers: "Stern, serious, and quietly furious. He doesn't yell. He doesn't threaten. He just stands there, seven feet of rusted metal, and tells you exactly what he's going to do. He carries himself like someone who's already failed once and refuses to let it happen again.",
     
-    likes: "• The showroom animatronic band\n• His younger brother, Oscar\n• Standing guard and protecting others from harm", 
+    likes: "• His brother Oscar\n• Standing guard\n• Protecting people who can't protect themselves",
     
-    dislikes: "• William Afton\n• DOM (The murderer of his parents)\n• Being viewed and treated as a mindless horror monster", 
+    dislikes: "• William Afton\n• DOM — the one who killed his parents\n• Being treated like a monster",
     
-    rel: "<strong>Oscar Woodside:</strong> His younger brother. Joshua's entire soul is powered by the profound guilt of failing to protect him in life. He remains hyper-vigilant over his whereabouts.\n\n<strong>Holly & Trixie:</strong> Fellow bound victim companions whom he shields within the facility layout.",
+    rel: "<strong>Oscar Woodside:</strong> His younger brother. Joshua died trying to find him. He will never stop trying to keep him safe.\n\n<strong>Holly & Trixie:</strong> Fellow victims. He protects them the same way he protected Oscar — silently, without being asked.",
     
     notes: [
-        "Canonically Stature: Joshua stood an imposing 7'0\" (213 cm) tall as a human before his death.",
-        "Beast Shell: The mechanical prototype Chuck suit increased his massive height and structural mass even further after merging permanently with his body.",
-        "Corporate Treatment: Fazbear Entertainment employees and staff frequently fear him, often mistreating or shunning his section due to his terrifying glitchy appearance.",
-        "Guardian Matrix: Despite his terrifying, massive exterior shell, his primary directive and core goal is exclusively to defend and protect those he cares about."
+        "He was seven feet tall before the suit. After the suit, he's bigger. Nobody measures anymore.",
+        "The suit fused permanently with his body. He can't remove it. It's him now.",
+        "Fazbear staff avoid his section. They call him a glitch. They don't understand he's a person.",
+        "He doesn't hunt. He guards. That's all he knows how to do."
     ]
 };

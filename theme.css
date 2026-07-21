@@ -1,20 +1,15 @@
 /* ==========================================================================
-   DATABASE TERMINAL CORE STYLES (通用主外觀樣式表 - 游標十字極致鎖定版)
+   DARK HORROR THEME — BXBC Global Stylesheet
    ========================================================================== */
 @import url('https://googleapis.com');
 
-/* 💡 終極游標鎖：強制 html、body 以及底下的所有標籤，滑鼠不論在任何狀態（包含 Hover），一律鎖死為十字準星！ */
 html, body, *, a, button, .dir-btn, .nav-btn, .submenu-btn, .back-lobby-btn, .back-btn, .menu-link, .collapsible-header { 
     font-family: "Times New Roman", serif !important; 
     box-sizing: border-box !important; 
-    
-    /* 徹底禁止全站文字選取，消滅任何瀏覽器與行動裝置的灰色選取工具列 */
     -webkit-user-select: none !important;
     -moz-user-select: none !important;
     -ms-user-select: none !important;
     user-select: none !important;
-
-    /* 💡 強制全域維持冰冷俐落的「十字準星」游標，消滅任何變成滑鼠手指（pointer）的企圖 */
     cursor: crosshair !important; 
 }
 
@@ -25,8 +20,12 @@ h1, h2, h3, .nav-btn, .infobox-title, .collapsible-header {
 }
 
 body { 
-    background: #0c0805; 
-    color: #b37446; 
+    background: #050204; 
+    background-image: 
+        radial-gradient(ellipse at 20% 50%, rgba(100,10,10,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(80,5,5,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(60,0,0,0.15) 0%, transparent 60%);
+    color: #8c6a55; 
     margin: 0; 
     padding: 20px 40px; 
     display: flex; 
@@ -36,125 +35,134 @@ body {
     overflow: hidden; 
     height: 100vh; 
     opacity: 1 !important;
-    transition: opacity 0.5s ease-in-out !important; 
+    transition: opacity 0.5s ease-in-out !important;
 }
 
-/* 轉場動畫控制類名項目 */
 body.fade-in { opacity: 1 !important; }
 body.fade-out { opacity: 0 !important; }
 
-/* ==========================================================================
-   NAVBAR COMPONENT (導覽列)
-   ========================================================================== */
+/* NAVBAR */
 #global-nav { display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%; margin-bottom: 20px; }
-.nav-status-group { display: flex; flex-wrap: nowrap; align-items: center; width: 100%; border: 1px dashed rgba(179,116,70,0.2); padding: 4px; }
+.nav-status-group { display: flex; flex-wrap: nowrap; align-items: center; width: 100%; border: 1px dashed rgba(139,26,26,0.2); padding: 4px; }
 .group-label { font-size: 11px; font-weight: bold; padding: 0 15px; white-space: nowrap; }
 .dead-label { color: #ff3333; }
-.nav-btn { flex: 1; text-align: center; white-space: nowrap; background: transparent; border: 1px solid #b37446; color: #b37446; padding: 6px 4px; font-size: 11px; font-weight: bold; margin: 0 3px; text-decoration: none; transition: all 0.2s ease-in-out; }
-.nav-btn:hover, .nav-btn.active { background: #b37446; color: #0c0805; box-shadow: 0 0 15px rgba(179,116,70,0.4); }
+.nav-btn { flex: 1; text-align: center; white-space: nowrap; background: transparent; border: 1px solid #5a2a15; color: #8c6a55; padding: 6px 4px; font-size: 11px; font-weight: bold; margin: 0 3px; text-decoration: none; transition: all 0.2s ease-in-out; }
+.nav-btn:hover, .nav-btn.active { background: #8b1a1a; color: #c4a080; border-color: #8b1a1a; box-shadow: 0 0 15px rgba(139,26,26,0.4); }
 .submenu-btn { flex: none; width: auto; padding: 4px 15px; margin-bottom: 4px; }
 
-/* ==========================================================================
-   PANEL LAYOUT (角色描述主面板)
-   ========================================================================== */
-.wiki-container { width: 100%; height: calc(100vh - 180px); height: calc(100dvh - 180px); border: 1px solid #b37446; background: rgba(12,8,5,0.95); padding: 25px; animation: breathe 5s infinite; overflow: hidden; }
+/* PANEL LAYOUT */
+.wiki-container { width: 100% !important; max-width: 700px !important; margin: 0 auto !important; min-height: calc(100vh - 180px) !important; height: auto !important; max-height: calc(100vh - 180px) !important; border: 1px solid #5a2a15; background: rgba(8,3,5,0.95); padding: 25px; animation: breathe 5s infinite; overflow-y: auto !important; position: relative; }
+.wiki-container > * { position: relative; z-index: 2; }
+.wiki-container::-webkit-scrollbar { width: 4px; }
+.wiki-container::-webkit-scrollbar-thumb { background: #5a2a15; border-radius: 2px; }
+
+.char-dossier { display: flex; flex-direction: column; height: auto; gap: 0; }
+.char-header { display: flex; flex-direction: column; align-items: flex-start; padding: 20px 0 16px 0; border-bottom: 1px solid rgba(139,26,26,0.2); margin-bottom: 16px; }
+.char-name-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.char-name { font-family: "EB Garamond", serif; font-size: 22px; letter-spacing: 3px; text-transform: uppercase; }
+.char-alias { font-size: 14px; color: #6a4a3a; letter-spacing: 1px; font-style: italic; }
+.char-header-row { display: flex; flex-direction: column; align-items: flex-start; }
+.char-portrait-wrap { flex: 0 0 160px; width: 160px; height: 160px; border: 1px solid #5a2a15; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; margin-bottom: 8px; }
+.char-portrait { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
+.portrait-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999; background: rgba(0,0,0,0.92); display: flex; align-items: center; justify-content: center; cursor: zoom-out; animation: overlayBg 0.1s ease-out; }
+.portrait-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; animation: portraitZoom 0.15s ease-out; }
+@keyframes overlayBg { from { opacity: 0; } to { opacity: 1; } }
+@keyframes portraitZoom { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.char-stats { display: flex; flex-direction: column; gap: 2px; }
+.char-stats .stat { font-size: 11px; color: #6a4a3a; letter-spacing: 1px; }
+.char-quote { font-style: italic; color: #a07858; font-size: 13px; border-left: 3px solid #8b1a1a; padding-left: 12px; max-width: 450px; margin-top: 10px; }
+.char-credit { font-size: 11px; color: #4a3020; letter-spacing: 1px; margin-top: 8px; }
+
+.char-body { flex: 1; }
+.char-section { border-bottom: none; }
+.char-section-title { font-family: "EB Garamond", serif; font-size: 16px; color: #8b1a1a; letter-spacing: 2px; text-transform: uppercase; padding: 12px 0; cursor: pointer; transition: color 0.2s; }
+.char-section-title:hover { color: #c4a080; }
+.char-section-body { overflow: hidden; max-height: 2000px; transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease; opacity: 1; padding-bottom: 12px; }
+.char-section-body.closed { max-height: 0; opacity: 0; padding-bottom: 0; }
+.char-text { font-size: 14px; color: #a07858; line-height: 1.8; white-space: pre-line; }
+.char-notes { padding-left: 10px; }
+.note-line { font-size: 13px; color: #c4a080; opacity: 0.7; line-height: 1.7; margin-bottom: 4px; }
+
 .wiki-layout { display: flex; gap: 30px; height: 100%; }
-.wiki-infobox { flex: 0 0 320px; background: #000; border: 1px solid #b37446; height: 100%; overflow-y: auto; padding: 15px; text-align: center; }
+.wiki-infobox { flex: 0 0 320px; background: #000; border: 1px solid #5a2a15; height: 100%; overflow-y: auto; padding: 15px; text-align: center; }
 .wiki-infobox::-webkit-scrollbar { display: none; }
-.infobox-title { font-size: 18px; font-weight: bold; padding: 8px; margin-bottom: 15px; border-bottom: 1px solid #b37446; }
+.infobox-title { font-size: 18px; font-weight: bold; padding: 8px; margin-bottom: 15px; border-bottom: 1px solid #5a2a15; }
 .infobox-pfp { max-width: 100%; height: auto; max-height: 240px; object-fit: contain; margin-bottom: 15px; }
 .infobox-table { width: 100%; font-size: 13px; border-collapse: collapse; text-align: left; }
-.infobox-table td { padding: 6px; color: #fff; }
-.infobox-table td.label { font-weight: bold; color: #b37446; width: 40%; }
+.infobox-table td { padding: 6px; color: #c4a080; }
+.infobox-table td.label { font-weight: bold; color: #8b1a1a; width: 40%; }
 
-/* ==========================================================================
-   LORE STYLES & INTERACTION (內文與點擊折疊)
-   ========================================================================== */
-.lore-content-area { flex: 1; text-align: left; color: #d19a6a; height: 100%; overflow-y: auto; padding-right: 15px; }
+/* LORE STYLES */
+.lore-content-area { flex: 1; text-align: left; color: #a07858; height: 100%; overflow-y: auto; padding-right: 15px; }
 .lore-content-area::-webkit-scrollbar { width: 4px; }
-.lore-content-area::-webkit-scrollbar-thumb { background: #b37446; border-radius: 2px; }
-.lore-content-area h1 { color: #fff; margin: 0 0 10px 0; font-size: 24px; }
-.collapsible-header { font-size: 18px; color: #b37446; border-bottom: 1px solid #b37446; padding-bottom: 4px; margin: 20px 0 10px 0; transition: color 0.2s ease, border-color 0.2s ease; }
-.collapsible-header:hover { color: #ffffff; border-bottom: 1px solid #ffffff; }
+.lore-content-area::-webkit-scrollbar-thumb { background: #5a2a15; border-radius: 2px; }
+.lore-content-area h1 { color: #c4a080; margin: 0 0 10px 0; font-size: 24px; }
+.collapsible-header { font-size: 18px; color: #8b1a1a; border-bottom: 1px solid #5a2a15; padding-bottom: 4px; margin: 20px 0 10px 0; transition: color 0.2s ease, border-color 0.2s ease; }
+.collapsible-header:hover { color: #c4a080; border-bottom: 1px solid #c4a080; }
 .toggle-content { margin-top: 8px; padding-left: 10px; animation: terminalFade 0.25s ease-out; }
 .lore-text, .list-spacing { font-size: 14px; line-height: 1.6; white-space: pre-line; margin-bottom: 15px; }
-.small-note { font-size: 13px; color: #fff; opacity: 0.7; line-height: 1.6; margin-bottom: 6px; }
-.quote-block { border-left: 3px solid #b37446; padding-left: 15px; font-style: italic; margin: 20px 0; color: #fff; font-size: 14px; }
+.small-note { font-size: 13px; color: #c4a080; opacity: 0.7; line-height: 1.6; margin-bottom: 6px; }
+.quote-block { border-left: 3px solid #8b1a1a; padding-left: 15px; font-style: italic; margin: 20px 0; color: #c4a080; font-size: 14px; }
 
-@keyframes breathe { 0%, 100% { box-shadow: 0 0 15px rgba(179, 116, 70, 0.15); } 50% { box-shadow: 0 0 35px rgba(179, 116, 70, 0.45); } }
+@keyframes breathe { 0%, 100% { box-shadow: 0 0 15px rgba(139, 26, 26, 0.1); } 50% { box-shadow: 0 0 35px rgba(139, 26, 26, 0.3); } }
 @keyframes terminalFade { from { opacity: 0; transform: translateY(-2px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ==========================================================================
-   💡 DEVELOPMENT LOCKOUT - FIXED (完工開發狀態精準鎖定核心)
-   ========================================================================== */
-
-/* 💡 只有當按鈕「明確帶有 .lock-btn」這個類名時，才會執行灰化停用！
-   這會徹底解放死者名單頁面，讓五位成員按鈕恢復 100% 原生灰紅暗紅色調！ */
+/* LOCK BUTTONS */
 .lobby-container .dir-btn.lock-btn {
     opacity: 0.4 !important;
     filter: brightness(0.6) !important;
     pointer-events: none !important;
     cursor: crosshair !important;
 }
-
-/* 確保被鎖死的未完工按鈕滑鼠指過去時不會觸發放大 */
 .lobby-container .dir-btn.lock-btn:hover {
     background: transparent !important;
     box-shadow: none !important;
     transform: scale(1) !important;
 }
-
-/* 不管是哪一頁，只要任何按鈕被 JavaScript 打上了 FNF 轉場退場標籤 (.fnf-fade-out)，
-   一律以最高優先權在 0.2 秒內縮小蒸發隱形，達成華麗全場退場效果！ */
 .lobby-container .dir-btn.fnf-fade-out {
     opacity: 0 !important;
     filter: brightness(0) !important;
     transform: scale(0.85) !important;
     visibility: hidden !important;
 }
-
-/* 當執行轉場時，底部的鎖定按鈕與返回按鈕同步蒸發 */
 .lobby-container .lock-system-btn.fnf-hide, .lobby-container .back-lobby-btn.fnf-hide {
     opacity: 0 !important;
     transform: scale(0.85) translateX(-50%) !important;
 }
 
-/* 💡 確保導覽列最左邊的生還者標籤顯示為鮮艷的科技翠綠色 */
 .group-label.alive-label {
-    color: #00e676 !important;
+    color: #cc3333 !important;
 }
 
-/* 確保死者標籤維持原本的警戒血紅色，達成完美分流 */
 .group-label.dead-label {
     color: #ff3333 !important;
 }
 
-
-/* ==========================================================================
-   LIST LAYOUT FORCE COMPRESS (最高權限・消滅清單所有內外邊距多餘空間)
-   ========================================================================== */
-
-/* 💡 強制將包裝盒的外邊距與內邊距完全壓縮歸零 */
+/* LIST LAYOUT */
 .lore-content-area ul, 
 .lore-content-area ol {
     margin: 10px 0 15px 0 !important;
-    padding: 0 !important;       /* 💡 徹底歸零內邊距，把多餘大空間全面蒸發 */
-    padding-left: 15px !important; /* 💡 只留 15px 給圓點站立 */
-    list-style-position: outside !important; /* 確保圓點優雅懸掛在文字外側 */
+    padding: 0 !important;
+    padding-left: 15px !important;
+    list-style-position: outside !important;
 }
-
-/* 💡 強制將圓點項目本身的內外邊距也完全縮死 */
 .lore-content-area ul li, 
 .lore-content-area ol li {
     margin: 0 0 8px 0 !important;
-    padding: 0 !important;       /* 💡 徹底歸零項目內邊距，阻止任何向右推的力量 */
+    padding: 0 !important;
     text-align: left !important;
-    color: inherit !important;   /* 自動完美繼承 Dominic 專屬的主題翠綠色 */
+    color: inherit !important;
 }
 
-/* ==========================================================================
-   MOBILE RESPONSIVE (手機版適配 - 直向堆疊，不再強制旋轉整站)
-   ========================================================================== */
+/* ALIVE PAGE */
+body.alive-page {
+    background: #050204;
+    background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(139,26,26,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(100,10,10,0.04) 0%, transparent 40%);
+}
+
+/* MOBILE */
 @media (max-width: 600px) {
     body {
         padding: 12px 14px;
@@ -162,11 +170,6 @@ body.fade-out { opacity: 0 !important; }
         min-height: 100dvh;
         overflow-y: auto;
     }
-
-    /* 導覽列：允許換行，避免五個角色按鈕擠成一團被切斷
-       💡 加上 !important：因為各角色頁自己的 <style> 裡重複定義了
-       .nav-btn { flex:1; white-space:nowrap } 且順序在 theme.css 之後，
-       同優先權時「後面贏」會蓋掉這裡的換行設定，所以必須用 !important 強制奪回控制權 */
     .nav-status-group {
         flex-wrap: wrap !important;
         justify-content: center !important;
@@ -183,8 +186,25 @@ body.fade-out { opacity: 0 !important; }
         min-height: 40px !important;
     }
     .submenu-btn {
-        width: 100% !important;
-        min-width: 100% !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        width: auto !important;
+        font-size: 10px !important;
+    }
+    .submenu-row {
+        flex-wrap: wrap !important;
+        gap: 4px !important;
+    }
+    .nav-status-group {
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    .nav-status-group::-webkit-scrollbar { display: none; }
+    .nav-btn {
+        min-width: auto !important;
+        font-size: 9px !important;
+        padding: 6px 4px !important;
     }
     .group-label {
         width: 100% !important;
@@ -192,12 +212,48 @@ body.fade-out { opacity: 0 !important; }
         padding: 4px 0 !important;
         white-space: normal !important;
     }
-
-    /* 主面板：桌面版是左右並排，手機改上下堆疊並可捲動
-       💡 同樣加上 !important，理由同上（各角色頁自己 <style> 也重複定義了 .wiki-container / .wiki-layout） */
     .wiki-container {
         height: calc(100dvh - 24px) !important;
         padding: 14px !important;
+    }
+    .char-dossier {
+        overflow-y: auto !important;
+    }
+    .char-header {
+        padding: 14px 0 12px 0 !important;
+    }
+    .char-name {
+        font-size: 17px !important;
+    }
+    .char-portrait-wrap {
+        width: 130px !important;
+        height: 130px !important;
+    }
+    .char-quote {
+        font-size: 12px !important;
+    }
+    .char-stats {
+        gap: 12px !important;
+    }
+    .char-stats .stat {
+        font-size: 11px !important;
+    }
+    .char-section-title {
+        font-size: 14px !important;
+        padding: 10px 0 !important;
+    }
+    .char-text {
+        font-size: 13px !important;
+    }
+    .char-credit {
+        font-size: 10px !important;
+    }
+    .wanted-header h2 {
+        font-size: 22px !important;
+        letter-spacing: 4px !important;
+    }
+    .wiki-container {
+        padding: 16px !important;
     }
     .wiki-layout {
         flex-direction: column !important;
@@ -233,15 +289,16 @@ body.fade-out { opacity: 0 !important; }
     .lore-text, .list-spacing, .quote-block {
         font-size: 13px !important;
     }
-
-    /* 觸控裝置：hover 效果換成 active 反饋 */
     .nav-btn:active {
-        background: #b37446;
-        color: #0c0805;
-        box-shadow: 0 0 15px rgba(179,116,70,0.4);
+        background: #8b1a1a;
+        color: #c4a080;
+        box-shadow: 0 0 15px rgba(139,26,26,0.4);
     }
     .collapsible-header:active {
-        color: #ffffff;
-        border-bottom: 1px solid #ffffff;
+        color: #c4a080;
+        border-bottom: 1px solid #c4a080;
     }
+}
+@media (hover:none) and (pointer:coarse){
+    #flashlight-dark{-webkit-mask-image:radial-gradient(circle 160px at var(--mx,50%) var(--my,50%),transparent 15%,black 100%)!important;mask-image:radial-gradient(circle 160px at var(--mx,50%) var(--my,50%),transparent 15%,black 100%)!important;}
 }
